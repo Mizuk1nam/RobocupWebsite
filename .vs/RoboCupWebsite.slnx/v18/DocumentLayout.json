@@ -1,7 +1,12 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "C:\\VisualStudio\\RoboCupWebsite\\",
-  "Documents": [],
+  "WorkspaceRootPath": "C:\\Git\\RobocupWebsite\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{AC04F6DF-E2DD-41F1-BDEC-1E1FE734491D}|Solution Items{AC04F6DF-E2DD-41F1-BDEC-1E1FE734491D}|C:\\Git\\RobocupWebsite\\MainPage.html||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{AC04F6DF-E2DD-41F1-BDEC-1E1FE734491D}|Solution Items{AC04F6DF-E2DD-41F1-BDEC-1E1FE734491D}|solutionrelative:MainPage.html||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    }
+  ],
   "DocumentGroupContainers": [
     {
       "Orientation": 0,
@@ -9,7 +14,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": -1,
+          "SelectedChildIndex": 2,
           "Children": [
             {
               "$type": "Bookmark",
@@ -18,6 +23,19 @@
             {
               "$type": "Bookmark",
               "Name": "ST:871033935:0:{bf84ea66-d821-4dba-b1b1-2777d8574775}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "MainPage.html",
+              "DocumentMoniker": "C:\\Git\\RobocupWebsite\\MainPage.html",
+              "RelativeDocumentMoniker": "MainPage.html",
+              "ToolTip": "C:\\Git\\RobocupWebsite\\MainPage.html",
+              "RelativeToolTip": "MainPage.html",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001512|",
+              "WhenOpened": "2026-05-21T17:21:46.566Z",
+              "EditorCaption": ""
             }
           ]
         }
