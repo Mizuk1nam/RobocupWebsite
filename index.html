@@ -1,0 +1,525 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RoboCup Junior Canada</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      color: #111827;
+      background: #fff;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .container { max-width: 80rem; margin: 0 auto; padding: 0 1rem; }
+    @media (min-width: 640px)  { .container { padding: 0 1.5rem; } }
+    @media (min-width: 1024px) { .container { padding: 0 2rem; } }
+
+    a { color: inherit; text-decoration: none; }
+
+    .btn-primary {
+      display: inline-flex; align-items: center; gap: .5rem;
+      background: #2563eb; color: #fff;
+      padding: .75rem 1.5rem; border-radius: .5rem; border: none;
+      font-size: 1rem; font-weight: 500; cursor: pointer;
+      transition: background .2s;
+    }
+    .btn-primary:hover { background: #1d4ed8; }
+
+    .btn-outline {
+      display: inline-flex; align-items: center; gap: .5rem;
+      background: #fff; color: #2563eb;
+      padding: .75rem 1.5rem; border-radius: .5rem;
+      border: 2px solid #2563eb;
+      font-size: 1rem; font-weight: 500; cursor: pointer;
+      transition: background .2s;
+    }
+    .btn-outline:hover { background: #eff6ff; }
+
+    /* Navigation */
+    nav {
+      border-bottom: 1px solid #e5e7eb;
+      position: sticky; top: 0; background: #fff; z-index: 100;
+    }
+    .nav-inner {
+      display: flex; align-items: center; justify-content: space-between;
+      height: 4rem;
+    }
+    .nav-logo {
+      display: flex; align-items: center; gap: .5rem;
+      font-size: 1.25rem; font-weight: 700; color: #111827;
+      cursor: pointer;
+    }
+    .nav-links { display: none; align-items: center; gap: 1.5rem; }
+    @media (min-width: 768px) { .nav-links { display: flex; } }
+
+    .nav-link {
+      color: #374151; cursor: pointer;
+      transition: color .2s; background: none; border: none; font-size: 1rem;
+    }
+    .nav-link:hover, .nav-link.active { color: #2563eb; }
+
+    .hamburger {
+      display: flex; align-items: center; justify-content: center;
+      background: none; border: none; cursor: pointer; padding: .25rem;
+    }
+    @media (min-width: 768px) { .hamburger { display: none; } }
+
+    .mobile-menu {
+      display: none; flex-direction: column; gap: 1rem;
+      padding: 1rem 0; border-top: 1px solid #e5e7eb;
+    }
+    .mobile-menu.open { display: flex; }
+    .mobile-menu .nav-link { text-align: left; font-size: 1rem; }
+
+    /* Hero */
+    .hero {
+      background: linear-gradient(135deg, #eff6ff 0%, #eef2ff 100%);
+      padding: 4rem 0; text-align: center;
+    }
+    .hero h1 {
+      font-size: clamp(2rem, 5vw, 3rem);
+      font-weight: 700; margin-bottom: 1rem; color: #111827;
+    }
+    .hero p {
+      font-size: 1.125rem; color: #374151;
+      max-width: 38rem; margin: 0 auto 2rem; line-height: 1.7;
+    }
+    .hero-buttons { display: flex; flex-wrap: wrap; gap: 1rem; justify-content: center; }
+
+    /* Sections */
+    section { padding: 3rem 0; }
+    section.bg-gray { background: #f9fafb; }
+    h2.section-title {
+      font-size: 1.875rem; font-weight: 700;
+      color: #111827; margin-bottom: 2.5rem; text-align: center;
+    }
+
+    /* Grids */
+    .grid-3 { display: grid; gap: 1.5rem; grid-template-columns: 1fr; }
+    @media (min-width: 768px)  { .grid-3 { grid-template-columns: repeat(2, 1fr); } }
+    @media (min-width: 1024px) { .grid-3 { grid-template-columns: repeat(3, 1fr); } }
+
+    .grid-2 { display: grid; gap: 2rem; grid-template-columns: 1fr; }
+    @media (min-width: 768px) { .grid-2 { grid-template-columns: repeat(2, 1fr); } }
+
+    /* Home challenge cards */
+    .home-challenge-card {
+      background: #fff; border-radius: .75rem;
+      box-shadow: 0 1px 3px rgba(0,0,0,.1); overflow: hidden;
+      transition: box-shadow .2s;
+    }
+    .home-challenge-card:hover { box-shadow: 0 4px 12px rgba(0,0,0,.12); }
+    .home-challenge-card img { width: 100%; height: 12rem; object-fit: cover; display: block; }
+    .image-placeholder {
+      width: 100%; min-height: 12rem; display: grid;
+      place-items: center; background: #e5e7eb; color: #475569;
+      border-radius: .75rem  .75rem 0 0; font-weight: 600;
+      text-transform: uppercase; letter-spacing: .05em;
+    }
+    .challenge-grid .image-placeholder { min-height: 16rem; }
+    .home-challenge-card-body { padding: 1.5rem; }
+    .home-challenge-card-body .icon-row {
+      display: flex; align-items: center; gap: .5rem; margin-bottom: .75rem;
+    }
+    .home-challenge-card-body .icon-row svg { color: #2563eb; }
+    .home-challenge-card-body h3 { font-size: 1.25rem; font-weight: 700; color: #111827; }
+    .home-challenge-card-body p { color: #374151; margin-top: .5rem; }
+
+    /* Intro */
+    .intro { max-width: 48rem; margin: 0 auto; text-align: center; }
+    .intro h2 { font-size: 1.875rem; font-weight: 700; color: #111827; margin-bottom: 1rem; }
+    .intro p { color: #374151; line-height: 1.7; margin-bottom: 1.5rem; }
+    .intro a { color: #2563eb; font-weight: 600; cursor: pointer; }
+    .intro a:hover { color: #1d4ed8; }
+
+    /* Challenge page cards */
+    .challenge-card {
+      background: #fff; border-radius: .75rem;
+      box-shadow: 0 4px 6px rgba(0,0,0,.07); overflow: hidden;
+      margin-bottom: 3rem;
+    }
+    .challenge-grid { display: grid; grid-template-columns: 1fr; }
+    @media (min-width: 768px) { .challenge-grid { grid-template-columns: 1fr 1fr; } }
+    .challenge-grid img { width: 100%; height: 16rem; object-fit: cover; display: block; }
+    @media (min-width: 768px) { .challenge-grid img { height: 100%; } }
+    .challenge-body { padding: 2rem; }
+    .challenge-body h2 { font-size: 1.875rem; font-weight: 700; color: #111827; margin-bottom: 1rem; }
+    .challenge-body p { color: #374151; line-height: 1.7; margin-bottom: 1rem; }
+    .challenge-body h3 { font-weight: 700; color: #111827; margin-bottom: .5rem; }
+    .challenge-body ul { list-style: none; color: #374151; margin-bottom: 1rem; }
+    .challenge-body ul li { margin-bottom: .25rem; }
+    .challenge-body ul li::before { content: "• "; }
+    .challenge-icon { display: flex; align-items: center; gap: .75rem; margin-bottom: 1rem; }
+    .challenge-icon svg { color: #2563eb; flex-shrink: 0; }
+
+    /* Event cards */
+    .event-card-featured {
+      background: linear-gradient(135deg, #eff6ff, #eef2ff);
+      border: 2px solid #2563eb;
+      border-radius: .75rem; padding: 1.5rem; transition: box-shadow .2s;
+    }
+    .event-card-featured:hover { box-shadow: 0 4px 12px rgba(0,0,0,.12); }
+    .event-card {
+      background: #fff; border: 1px solid #e5e7eb;
+      border-radius: .75rem; padding: 1.5rem;
+      transition: border-color .2s, box-shadow .2s;
+    }
+    .event-card:hover { border-color: #2563eb; box-shadow: 0 2px 8px rgba(0,0,0,.08); }
+    .event-province { display: flex; align-items: center; gap: .5rem; font-weight: 700; margin-bottom: .75rem; }
+    .event-province.featured { color: #2563eb; }
+    .event-province.other { color: #4b5563; }
+    .event-card h3, .event-card-featured h3 {
+      font-size: 1.125rem; font-weight: 700; color: #111827; margin-bottom: .5rem;
+    }
+    .event-date {
+      display: flex; align-items: center; gap: .5rem;
+      font-size: .875rem; color: #374151; margin-bottom: .75rem;
+    }
+    .event-desc { font-size: .875rem; color: #374151; margin-bottom: 1rem; }
+
+    /* Community cards */
+    .community-card {
+      background: #fff; border-radius: .75rem;
+      box-shadow: 0 4px 6px rgba(0,0,0,.07); padding: 2rem;
+    }
+    .community-card-header {
+      display: flex; align-items: center; gap: .75rem; margin-bottom: 1rem;
+    }
+    .community-card-header svg { color: #2563eb; }
+    .community-card-header h2 { font-size: 1.5rem; font-weight: 700; color: #111827; }
+    .community-card p { color: #374151; line-height: 1.7; margin-bottom: 1.5rem; }
+    .community-card ul { list-style: none; color: #374151; margin-bottom: 1.5rem; }
+    .community-card ul li { margin-bottom: .5rem; }
+    .community-card ul li::before { content: "• "; }
+
+    /* About */
+    .prose h2 {
+      font-size: 1.875rem; font-weight: 700; color: #111827;
+      margin-bottom: 1rem; margin-top: 3rem;
+    }
+    .prose h2:first-child { margin-top: 0; }
+    .prose p { color: #374151; line-height: 1.7; margin-bottom: 1.5rem; }
+
+    .value-card { background: #eff6ff; border-radius: .75rem; padding: 1.5rem; }
+    .value-card-header { display: flex; align-items: center; gap: .75rem; margin-bottom: .75rem; }
+    .value-card-header svg { color: #2563eb; }
+    .value-card-header h3 { font-size: 1.125rem; font-weight: 700; color: #111827; }
+    .value-card p { color: #374151; line-height: 1.6; }
+
+    /* Contact */
+    .contact-box {
+      background: #fff; border-radius: .75rem;
+      box-shadow: 0 2px 6px rgba(0,0,0,.08); padding: 2rem; margin-top: 2rem;
+    }
+    .contact-grid { display: grid; gap: 1.5rem; grid-template-columns: 1fr; }
+    @media (min-width: 768px) { .contact-grid { grid-template-columns: 1fr 1fr; } }
+    .contact-grid h3 { font-weight: 700; color: #111827; margin-bottom: .25rem; }
+    .contact-grid p { color: #374151; }
+    .contact-grid .email { color: #2563eb; }
+
+    /* Footer */
+    footer { background: #111827; color: #fff; padding: 2rem 0; margin-top: auto; }
+    .footer-inner {
+      display: flex; flex-direction: column; align-items: center; gap: 1rem;
+    }
+    @media (min-width: 768px) {
+      .footer-inner { flex-direction: row; justify-content: space-between; }
+    }
+    .footer-logo { display: flex; align-items: center; gap: .5rem; font-weight: 600; }
+    .footer-copy { font-size: .875rem; color: #9ca3af; }
+    .footer-links { display: flex; gap: 1rem; }
+    .footer-links a { font-size: .875rem; color: #9ca3af; }
+    .footer-links a:hover { color: #fff; }
+
+    /* Page visibility */
+    .page { display: none; }
+    .page.active { display: block; }
+    svg { display: inline-block; vertical-align: middle; }
+  </style>
+</head>
+<body>
+
+<!-- Navigation -->
+<nav>
+  <div class="container">
+    <div class="nav-inner">
+      <div class="nav-links">
+        <button class="nav-link" onclick="showPage('home')">Home</button>
+        <button class="nav-link" onclick="showPage('about')">About</button>
+        <button class="nav-link" onclick="showPage('challenges')">Competitions</button>
+        <button class="nav-link" onclick="showPage('leagues')">Leagues</button>
+        <button class="nav-link" onclick="showPage('contact')">Contact</button>
+        <button class="nav-link" onclick="showPage('community')">Community</button>
+      </div>
+      <button class="hamburger" onclick="toggleMobile()" aria-label="Menu">
+        <svg id="icon-menu" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#374151" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="4" y1="6" x2="20" y2="6"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="18" x2="20" y2="18"/>
+        </svg>
+        <svg id="icon-x" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#374151" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none">
+          <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+        </svg>
+      </button>
+    </div>
+    <div class="mobile-menu" id="mobile-menu">
+      <button class="nav-link" onclick="showPage('home')">Home</button>
+      <button class="nav-link" onclick="showPage('about')">About</button>
+      <button class="nav-link" onclick="showPage('challenges')">Competitions</button>
+      <button class="nav-link" onclick="showPage('leagues')">Leagues</button>
+      <button class="nav-link" onclick="showPage('contact')">Contact</button>
+      <button class="nav-link" onclick="showPage('community')">Community</button>
+    </div>
+  </div>
+</nav>
+
+<main style="flex:1">
+
+<!-- HOME -->
+<div class="page active" id="page-home">
+  <section class="hero">
+    <div class="container">
+      <h1>RoboCup Junior Canada</h1>
+      <p>An educational initiative empowering Canadian students to explore robotics, AI, and technology through hands-on competition and collaboration.</p>
+      <div class="hero-buttons">
+        <button class="btn-primary">Register Now</button>
+        <button class="btn-outline" onclick="showPage('about')">Learn More</button>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="container">
+      <div class="intro">
+        <h2>What is RoboCup Junior?</h2>
+        <p>RoboCup Junior is a project-oriented educational initiative for students up to age 19. Through exciting competitions in soccer, rescue, and performance, students develop skills in programming, engineering, and teamwork.</p>
+        <a onclick="showPage('challenges')">Explore Our Competitions →</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-gray">
+    <div class="container">
+      <h2 class="section-title">Competitions</h2>
+      <div class="grid-3">
+        <div class="home-challenge-card">
+          <div class="image-placeholder">Placeholder</div>
+          <div class="home-challenge-card-body">
+            <div class="icon-row">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg>
+              <h3>Toronto Canada RoboCup Junior</h3>
+            </div>
+            <p>Autonomous robots compete in dynamic two-on-two soccer matches.</p>
+          </div>
+        </div>
+        <div class="home-challenge-card">
+          <div class="image-placeholder">Placeholder</div>
+          <div class="home-challenge-card-body">
+            <div class="icon-row">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="22" y1="12" x2="18" y2="12"/><line x1="6" y1="12" x2="2" y2="12"/><line x1="12" y1="6" x2="12" y2="2"/><line x1="12" y1="22" x2="12" y2="18"/></svg>
+              <h3>Western Canada RoboCup Junior</h3>
+            </div>
+            <p>Navigate challenging terrains and mazes to locate and rescue victims.</p>
+          </div>
+        </div>
+        <div class="home-challenge-card">
+          <div class="image-placeholder">Placeholder</div>
+          <div class="home-challenge-card-body">
+            <div class="icon-row">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/></svg>
+              <h3>RoboCup Americas 2026</h3>
+            </div>
+            <p>Create choreographed performances combining robotics with art and music.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+</div>
+
+<!-- ABOUT -->
+<div class="page" id="page-about">
+  <section class="hero">
+    <div class="container">
+      <h1>About RoboCup Junior Canada</h1>
+      <p>Inspiring the next generation of innovators through robotics education</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="container">
+      <div style="max-width:56rem; margin:0 auto">
+        <div class="prose">
+          <p>Welcome to RoboCupJunior (RCJ), a unique, project-driven educational initiative designed to ignite a passion for robotics in students up to age 19. RCJ hosts local, regional, and international robotics events, guiding students from their first steps in robotics to meaningful, sophisticated projects.</p>
+
+          <p>Whether you’re just starting out or looking to deepen your skills, RCJ provides the ideal platform to grow in an inspiring, challenge-driven environment.</p>
+        </div>
+
+        <div class="grid-2" style="margin-top:3rem">
+          <div class="value-card">
+            <div class="value-card-header">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+              <h3>Teamwork</h3>
+            </div>
+            <p>Students collaborate in teams, learning to communicate effectively and leverage each other's strengths.</p>
+          </div>
+          <div class="value-card">
+            <div class="value-card-header">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/></svg>
+              <h3>Innovation</h3>
+            </div>
+            <p>Challenges encourage creative problem-solving and innovative thinking in robotics design and programming.</p>
+          </div>
+          <div class="value-card">
+            <div class="value-card-header">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="22" y1="12" x2="18" y2="12"/><line x1="6" y1="12" x2="2" y2="12"/><line x1="12" y1="6" x2="12" y2="2"/><line x1="12" y1="22" x2="12" y2="18"/></svg>
+              <h3>Skill Development</h3>
+            </div>
+            <p>Participants develop technical skills in programming, engineering, and electronics through hands-on experience.</p>
+          </div>
+          <div class="value-card">
+            <div class="value-card-header">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg>
+              <h3>Competition</h3>
+            </div>
+            <p>Friendly competition motivates students to excel while learning sportsmanship and resilience.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- COMPETITIONS -->
+<div class="page" id="page-challenges">
+  <section class="hero">
+    <div class="container">
+      <h1>RoboCup Competitions</h1>
+    </div>
+  </section>
+
+  <section>
+    <div class="container">
+
+      <div class="challenge-card">
+        <div class="challenge-grid">
+          <div class="image-placeholder">Placeholder</div>
+          <div class="challenge-body">
+            <div class="challenge-icon">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg>
+              <h2>Toronto Canada RoboCup Junior</h2>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="challenge-card">
+        <div class="challenge-grid">
+          <div class="challenge-body" style="order:2">
+            <div class="challenge-icon">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="22" y1="12" x2="18" y2="12"/><line x1="6" y1="12" x2="2" y2="12"/><line x1="12" y1="6" x2="12" y2="2"/><line x1="12" y1="22" x2="12" y2="18"/></svg>
+              <h2>Western Canada RoboCup Junior</h2>
+            </div>
+          </div>
+          <div class="image-placeholder" style="order:1">Placeholder</div>
+        </div>
+      </div>
+
+      <div class="challenge-card">
+        <div class="challenge-grid">
+          <div class="image-placeholder">Placeholder</div>
+          <div class="challenge-body">
+            <div class="challenge-icon">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/></svg>
+              <h2>RoboCup Americas 2026</h2>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+</div>
+
+<!-- LEAGUES -->
+<div class="page" id="page-leagues">
+  <section class="hero">
+    <div class="container">
+      <h1>Leagues</h1>
+    </div>
+  </section>
+</div>
+
+<!-- COMMUNITY --><!-- COMMUNITY -->
+<div class="page" id="page-community">
+  <section class="hero">
+    <div class="container">
+      <h1>Join Our Community</h1>
+      <p>Whether you're a student, educator, volunteer, or sponsor, there are many ways to get involved</p>
+    </div>
+  </section>
+</div>
+
+<div class="page" id="page-contact">
+  <section class="hero">
+    <div class="container" style="max-width:48rem; text-align:center">
+      <h1>Get in Touch</h1>
+      <p style="color:#374151; margin-bottom:2rem">Have questions? Want to learn more? We'd love to hear from you!</p>
+      <div class="contact-box">
+        <div class="contact-grid">
+          <div><h3>General Information</h3><p class="email">info@robocupcanada.ca</p></div>
+          <div><h3>RoboCupJunior Québec Representative</h3><p>Sarah Morgan: director@robocupcanada.ca</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+</main>
+
+<!-- Footer -->
+<footer>
+  <div class="container">
+    <div class="footer-inner">
+      <p class="footer-copy">© 2026 RoboCup Junior Canada. All rights reserved.</p>
+      <div class="footer-links">
+        <a href="#">Privacy</a>
+        <a href="#">Terms</a>
+        <a href="#">Contact</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  const pages = ['home','about','challenges','leagues','contact','community'];
+
+  function showPage(id) {
+    pages.forEach(p => {
+      document.getElementById('page-' + p).classList.toggle('active', p === id);
+    });
+    closeMobile();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function toggleMobile() {
+    const menu = document.getElementById('mobile-menu');
+    const open = menu.classList.toggle('open');
+    document.getElementById('icon-menu').style.display = open ? 'none' : '';
+    document.getElementById('icon-x').style.display = open ? '' : 'none';
+  }
+
+  function closeMobile() {
+    document.getElementById('mobile-menu').classList.remove('open');
+    document.getElementById('icon-menu').style.display = '';
+    document.getElementById('icon-x').style.display = 'none';
+  }
+</script>
+</body>
+</html>
