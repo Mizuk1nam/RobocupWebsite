@@ -250,12 +250,14 @@
   <div class="container">
     <div class="nav-inner">
       <div class="nav-links">
-        <button class="nav-link" onclick="showPage('home')">Home</button>
-        <button class="nav-link" onclick="showPage('about')">About</button>
-        <button class="nav-link" onclick="showPage('challenges')">Competitions</button>
-        <button class="nav-link" onclick="showPage('leagues')">Leagues</button>
-        <button class="nav-link" onclick="showPage('contact')">Contact</button>
-        <button class="nav-link" onclick="showPage('community')">Community</button>
+        <button class="nav-link" onclick="showPage('home')">Homepage</button>
+        <button class="nav-link" onclick="showPage('about')">About Us</button>
+        <button class="nav-link" onclick="showPage('leagues')">Leagues & Rules</button>
+        <button class="nav-link" onclick="showPage('registration')">Online Registration</button>
+        <button class="nav-link" onclick="showPage('schedule')">Competition Schedule</button>
+        <button class="nav-link" onclick="showPage('gallery')">International Image Gallery</button>
+        <button class="nav-link" onclick="showPage('resources')">RoboCup Community Resources</button>
+        <button class="nav-link" onclick="showPage('contact')">Contact Us</button>
       </div>
       <button class="hamburger" onclick="toggleMobile()" aria-label="Menu">
         <svg id="icon-menu" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#374151" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -267,12 +269,14 @@
       </button>
     </div>
     <div class="mobile-menu" id="mobile-menu">
-      <button class="nav-link" onclick="showPage('home')">Home</button>
-      <button class="nav-link" onclick="showPage('about')">About</button>
-      <button class="nav-link" onclick="showPage('challenges')">Competitions</button>
-      <button class="nav-link" onclick="showPage('leagues')">Leagues</button>
-      <button class="nav-link" onclick="showPage('contact')">Contact</button>
-      <button class="nav-link" onclick="showPage('community')">Community</button>
+      <button class="nav-link" onclick="showPage('home')">Homepage</button>
+      <button class="nav-link" onclick="showPage('about')">About Us</button>
+      <button class="nav-link" onclick="showPage('leagues')">Leagues & Rules</button>
+      <button class="nav-link" onclick="showPage('registration')">Online Registration</button>
+      <button class="nav-link" onclick="showPage('schedule')">Competition Schedule</button>
+      <button class="nav-link" onclick="showPage('gallery')">International Image Gallery</button>
+      <button class="nav-link" onclick="showPage('resources')">RoboCup Community Resources</button>
+      <button class="nav-link" onclick="showPage('contact')">Contact Us</button>
     </div>
   </div>
 </nav>
@@ -284,9 +288,9 @@
   <section class="hero">
     <div class="container">
       <h1>RoboCup Junior Canada</h1>
-      <p>An educational initiative empowering Canadian students to explore robotics, AI, and technology through hands-on competition and collaboration.</p>
+      <p>The RoboCup organization is run by a dedicated team of volunteers, researchers, professionals, and more worldwide. RoboCup provides opportunities for students from age 10 to 19 in Junior leagues and students from age 19+ in a Major division.</p>
       <div class="hero-buttons">
-        <button class="btn-primary">Register Now</button>
+        <button class="btn-primary" onclick="showPage('registration')">Register Now</button>
         <button class="btn-outline" onclick="showPage('about')">Learn More</button>
       </div>
     </div>
@@ -296,46 +300,8 @@
     <div class="container">
       <div class="intro">
         <h2>What is RoboCup Junior?</h2>
-        <p>RoboCup Junior is a project-oriented educational initiative for students up to age 19. Through exciting competitions in soccer, rescue, and performance, students develop skills in programming, engineering, and teamwork.</p>
-        <a onclick="showPage('challenges')">Explore Our Competitions →</a>
-      </div>
-    </div>
-  </section>
-
-  <section class="bg-gray">
-    <div class="container">
-      <h2 class="section-title">Competitions</h2>
-      <div class="grid-3">
-        <div class="home-challenge-card">
-          <div class="image-placeholder">Placeholder</div>
-          <div class="home-challenge-card-body">
-            <div class="icon-row">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg>
-              <h3>Toronto Canada RoboCup Junior</h3>
-            </div>
-            <p>Autonomous robots compete in dynamic two-on-two soccer matches.</p>
-          </div>
-        </div>
-        <div class="home-challenge-card">
-          <div class="image-placeholder">Placeholder</div>
-          <div class="home-challenge-card-body">
-            <div class="icon-row">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="22" y1="12" x2="18" y2="12"/><line x1="6" y1="12" x2="2" y2="12"/><line x1="12" y1="6" x2="12" y2="2"/><line x1="12" y1="22" x2="12" y2="18"/></svg>
-              <h3>Western Canada RoboCup Junior</h3>
-            </div>
-            <p>Navigate challenging terrains and mazes to locate and rescue victims.</p>
-          </div>
-        </div>
-        <div class="home-challenge-card">
-          <div class="image-placeholder">Placeholder</div>
-          <div class="home-challenge-card-body">
-            <div class="icon-row">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/></svg>
-              <h3>RoboCup Americas 2026</h3>
-            </div>
-            <p>Create choreographed performances combining robotics with art and music.</p>
-          </div>
-        </div>
+        <p>The RoboCup organization is run by a dedicated team of volunteers, researchers, professionals, and more worldwide. RoboCup provides opportunities for students from age 10 to 19 in Junior leagues and students from age 19+ in a Major division.</p>
+        <a onclick="showPage('schedule')">Explore Our Competitions →</a>
       </div>
     </div>
   </section>
@@ -348,101 +314,6 @@
   <section class="hero">
     <div class="container">
       <h1>About RoboCup Junior Canada</h1>
-      <p>Inspiring the next generation of innovators through robotics education</p>
-    </div>
-  </section>
-
-  <section>
-    <div class="container">
-      <div style="max-width:56rem; margin:0 auto">
-        <div class="prose">
-          <p>Welcome to RoboCupJunior (RCJ), a unique, project-driven educational initiative designed to ignite a passion for robotics in students up to age 19. RCJ hosts local, regional, and international robotics events, guiding students from their first steps in robotics to meaningful, sophisticated projects.</p>
-
-          <p>Whether you’re just starting out or looking to deepen your skills, RCJ provides the ideal platform to grow in an inspiring, challenge-driven environment.</p>
-        </div>
-
-        <div class="grid-2" style="margin-top:3rem">
-          <div class="value-card">
-            <div class="value-card-header">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-              <h3>Teamwork</h3>
-            </div>
-            <p>Students collaborate in teams, learning to communicate effectively and leverage each other's strengths.</p>
-          </div>
-          <div class="value-card">
-            <div class="value-card-header">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/></svg>
-              <h3>Innovation</h3>
-            </div>
-            <p>Challenges encourage creative problem-solving and innovative thinking in robotics design and programming.</p>
-          </div>
-          <div class="value-card">
-            <div class="value-card-header">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="22" y1="12" x2="18" y2="12"/><line x1="6" y1="12" x2="2" y2="12"/><line x1="12" y1="6" x2="12" y2="2"/><line x1="12" y1="22" x2="12" y2="18"/></svg>
-              <h3>Skill Development</h3>
-            </div>
-            <p>Participants develop technical skills in programming, engineering, and electronics through hands-on experience.</p>
-          </div>
-          <div class="value-card">
-            <div class="value-card-header">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg>
-              <h3>Competition</h3>
-            </div>
-            <p>Friendly competition motivates students to excel while learning sportsmanship and resilience.</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-</div>
-
-<!-- COMPETITIONS -->
-<div class="page" id="page-challenges">
-  <section class="hero">
-    <div class="container">
-      <h1>RoboCup Competitions</h1>
-    </div>
-  </section>
-
-  <section>
-    <div class="container">
-
-      <div class="challenge-card">
-        <div class="challenge-grid">
-          <div class="image-placeholder">Placeholder</div>
-          <div class="challenge-body">
-            <div class="challenge-icon">
-              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg>
-              <h2>Toronto Canada RoboCup Junior</h2>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="challenge-card">
-        <div class="challenge-grid">
-          <div class="challenge-body" style="order:2">
-            <div class="challenge-icon">
-              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="22" y1="12" x2="18" y2="12"/><line x1="6" y1="12" x2="2" y2="12"/><line x1="12" y1="6" x2="12" y2="2"/><line x1="12" y1="22" x2="12" y2="18"/></svg>
-              <h2>Western Canada RoboCup Junior</h2>
-            </div>
-          </div>
-          <div class="image-placeholder" style="order:1">Placeholder</div>
-        </div>
-      </div>
-
-      <div class="challenge-card">
-        <div class="challenge-grid">
-          <div class="image-placeholder">Placeholder</div>
-          <div class="challenge-body">
-            <div class="challenge-icon">
-              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/></svg>
-              <h2>RoboCup Americas 2026</h2>
-            </div>
-          </div>
-        </div>
-      </div>
-
     </div>
   </section>
 </div>
@@ -456,12 +327,38 @@
   </section>
 </div>
 
-<!-- COMMUNITY --><!-- COMMUNITY -->
-<div class="page" id="page-community">
+<div class="page" id="page-registration">
   <section class="hero">
     <div class="container">
-      <h1>Join Our Community</h1>
-      <p>Whether you're a student, educator, volunteer, or sponsor, there are many ways to get involved</p>
+      <h1>Online Registration</h1>
+      <p>Registration information and next steps will be available soon.</p>
+    </div>
+  </section>
+</div>
+
+<div class="page" id="page-schedule">
+  <section class="hero">
+    <div class="container">
+      <h1>Competition Schedule</h1>
+      <p>Check back for the latest schedule of RoboCup events and tournament dates.</p>
+    </div>
+  </section>
+</div>
+
+<div class="page" id="page-gallery">
+  <section class="hero">
+    <div class="container">
+      <h1>International Image Gallery</h1>
+      <p>Browse photos from past RoboCup competitions around the world.</p>
+    </div>
+  </section>
+</div>
+
+<div class="page" id="page-resources">
+  <section class="hero">
+    <div class="container">
+      <h1>RoboCup Community Resources</h1>
+      <p>Whether you're a student, educator, volunteer, or sponsor, there are many ways to get involved.</p>
     </div>
   </section>
 </div>
@@ -469,14 +366,7 @@
 <div class="page" id="page-contact">
   <section class="hero">
     <div class="container" style="max-width:48rem; text-align:center">
-      <h1>Get in Touch</h1>
-      <p style="color:#374151; margin-bottom:2rem">Have questions? Want to learn more? We'd love to hear from you!</p>
-      <div class="contact-box">
-        <div class="contact-grid">
-          <div><h3>General Information</h3><p class="email">info@robocupcanada.ca</p></div>
-          <div><h3>RoboCupJunior Québec Representative</h3><p>Sarah Morgan: director@robocupcanada.ca</p></div>
-        </div>
-      </div>
+      <h1>Contact Us</h1>
     </div>
   </section>
 </div>
@@ -498,7 +388,7 @@
 </footer>
 
 <script>
-  const pages = ['home','about','challenges','leagues','contact','community'];
+  const pages = ['home','about','leagues','registration','schedule','gallery','resources','contact'];
 
   function showPage(id) {
     pages.forEach(p => {
