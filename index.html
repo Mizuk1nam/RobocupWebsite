@@ -238,8 +238,6 @@
     .footer-links a:hover { color: #fff; }
 
     /* Page visibility */
-    .page { display: none; }
-    .page.active { display: block; }
     svg { display: inline-block; vertical-align: middle; }
   </style>
 </head>
@@ -250,14 +248,14 @@
   <div class="container">
     <div class="nav-inner">
       <div class="nav-links">
-        <button class="nav-link" onclick="showPage('home')">Homepage</button>
-        <button class="nav-link" onclick="showPage('about')">About Us</button>
+        <a class="nav-link active" href="index.html">Homepage</a>
+        <a class="nav-link" href="about.html">About Us</a>
         <a class="nav-link" href="leagues.html">Leagues & Rules</a>
-        <button class="nav-link" onclick="showPage('registration')">Online Registration</button>
-        <button class="nav-link" onclick="showPage('schedule')">Competition Schedule</button>
-        <button class="nav-link" onclick="showPage('gallery')">International Image Gallery</button>
-        <button class="nav-link" onclick="showPage('resources')">RoboCup Community Resources</button>
-        <button class="nav-link" onclick="showPage('contact')">Contact Us</button>
+        <a class="nav-link" href="registration.html">Online Registration</a>
+        <a class="nav-link" href="schedule.html">Competition Schedule</a>
+        <a class="nav-link" href="gallery.html">International Image Gallery</a>
+        <a class="nav-link" href="resources.html">RoboCup Community Resources</a>
+        <a class="nav-link" href="contact.html">Contact Us</a>
       </div>
       <button class="hamburger" onclick="toggleMobile()" aria-label="Menu">
         <svg id="icon-menu" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#374151" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -269,14 +267,14 @@
       </button>
     </div>
     <div class="mobile-menu" id="mobile-menu">
-      <button class="nav-link" onclick="showPage('home')">Homepage</button>
-      <button class="nav-link" onclick="showPage('about')">About Us</button>
+      <a class="nav-link" href="index.html">Homepage</a>
+      <a class="nav-link" href="about.html">About Us</a>
       <a class="nav-link" href="leagues.html">Leagues & Rules</a>
-      <button class="nav-link" onclick="showPage('registration')">Online Registration</button>
-      <button class="nav-link" onclick="showPage('schedule')">Competition Schedule</button>
-      <button class="nav-link" onclick="showPage('gallery')">International Image Gallery</button>
-      <button class="nav-link" onclick="showPage('resources')">RoboCup Community Resources</button>
-      <button class="nav-link" onclick="showPage('contact')">Contact Us</button>
+      <a class="nav-link" href="registration.html">Online Registration</a>
+      <a class="nav-link" href="schedule.html">Competition Schedule</a>
+      <a class="nav-link" href="gallery.html">International Image Gallery</a>
+      <a class="nav-link" href="resources.html">RoboCup Community Resources</a>
+      <a class="nav-link" href="contact.html">Contact Us</a>
     </div>
   </div>
 </nav>
@@ -290,8 +288,8 @@
       <h1>RoboCup Junior Canada</h1>
       <p>The RoboCup organization is run by a dedicated team of volunteers, researchers, professionals, and more worldwide. RoboCup provides opportunities for students from age 10 to 19 in Junior leagues and students from age 19+ in a Major division.</p>
       <div class="hero-buttons">
-        <button class="btn-primary" onclick="showPage('registration')">Register Now</button>
-        <button class="btn-outline" onclick="showPage('about')">Learn More</button>
+        <a class="btn-primary" href="registration.html">Register Now</a>
+        <a class="btn-outline" href="about.html">Learn More</a>
       </div>
     </div>
   </section>
@@ -301,63 +299,8 @@
       <div class="intro">
         <h2>What is RoboCup Junior?</h2>
         <p>The RoboCup organization is run by a dedicated team of volunteers, researchers, professionals, and more worldwide. RoboCup provides opportunities for students from age 10 to 19 in Junior leagues and students from age 19+ in a Major division.</p>
-        <a onclick="showPage('schedule')">Explore Our Competitions →</a>
+        <a href="schedule.html">Explore Our Competitions →</a>
       </div>
-    </div>
-  </section>
-
-
-</div>
-
-<!-- ABOUT -->
-<div class="page" id="page-about">
-  <section class="hero">
-    <div class="container">
-      <h1>About RoboCup Junior Canada</h1>
-    </div>
-  </section>
-</div>
-
-<div class="page" id="page-registration">
-  <section class="hero">
-    <div class="container">
-      <h1>Online Registration</h1>
-      <p>Registration information and next steps will be available soon.</p>
-    </div>
-  </section>
-</div>
-
-<div class="page" id="page-schedule">
-  <section class="hero">
-    <div class="container">
-      <h1>Competition Schedule</h1>
-      <p>Check back for the latest schedule of RoboCup events and tournament dates.</p>
-    </div>
-  </section>
-</div>
-
-<div class="page" id="page-gallery">
-  <section class="hero">
-    <div class="container">
-      <h1>International Image Gallery</h1>
-      <p>Browse photos from past RoboCup competitions around the world.</p>
-    </div>
-  </section>
-</div>
-
-<div class="page" id="page-resources">
-  <section class="hero">
-    <div class="container">
-      <h1>RoboCup Community Resources</h1>
-      <p>Whether you're a student, educator, volunteer, or sponsor, there are many ways to get involved.</p>
-    </div>
-  </section>
-</div>
-
-<div class="page" id="page-contact">
-  <section class="hero">
-    <div class="container" style="max-width:48rem; text-align:center">
-      <h1>Contact Us</h1>
     </div>
   </section>
 </div>
@@ -379,16 +322,6 @@
 </footer>
 
 <script>
-  const pages = ['home','about','registration','schedule','gallery','resources','contact'];
-
-  function showPage(id) {
-    pages.forEach(p => {
-      document.getElementById('page-' + p).classList.toggle('active', p === id);
-    });
-    closeMobile();
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }
-
   function toggleMobile() {
     const menu = document.getElementById('mobile-menu');
     const open = menu.classList.toggle('open');
@@ -398,6 +331,15 @@
 
   function closeMobile() {
     document.getElementById('mobile-menu').classList.remove('open');
+    document.getElementById('icon-menu').style.display = '';
+    document.getElementById('icon-x').style.display = 'none';
+  }
+
+  // Close mobile menu when a link is clicked
+  document.querySelectorAll('.mobile-menu a').forEach(link => {
+    link.addEventListener('click', closeMobile);
+  });
+</script>
     document.getElementById('icon-menu').style.display = '';
     document.getElementById('icon-x').style.display = 'none';
   }
