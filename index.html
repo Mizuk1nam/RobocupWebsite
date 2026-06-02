@@ -252,7 +252,7 @@
       <div class="nav-links">
         <button class="nav-link" onclick="showPage('home')">Homepage</button>
         <button class="nav-link" onclick="showPage('about')">About Us</button>
-        <button class="nav-link" onclick="showPage('leagues')">Leagues & Rules</button>
+        <a class="nav-link" href="leagues.html">Leagues & Rules</a>
         <button class="nav-link" onclick="showPage('registration')">Online Registration</button>
         <button class="nav-link" onclick="showPage('schedule')">Competition Schedule</button>
         <button class="nav-link" onclick="showPage('gallery')">International Image Gallery</button>
@@ -271,7 +271,7 @@
     <div class="mobile-menu" id="mobile-menu">
       <button class="nav-link" onclick="showPage('home')">Homepage</button>
       <button class="nav-link" onclick="showPage('about')">About Us</button>
-      <button class="nav-link" onclick="showPage('leagues')">Leagues & Rules</button>
+      <a class="nav-link" href="leagues.html">Leagues & Rules</a>
       <button class="nav-link" onclick="showPage('registration')">Online Registration</button>
       <button class="nav-link" onclick="showPage('schedule')">Competition Schedule</button>
       <button class="nav-link" onclick="showPage('gallery')">International Image Gallery</button>
@@ -314,15 +314,6 @@
   <section class="hero">
     <div class="container">
       <h1>About RoboCup Junior Canada</h1>
-    </div>
-  </section>
-</div>
-
-<!-- LEAGUES -->
-<div class="page" id="page-leagues">
-  <section class="hero">
-    <div class="container">
-      <h1>Leagues</h1>
     </div>
   </section>
 </div>
@@ -388,7 +379,7 @@
 </footer>
 
 <script>
-  const pages = ['home','about','leagues','registration','schedule','gallery','resources','contact'];
+  const pages = ['home','about','registration','schedule','gallery','resources','contact'];
 
   function showPage(id) {
     pages.forEach(p => {

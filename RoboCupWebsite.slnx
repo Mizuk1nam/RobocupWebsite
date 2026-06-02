@@ -1,5 +1,8 @@
 <Solution>
   <Folder Name="/Solution Items/">
+    <File Path="index.html" />
+    <File Path="leagues.css" />
+    <File Path="leagues.html" />
     <File Path="MainPage.html" />
   </Folder>
 </Solution>
