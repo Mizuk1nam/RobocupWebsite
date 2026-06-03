@@ -112,7 +112,7 @@ nav {
     }
 }
 
-.nav-link {
+.nav-links a {
     color: #374151;
     cursor: pointer;
     transition: color .2s;
@@ -121,8 +121,8 @@ nav {
     font-size: 1rem;
 }
 
-.nav-link:hover,
-.nav-link.active {
+.nav-links a:hover,
+.nav-links a.active {
     color: #2563eb;
 }
 
@@ -315,4 +315,14 @@ footer {
 
 main {
     flex: 1;
+}
+
+.prose a {
+    color: #2563eb;
+    font-weight: 600;
+    text-decoration: underline;
+}
+
+.prose a:hover {
+    color: #1d4ed8;
 }
