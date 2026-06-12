@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -6,6 +6,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Contact Us | RoboCup Junior Canada</title>
     <link rel="stylesheet" href="contact.css" />
+<style>
+body { opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease, transform 0.6s ease; }
+body.page-loaded { opacity: 1; transform: none; }
+.hero h1, .hero p, .hero-buttons { opacity: 0; transform: translateY(12px); transition: opacity 0.6s ease 0.2s, transform 0.6s ease 0.2s; }
+body.page-loaded .hero h1, body.page-loaded .hero p, body.page-loaded .hero-buttons { opacity: 1; transform: none; }
+</style>
 </head>
 <body>
     <nav>
@@ -62,5 +68,16 @@
             <p class="footer-copy">© 2026 RoboCup Junior Canada. All rights reserved.</p>
         </div>
     </footer>
+<script>
+function animatePageLoad() {
+  document.body.classList.remove('page-loaded');
+  void document.body.offsetWidth;
+  requestAnimationFrame(() => document.body.classList.add('page-loaded'));
+}
+
+window.addEventListener('pageshow', animatePageLoad);
+</script>
 </body>
 </html>
+
+
