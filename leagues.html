@@ -5,31 +5,69 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Leagues & Rules | RoboCup Junior Canada</title>
-    <link rel="stylesheet" href="leagues.css" />
+        <link rel="stylesheet" href="leagues.css" />
 <style>
-body { opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease, transform 0.6s ease; }
-body.page-loaded { opacity: 1; transform: none; }
-.hero h1, .hero p, .hero-buttons { opacity: 0; transform: translateY(12px); transition: opacity 0.6s ease 0.2s, transform 0.6s ease 0.2s; }
-body.page-loaded .hero h1, body.page-loaded .hero p, body.page-loaded .hero-buttons { opacity: 1; transform: none; }
+    .container { max-width: 80rem; margin: 0 auto; padding: 0 1rem; }
+    @media (min-width: 640px)  { .container { padding: 0 1.5rem; } }
+    @media (min-width: 1024px) { .container { padding: 0 2rem; } }
+
+    nav { border-bottom: 1px solid #e5e7eb; position: sticky; top: 0; background: #fff; z-index: 100; }
+    .nav-inner { display: flex; align-items: center; justify-content: space-between; height: 4rem; }
+    .nav-logo { display: flex; align-items: center; gap: .5rem; font-size: 1.25rem; font-weight: 700; color: #111827; cursor: pointer; }
+    .nav-links { display: none; align-items: center; gap: 1.5rem; }
+    @media (min-width: 768px) { .nav-links { display: flex; } }
+
+    .nav-link { color: #374151; cursor: pointer; transition: color .2s; background: none; border: none; font-size: 1rem; }
+    .nav-link:hover, .nav-link.active { color: #2563eb; }
+
+    .hamburger { display: flex; align-items: center; justify-content: center; background: none; border: none; cursor: pointer; padding: .25rem; }
+    @media (min-width: 768px) { .hamburger { display: none; } }
+
+    .mobile-menu { display: none; flex-direction: column; gap: 1rem; padding: 1rem 0; border-top: 1px solid #e5e7eb; }
+    .mobile-menu.open { display: flex; }
+    .mobile-menu .nav-link { text-align: left; font-size: 1rem; }
+
+    body { opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease, transform 0.6s ease; }
+    body.page-loaded { opacity: 1; transform: none; }
+    .hero h1, .hero p, .hero-buttons { opacity: 0; transform: translateY(12px); transition: opacity 0.6s ease 0.2s, transform 0.6s ease 0.2s; }
+    body.page-loaded .hero h1, body.page-loaded .hero p, body.page-loaded .hero-buttons { opacity: 1; transform: none; }
 </style>
 </head>
 <body>
-    <nav>
-        <div class="container nav-inner">
-            <a class="nav-logo" href="index.html">RoboCup Junior Canada</a>
-
-            <div class="nav-links">
-                <a href="index.html">Homepage</a>
-                <a href="index.html#about">About Us</a>
-                <a class="active" href="leagues.html">Leagues & Rules</a>
-                <a href="index.html#registration">Online Registration</a>
-                <a href="index.html#schedule">Competition Schedule</a>
-                <a href="index.html#gallery">International Image Gallery</a>
-                <a href="index.html#resources">RoboCup Community Resources</a>
-                <a href="index.html#contact">Contact Us</a>
+        <nav>
+            <div class="container">
+                <div class="nav-inner">
+                    <div class="nav-links">
+                        <a class="nav-link" href="index.html">Homepage</a>
+                        <a class="nav-link" href="about.html">About Us</a>
+                        <a class="nav-link active" href="leagues.html">Leagues & Rules</a>
+                        <a class="nav-link" href="registration.html">Online Registration</a>
+                        <a class="nav-link" href="schedule.html">Competition Schedule</a>
+                        <a class="nav-link" href="gallery.html">International Image Gallery</a>
+                        <a class="nav-link" href="resources.html">RoboCup Community Resources</a>
+                        <a class="nav-link" href="contact.html">Contact Us</a>
+                    </div>
+                    <button class="hamburger" onclick="toggleMobile()" aria-label="Menu">
+                        <svg id="icon-menu" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#374151" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="4" y1="6" x2="20" y2="6"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="18" x2="20" y2="18"/>
+                        </svg>
+                        <svg id="icon-x" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#374151" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none">
+                            <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+                        </svg>
+                    </button>
+                </div>
+                <div class="mobile-menu" id="mobile-menu">
+                    <a class="nav-link" href="index.html">Homepage</a>
+                    <a class="nav-link" href="about.html">About Us</a>
+                    <a class="nav-link active" href="leagues.html">Leagues & Rules</a>
+                    <a class="nav-link" href="registration.html">Online Registration</a>
+                    <a class="nav-link" href="schedule.html">Competition Schedule</a>
+                    <a class="nav-link" href="gallery.html">International Image Gallery</a>
+                    <a class="nav-link" href="resources.html">RoboCup Community Resources</a>
+                    <a class="nav-link" href="contact.html">Contact Us</a>
+                </div>
             </div>
-        </div>
-    </nav>
+        </nav>
 
     <main>
         <section class="hero">
@@ -159,13 +197,32 @@ body.page-loaded .hero h1, body.page-loaded .hero p, body.page-loaded .hero-butt
     </footer>
 
 <script>
-function animatePageLoad() {
-  document.body.classList.remove('page-loaded');
-  void document.body.offsetWidth;
-  requestAnimationFrame(() => document.body.classList.add('page-loaded'));
-}
+    function toggleMobile() {
+        const menu = document.getElementById('mobile-menu');
+        const open = menu.classList.toggle('open');
+        document.getElementById('icon-menu').style.display = open ? 'none' : '';
+        document.getElementById('icon-x').style.display = open ? '' : 'none';
+    }
 
-window.addEventListener('pageshow', animatePageLoad);
+    function closeMobile() {
+        document.getElementById('mobile-menu').classList.remove('open');
+        document.getElementById('icon-menu').style.display = '';
+        document.getElementById('icon-x').style.display = 'none';
+    }
+
+    // Close mobile menu when a link is clicked
+    document.querySelectorAll('.mobile-menu a').forEach(link => {
+        link.addEventListener('click', closeMobile);
+    });
+
+    // Animate the page on load
+    function animatePageLoad() {
+        document.body.classList.remove('page-loaded');
+        void document.body.offsetWidth;
+        requestAnimationFrame(() => document.body.classList.add('page-loaded'));
+    }
+
+    window.addEventListener('pageshow', animatePageLoad);
 </script>
 </body>
 </html>
