@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Galerie | RoboCup Junior Canada</title>
+    <link rel="stylesheet" href="gallery.css" />
+    <style>
+        .container { max-width: 80rem; margin: 0 auto; padding: 0 1rem; }
+        @media (min-width: 640px)  { .container { padding: 0 1.5rem; } }
+        @media (min-width: 1024px) { .container { padding: 0 2rem; } }
+        nav { border-bottom: 1px solid #e5e7eb; position: sticky; top: 0; background: #fff; z-index: 100; }
+        .nav-inner { display: flex; align-items: center; justify-content: space-between; height: 4rem; }
+        .nav-links { display: none; align-items: center; gap: 1.5rem; }
+        @media (min-width: 768px) { .nav-links { display: flex; } }
+        .nav-links .nav-link { padding: .5rem .75rem; border-radius: .375rem; }
+        .mobile-menu .nav-link { padding: .5rem .75rem; border-radius: .375rem; }
+        .nav-link { color: #374151; cursor: pointer; transition: color .2s; background: none; border: none; font-size: 1rem; }
+        .nav-link:hover, .nav-link.active { color: #2563eb; }
+        .btn-outline { display: inline-flex; align-items: center; gap: .5rem; background: #fff; color: #2563eb; padding: .75rem 1.25rem; border-radius: .5rem; border: 2px solid #2563eb; font-size: 1rem; font-weight: 500; cursor: pointer; transition: background .2s; text-decoration: none; }
+        .links-grid { display: grid; gap: 1rem; grid-template-columns: repeat(1, minmax(0, 1fr)); }
+        @media (min-width: 640px) { .links-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+        @media (min-width: 1024px) { .links-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="container">
+            <div class="nav-inner">
+                <div class="nav-links">
+                    <a class="nav-link" href="index_fr.html">Accueil</a>
+                    <a class="nav-link" href="about_fr.html">À propos</a>
+                    <a class="nav-link" href="leagues_fr.html">Ligues & Règles</a>
+                    <a class="nav-link" href="registration_fr.html">Inscription en ligne</a>
+                    <a class="nav-link" href="schedule_fr.html">Calendrier</a>
+                    <a class="nav-link active" href="gallery_fr.html">Galerie</a>
+                    <a class="nav-link" href="resources_fr.html">Ressources</a>
+                    <a class="nav-link" href="contact_fr.html">Contact</a>
+                    <a class="nav-link" href="gallery.html">English</a>
+                </div>
+                <button class="hamburger" onclick="toggleMobile()" aria-label="Menu">
+                    <svg id="icon-menu" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#374151" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="4" y1="6" x2="20" y2="6"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="18" x2="20" y2="18"/>
+                    </svg>
+                    <svg id="icon-x" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#374151" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none">
+                        <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+                    </svg>
+                </button>
+            </div>
+            <div class="mobile-menu" id="mobile-menu">
+                <a class="nav-link" href="index_fr.html">Accueil</a>
+                <a class="nav-link" href="about_fr.html">À propos</a>
+                <a class="nav-link" href="leagues_fr.html">Ligues & Règles</a>
+                <a class="nav-link" href="registration_fr.html">Inscription en ligne</a>
+                <a class="nav-link" href="schedule_fr.html">Calendrier</a>
+                <a class="nav-link active" href="gallery_fr.html">Galerie</a>
+                <a class="nav-link" href="resources_fr.html">Ressources</a>
+                <a class="nav-link" href="contact_fr.html">Contact</a>
+                <a class="nav-link" href="gallery.html">English</a>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        <section class="hero">
+            <div class="container">
+                <h1>Galerie internationale</h1>
+                <p>Photos et vidéos d'événements RoboCup Junior à travers le monde.</p>
+            </div>
+        </section>
+
+        <section>
+            <div class="container">
+                <h2 class="section-title">Vidéos d'événements</h2>
+                <p>Chaîne officielle et playlists:</p>
+                <div class="links-grid">
+                    <a class="btn-outline" href="https://www.youtube.com/@robocupjr" target="_blank" rel="noopener noreferrer">Chaîne YouTube RoboCupJR</a>
+                    <a class="btn-outline" href="https://www.youtube.com/playlist?list=PLEfaZULTeP_-bqFvCLBWnOvFAgkHTWbWC" target="_blank" rel="noopener noreferrer">Playlist vidéos d'événements</a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container footer-inner">
+            <p class="footer-copy">© 2026 RoboCup Junior Canada. Tous droits réservés.</p>
+        </div>
+    </footer>
+
+    <script>
+        function toggleMobile() { const menu = document.getElementById('mobile-menu'); const open = menu.classList.toggle('open'); document.getElementById('icon-menu').style.display = open ? 'none' : ''; document.getElementById('icon-x').style.display = open ? '' : 'none'; }
+        window.addEventListener('pageshow', () => document.body.classList.add('page-loaded'));
+    </script>
+</body>
+</html>

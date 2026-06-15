@@ -16,6 +16,8 @@
     .nav-logo { display: flex; align-items: center; gap: .5rem; font-size: 1.25rem; font-weight: 700; color: #111827; cursor: pointer; }
     .nav-links { display: none; align-items: center; gap: 1.5rem; }
     @media (min-width: 768px) { .nav-links { display: flex; } }
+    .nav-links .nav-link { padding: .5rem .75rem; border-radius: .375rem; }
+    .mobile-menu .nav-link { padding: .5rem .75rem; border-radius: .375rem; }
 
     .nav-link { color: #374151; cursor: pointer; transition: color .2s; background: none; border: none; font-size: 1rem; }
     .nav-link:hover, .nav-link.active { color: #2563eb; }
@@ -46,6 +48,7 @@
                         <a class="nav-link" href="gallery.html">International Image Gallery</a>
                         <a class="nav-link" href="resources.html">RoboCup Community Resources</a>
                         <a class="nav-link active" href="contact.html">Contact Us</a>
+                        <a class="nav-link" href="contact_fr.html">Français</a>
                     </div>
                     <button class="hamburger" onclick="toggleMobile()" aria-label="Menu">
                         <svg id="icon-menu" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#374151" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -65,6 +68,7 @@
                     <a class="nav-link" href="gallery.html">International Image Gallery</a>
                     <a class="nav-link" href="resources.html">RoboCup Community Resources</a>
                     <a class="nav-link active" href="contact.html">Contact Us</a>
+                    <a class="nav-link" href="contact_fr.html">Français</a>
                 </div>
             </div>
         </nav>

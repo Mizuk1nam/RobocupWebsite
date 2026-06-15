@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ligues & Règles | RoboCup Junior Canada</title>
+    <link rel="stylesheet" href="leagues.css" />
+    <style>
+        .container { max-width: 80rem; margin: 0 auto; padding: 0 1rem; }
+        @media (min-width: 640px)  { .container { padding: 0 1.5rem; } }
+        @media (min-width: 1024px) { .container { padding: 0 2rem; } }
+        nav { border-bottom: 1px solid #e5e7eb; position: sticky; top: 0; background: #fff; z-index: 100; }
+        .nav-inner { display: flex; align-items: center; justify-content: space-between; height: 4rem; }
+        .nav-links { display: none; align-items: center; gap: 1.5rem; }
+        @media (min-width: 768px) { .nav-links { display: flex; } }
+        .nav-links .nav-link { padding: .5rem .75rem; border-radius: .375rem; }
+        .mobile-menu .nav-link { padding: .5rem .75rem; border-radius: .375rem; }
+        .nav-link { color: #374151; cursor: pointer; transition: color .2s; background: none; border: none; font-size: 1rem; }
+        .nav-link:hover, .nav-link.active { color: #2563eb; }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="container">
+            <div class="nav-inner">
+                <div class="nav-links">
+                    <a class="nav-link" href="index_fr.html">Accueil</a>
+                    <a class="nav-link" href="about_fr.html">À propos</a>
+                    <a class="nav-link active" href="leagues_fr.html">Ligues & Règles</a>
+                    <a class="nav-link" href="registration_fr.html">Inscription en ligne</a>
+                    <a class="nav-link" href="schedule_fr.html">Calendrier</a>
+                    <a class="nav-link" href="gallery_fr.html">Galerie</a>
+                    <a class="nav-link" href="resources_fr.html">Ressources</a>
+                    <a class="nav-link" href="contact_fr.html">Contact</a>
+                    <a class="nav-link" href="leagues.html">English</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        <section class="hero">
+            <div class="container">
+                <h1>Ligues & Règles</h1>
+                <p>RoboCupJunior encourage les élèves à combiner robotique, programmation, créativité et travail d'équipe grâce à des compétitions autonomes.</p>
+                <a class="btn-primary" href="https://robocupcanada.ca/2025/index.php" target="_blank" rel="noopener">Règles officielles</a>
+            </div>
+        </section>
+
+        <section>
+            <div class="container">
+                <h2 class="section-title">Règles générales de la compétition</h2>
+                <div class="rules-panel">
+                    <h3>Équipes & exigences des robots</h3>
+                    <ul>
+                        <li>Les équipes participent dans des sous-ligues Primaire ou Secondaire.</li>
+                        <li>Les équipes doivent compter 2 à 4 élèves et 1 enseignant ou mentor.</li>
+                        <li>Les équipes OnStage peuvent inclure jusqu'à 5 élèves.</li>
+                        <li>Un élève ou un robot ne peut pas être partagé entre des équipes.</li>
+                        <li>Chaque équipe ne peut participer qu'à un seul événement.</li>
+                        <li>Les robots doivent être construits et programmés par les élèves.</li>
+                        <li>Les robots doivent fonctionner de manière autonome; les télécommandes sont interdites.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section class="bg-gray">
+            <div class="container">
+                <h2 class="section-title">Ligues</h2>
+                <div class="grid-3">
+                    <article class="league-card">
+                        <h3>RoboParty</h3>
+                        <p>Événement d'initiation pour nouveaux participants.</p>
+                    </article>
+                    <article class="league-card">
+                        <h3>Rescue Line</h3>
+                        <p>Les robots suivent une ligne noire à travers un parcours de sauvetage.</p>
+                    </article>
+                    <article class="league-card">
+                        <h3>Rescue Maze</h3>
+                        <p>Les robots explorent un labyrinthe simulé de catastrophe pour localiser des victimes.</p>
+                    </article>
+                    <article class="league-card">
+                        <h3>Soccer</h3>
+                        <p>Deux robots autonomes s'affrontent pour marquer des buts.</p>
+                    </article>
+                    <article class="league-card">
+                        <h3>OnStage</h3>
+                        <p>Performance robotique mêlant musique, mouvement et programmation.</p>
+                    </article>
+                    <article class="league-card official-card">
+                        <h3>Documents officiels</h3>
+                        <p>Consultez la page officielle pour les versions les plus récentes des règles.</p>
+                        <a class="btn-outline" href="https://robocupcanada.ca/2025/index.php" target="_blank" rel="noopener">Voir les règles officielles</a>
+                    </article>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container footer-inner">
+            <p class="footer-copy">© 2026 RoboCup Junior Canada. Tous droits réservés.</p>
+        </div>
+    </footer>
+</body>
+</html>

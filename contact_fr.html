@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Contact | RoboCup Junior Canada</title>
+    <link rel="stylesheet" href="contact.css" />
+    <style>
+        .container { max-width: 80rem; margin: 0 auto; padding: 0 1rem; }
+        @media (min-width: 640px)  { .container { padding: 0 1.5rem; } }
+        @media (min-width: 1024px) { .container { padding: 0 2rem; } }
+        nav { border-bottom: 1px solid #e5e7eb; position: sticky; top: 0; background: #fff; z-index: 100; }
+        .nav-inner { display: flex; align-items: center; justify-content: space-between; height: 4rem; }
+        .nav-links { display: none; align-items: center; gap: 1.5rem; }
+        @media (min-width: 768px) { .nav-links { display: flex; } }
+        .nav-links .nav-link { padding: .5rem .75rem; border-radius: .375rem; }
+        .mobile-menu .nav-link { padding: .5rem .75rem; border-radius: .375rem; }
+        .nav-link { color: #374151; cursor: pointer; transition: color .2s; background: none; border: none; font-size: 1rem; }
+        .nav-link:hover, .nav-link.active { color: #2563eb; }
+        .mobile-menu { display: none; flex-direction: column; gap: 1rem; padding: 1rem 0; border-top: 1px solid #e5e7eb; }
+        .mobile-menu.open { display: flex; }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="container">
+            <div class="nav-inner">
+                <div class="nav-links">
+                    <a class="nav-link" href="index_fr.html">Accueil</a>
+                    <a class="nav-link" href="about_fr.html">À propos</a>
+                    <a class="nav-link" href="leagues_fr.html">Ligues & Règles</a>
+                    <a class="nav-link" href="registration_fr.html">Inscription en ligne</a>
+                    <a class="nav-link" href="schedule_fr.html">Calendrier</a>
+                    <a class="nav-link" href="gallery_fr.html">Galerie</a>
+                    <a class="nav-link" href="resources_fr.html">Ressources</a>
+                    <a class="nav-link active" href="contact_fr.html">Contact</a>
+                    <a class="nav-link" href="contact.html">English</a>
+                </div>
+                <button class="hamburger" onclick="toggleMobile()" aria-label="Menu">
+                    <svg id="icon-menu" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#374151" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="4" y1="6" x2="20" y2="6"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="18" x2="20" y2="18"/>
+                    </svg>
+                    <svg id="icon-x" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#374151" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none">
+                        <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+                    </svg>
+                </button>
+            </div>
+            <div class="mobile-menu" id="mobile-menu">
+                <a class="nav-link" href="index_fr.html">Accueil</a>
+                <a class="nav-link" href="about_fr.html">À propos</a>
+                <a class="nav-link" href="leagues_fr.html">Ligues & Règles</a>
+                <a class="nav-link" href="registration_fr.html">Inscription en ligne</a>
+                <a class="nav-link" href="schedule_fr.html">Calendrier</a>
+                <a class="nav-link" href="gallery_fr.html">Galerie</a>
+                <a class="nav-link" href="resources_fr.html">Ressources</a>
+                <a class="nav-link active" href="contact_fr.html">Contact</a>
+                <a class="nav-link" href="contact.html">English</a>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        <section class="hero">
+            <div class="container">
+                <h1>Contactez-nous</h1>
+                <p>Nous sommes toujours ravis d'accueillir des passionnés de robotique ! Pour toute question, contactez-nous.</p>
+            </div>
+        </section>
+
+        <section>
+            <div class="container prose">
+                <h2>Prendre contact</h2>
+                <p>Nous accueillons les élèves, mentors, enseignants et bénévoles souhaitant en savoir plus sur RoboCupJunior Canada.</p>
+
+                <div class="contact-box">
+                    <div class="contact-info-grid">
+                        <div>
+                            <h3>Informations générales</h3>
+                            <p class="email"><a href="mailto:info@robocupcanada.ca">info@robocupcanada.ca</a></p>
+                        </div>
+                        <div>
+                            <h3>Représentants RoboCupJunior</h3>
+                            <p><strong>Représentante Québec - Sarah Morgan</strong><br />
+                            <a href="mailto:director@robocupcanada.ca">director@robocupcanada.ca</a></p>
+                            <p><strong>Représentant national - Shaun Callendar</strong><br />
+                            <a href="mailto:director@robocupcanada.ca">director@robocupcanada.ca</a></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container footer-inner">
+            <p class="footer-copy">© 2026 RoboCup Junior Canada. Tous droits réservés.</p>
+        </div>
+    </footer>
+
+    <script>
+        function toggleMobile() { const menu = document.getElementById('mobile-menu'); const open = menu.classList.toggle('open'); document.getElementById('icon-menu').style.display = open ? 'none' : ''; document.getElementById('icon-x').style.display = open ? '' : 'none'; }
+        window.addEventListener('pageshow', () => document.body.classList.add('page-loaded'));
+    </script>
+</body>
+</html>
