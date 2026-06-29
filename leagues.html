@@ -1,232 +1,602 @@
 ﻿<!DOCTYPE html>
-
-<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<html lang="en">
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Leagues & Rules | RoboCup Junior Canada</title>
-        <link rel="stylesheet" href="leagues.css" />
-<style>
-    .container { max-width: 80rem; margin: 0 auto; padding: 0 1rem; }
-    @media (min-width: 640px)  { .container { padding: 0 1.5rem; } }
-    @media (min-width: 1024px) { .container { padding: 0 2rem; } }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    nav { border-bottom: 1px solid #e5e7eb; position: sticky; top: 0; background: #fff; z-index: 100; }
-    .nav-inner { display: flex; align-items: center; justify-content: space-between; height: 4rem; }
-    .nav-logo { display: flex; align-items: center; gap: .5rem; font-size: 1.25rem; font-weight: 700; color: #111827; cursor: pointer; }
-    .nav-links { display: none; align-items: center; gap: 1.5rem; }
-    @media (min-width: 768px) { .nav-links { display: flex; } }
-    .nav-links .nav-link { padding: .5rem .75rem; border-radius: .375rem; }
-    .mobile-menu .nav-link { padding: .5rem .75rem; border-radius: .375rem; }
+  <title>Leagues & Rules | RoboCup Junior Canada</title>
 
-    .nav-link { color: #374151; cursor: pointer; transition: color .2s; background: none; border: none; font-size: 1rem; }
-    .nav-link:hover, .nav-link.active { color: #2563eb; }
+  <style>
+    /* =========================
+       Basic page setup
+    ========================== */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
-    .hamburger { display: flex; align-items: center; justify-content: center; background: none; border: none; cursor: pointer; padding: .25rem; }
-    @media (min-width: 768px) { .hamburger { display: none; } }
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      background: #f8fbff;
+      color: #0f172a;
+      line-height: 1.6;
+    }
 
-    .mobile-menu { display: none; flex-direction: column; gap: 1rem; padding: 1rem 0; border-top: 1px solid #e5e7eb; }
-    .mobile-menu.open { display: flex; }
-    .mobile-menu .nav-link { text-align: left; font-size: 1rem; }
+    a {
+      text-decoration: none;
+    }
 
-    body { opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease, transform 0.6s ease; }
-    body.page-loaded { opacity: 1; transform: none; }
-    .hero h1, .hero p, .hero-buttons { opacity: 0; transform: translateY(12px); transition: opacity 0.6s ease 0.2s, transform 0.6s ease 0.2s; }
-    body.page-loaded .hero h1, body.page-loaded .hero p, body.page-loaded .hero-buttons { opacity: 1; transform: none; }
-</style>
+    .container {
+      width: min(1200px, 92%);
+      margin: auto;
+    }
+
+    /* =========================
+       Navigation
+    ========================== */
+    nav {
+      background: white;
+      border-bottom: 1px solid #e5e7eb;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+
+    .nav-inner {
+      min-height: 78px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 25px;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 800;
+      color: #111827;
+      min-width: 170px;
+    }
+
+    .logo-circle {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      background: #eff6ff;
+      display: grid;
+      place-items: center;
+      font-size: 22px;
+    }
+
+    .logo span {
+      display: block;
+      color: red;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 26px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .nav-link {
+      color: #020617;
+      font-size: 15px;
+      font-weight: 700;
+      padding: 10px 0;
+      position: relative;
+    }
+
+    .nav-link:hover,
+    .nav-link.active {
+      color: #2563eb;
+    }
+
+    .nav-link.active::after,
+    .nav-link:hover::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: -8px;
+      width: 100%;
+      height: 3px;
+      background: #2563eb;
+      border-radius: 999px;
+    }
+
+    /* =========================
+       Hero section
+    ========================== */
+    .hero {
+      position: relative;
+      overflow: hidden;
+      color: white;
+      background:
+        radial-gradient(circle at 80% 45%, rgba(37, 99, 235, 0.45), transparent 25%),
+        radial-gradient(circle at 8% 45%, rgba(37, 99, 235, 0.25), transparent 24%),
+        linear-gradient(135deg, #020617 0%, #06224a 55%, #020617 100%);
+      padding: 95px 0;
+    }
+
+    .hero::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(59,130,246,.18) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(59,130,246,.18) 1px, transparent 1px);
+      background-size: 55px 55px;
+      opacity: .18;
+    }
+
+    .hero-inner {
+      position: relative;
+      z-index: 2;
+      display: grid;
+      grid-template-columns: 1.1fr .9fr;
+      gap: 50px;
+      align-items: center;
+    }
+
+    .hero h1 {
+      font-size: clamp(42px, 6vw, 70px);
+      line-height: 1.05;
+      font-weight: 900;
+      letter-spacing: -1.5px;
+      margin-bottom: 22px;
+    }
+
+    .hero h1 span {
+      display: block;
+      color: #1677ff;
+    }
+
+    .hero p {
+      max-width: 650px;
+      font-size: 20px;
+      color: #f1f5f9;
+      line-height: 1.8;
+      margin-bottom: 30px;
+    }
+
+    .hero-img {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .hero-img img {
+      width: min(330px, 100%);
+      animation: floatRobot 4s ease-in-out infinite;
+      filter: drop-shadow(0 25px 35px rgba(0,0,0,.55));
+    }
+
+    @keyframes floatRobot {
+      0%, 100% {
+        transform: translateY(0);
+      }
+
+      50% {
+        transform: translateY(-14px);
+      }
+    }
+
+    /* =========================
+       Buttons
+    ========================== */
+    .btn-primary,
+    .btn-outline {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 15px 26px;
+      border-radius: 10px;
+      font-size: 16px;
+      font-weight: 800;
+      transition: .25s ease;
+    }
+
+    .btn-primary {
+      background: #1677ff;
+      color: white;
+      box-shadow: 0 14px 30px rgba(37,99,235,.35);
+    }
+
+    .btn-outline {
+      border: 2px solid #1677ff;
+      color: #2563eb;
+      background: white;
+    }
+
+    .btn-primary:hover,
+    .btn-outline:hover {
+      transform: translateY(-3px);
+    }
+
+    /* =========================
+       Main sections
+    ========================== */
+    section {
+      padding: 75px 0;
+    }
+
+    .light-section {
+      background: linear-gradient(180deg, #f8fbff, #eef5ff);
+    }
+
+    .section-title {
+      text-align: center;
+      font-size: 40px;
+      margin-bottom: 45px;
+      color: #0f172a;
+    }
+
+    .section-title::after {
+      content: "";
+      display: block;
+      width: 50px;
+      height: 4px;
+      background: #2563eb;
+      border-radius: 999px;
+      margin: 14px auto 0;
+    }
+
+    /* =========================
+       Rules panel
+    ========================== */
+    .rules-panel {
+      background:
+        radial-gradient(circle at 90% 15%, rgba(37, 99, 235, 0.22), transparent 24%),
+        linear-gradient(135deg, #020617, #06224a);
+      color: white;
+      padding: 45px;
+      border-radius: 22px;
+      box-shadow: 0 20px 45px rgba(15, 23, 42, 0.18);
+    }
+
+    .rules-panel h3 {
+      font-size: 30px;
+      margin-bottom: 24px;
+    }
+
+    .rules-panel ul {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px 28px;
+      list-style: none;
+    }
+
+    .rules-panel li {
+      color: #e5e7eb;
+      font-size: 16px;
+      position: relative;
+      padding-left: 28px;
+    }
+
+    .rules-panel li::before {
+      content: "✓";
+      position: absolute;
+      left: 0;
+      top: 0;
+      color: #60a5fa;
+      font-weight: 900;
+    }
+
+    /* =========================
+       League cards
+    ========================== */
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 26px;
+    }
+
+    .league-card {
+      background: white;
+      padding: 32px;
+      border-radius: 18px;
+      box-shadow: 0 14px 35px rgba(15, 23, 42, 0.1);
+      border-top: 4px solid #2563eb;
+      transition: .25s ease;
+    }
+
+    .league-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 20px 45px rgba(15, 23, 42, 0.16);
+    }
+
+    .league-icon {
+      width: 62px;
+      height: 62px;
+      border-radius: 50%;
+      background: #eff6ff;
+      display: grid;
+      place-items: center;
+      font-size: 28px;
+      margin-bottom: 18px;
+    }
+
+    .league-card h3 {
+      font-size: 23px;
+      color: #0f172a;
+      margin-bottom: 14px;
+    }
+
+    .league-card p {
+      color: #334155;
+      font-size: 16px;
+      margin-bottom: 18px;
+    }
+
+    .league-card ul {
+      list-style: none;
+    }
+
+    .league-card li {
+      color: #475569;
+      margin-bottom: 10px;
+      padding-left: 24px;
+      position: relative;
+      font-size: 15px;
+    }
+
+    .league-card li::before {
+      content: "•";
+      color: #2563eb;
+      position: absolute;
+      left: 0;
+      font-size: 22px;
+      line-height: 16px;
+    }
+
+    .official-card {
+      background:
+        radial-gradient(circle at 90% 10%, rgba(37, 99, 235, 0.28), transparent 25%),
+        linear-gradient(135deg, #020617, #06224a);
+      color: white;
+      border-top: none;
+    }
+
+    .official-card h3,
+    .official-card p {
+      color: white;
+    }
+
+    .official-card p {
+      color: #cbd5e1;
+    }
+
+    .official-card .btn-outline {
+      margin-top: 10px;
+      color: #60a5fa;
+      background: transparent;
+      border-color: #2563eb;
+    }
+
+    /* =========================
+       Footer
+    ========================== */
+    footer {
+      background: #020617;
+      color: #94a3b8;
+      text-align: center;
+      padding: 26px;
+      font-size: 14px;
+    }
+
+    /* =========================
+       Responsive design
+    ========================== */
+    @media (max-width: 950px) {
+      .nav-inner {
+        flex-direction: column;
+        padding: 16px 0;
+      }
+
+      .nav-links {
+        gap: 16px;
+      }
+
+      .hero-inner {
+        grid-template-columns: 1fr;
+        text-align: center;
+      }
+
+      .hero p {
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      .grid-3,
+      .rules-panel ul {
+        grid-template-columns: 1fr;
+      }
+
+      .rules-panel {
+        padding: 32px;
+      }
+    }
+  </style>
 </head>
+
 <body>
-        <nav>
-            <div class="container">
-                <div class="nav-inner">
-                    <div class="nav-links">
-                        <a class="nav-link" href="index.html">Homepage</a>
-                        <a class="nav-link" href="about.html">About Us</a>
-                        <a class="nav-link active" href="leagues.html">Leagues & Rules</a>
-                        <a class="nav-link" href="registration.html">Online Registration</a>
-                        <a class="nav-link" href="schedule.html">Competition Schedule</a>
-                        <a class="nav-link" href="gallery.html">International Image Gallery</a>
-                        <a class="nav-link" href="resources.html">RoboCup Community Resources</a>
-                        <a class="nav-link" href="contact.html">Contact Us</a>
-                    </div>
-                    <button class="hamburger" onclick="toggleMobile()" aria-label="Menu">
-                        <svg id="icon-menu" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#374151" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <line x1="4" y1="6" x2="20" y2="6"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="18" x2="20" y2="18"/>
-                        </svg>
-                        <svg id="icon-x" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#374151" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none">
-                            <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
-                        </svg>
-                    </button>
-                </div>
-                <div class="mobile-menu" id="mobile-menu">
-                    <a class="nav-link" href="index.html">Homepage</a>
-                    <a class="nav-link" href="about.html">About Us</a>
-                    <a class="nav-link active" href="leagues.html">Leagues & Rules</a>
-                    <a class="nav-link" href="registration.html">Online Registration</a>
-                    <a class="nav-link" href="schedule.html">Competition Schedule</a>
-                    <a class="nav-link" href="gallery.html">International Image Gallery</a>
-                    <a class="nav-link" href="resources.html">RoboCup Community Resources</a>
-                    <a class="nav-link" href="contact.html">Contact Us</a>
-                    <a class="nav-link" href="leagues_fr.html">Français</a>
-                </div>
-            </div>
-        </nav>
 
-    <main>
-        <section class="hero">
-            <div class="container">
-                <h1>Leagues & Rules</h1>
-                <p>
-                    RoboCupJunior Canada challenges students to combine robotics, coding,
-                    problem solving, creativity, and teamwork through autonomous robot competitions.
-                </p>
-                <a class="btn-primary" href="https://robocupcanada.ca/2025/index.php" target="_blank" rel="noopener">
-                    Official Rules
-                </a>
-            </div>
-        </section>
-
-        <section>
-            <div class="container">
-                <h2 class="section-title">General Competition Rules</h2>
-
-                <div class="rules-panel">
-                    <h3>Team & Robot Requirements</h3>
-                    <ul>
-                        <li>Teams compete in Primary or Secondary sub-leagues.</li>
-                        <li>Teams must have 2 to 4 students and 1 teacher or mentor.</li>
-                        <li>OnStage teams may include up to 5 students.</li>
-                        <li>A team member or robot cannot be shared between teams.</li>
-                        <li>Each team can compete in only one event.</li>
-                        <li>Robots must be built and programmed by student team members.</li>
-                        <li>Robots must operate autonomously; remote controls are not allowed.</li>
-                        <li>Teams must ask the referee before touching an active robot.</li>
-                        <li>Teams should arrive 5 minutes before their scheduled competition time.</li>
-                    </ul>
-                </div>
-            </div>
-        </section>
-
-        <section class="bg-gray">
-            <div class="container">
-                <h2 class="section-title">Leagues</h2>
-
-                <div class="grid-3">
-                    <article class="league-card">
-                        <h3>RoboParty</h3>
-                        <p>
-                            RoboParty is a beginner-friendly robotics event for new students and
-                            returning competitors who want to improve their skills.
-                        </p>
-                        <ul>
-                            <li>Maze: drive through a walled corridor without touching the sides.</li>
-                            <li>Formula 1: follow a black curved line around a race track.</li>
-                            <li>Performance: present a 1 minute robot routine to music.</li>
-                            <li>SumoBots: push other robots out of an octagonal ring.</li>
-                        </ul>
-                    </article>
-
-                    <article class="league-card">
-                        <h3>Rescue Line</h3>
-                        <p>
-                            Robots follow a black line through a rescue course while handling
-                            intersections, obstacles, gaps, speed bumps, inclines, and an evacuation zone.
-                        </p>
-                        <ul>
-                            <li>Points are awarded for completing course elements.</li>
-                            <li>Robots may need to recover from gaps or obstacles.</li>
-                            <li>The evacuation zone uses victim objects and point multipliers.</li>
-                        </ul>
-                    </article>
-
-                    <article class="league-card">
-                        <h3>Rescue Maze</h3>
-                        <p>
-                            Robots explore a simulated disaster maze to locate victims and deliver
-                            rescue kits while operating fully autonomously.
-                        </p>
-                        <ul>
-                            <li>Designed as preparation for international Rescue divisions.</li>
-                            <li>Teams may participate in Rescue Maze and Rescue Line at qualifying events.</li>
-                        </ul>
-                    </article>
-
-                    <article class="league-card">
-                        <h3>Soccer</h3>
-                        <p>
-                            Two autonomous robots compete against another pair by detecting and
-                            kicking a ball into the opponent's goal.
-                        </p>
-                        <ul>
-                            <li>Lightweight uses an infrared ball.</li>
-                            <li>Open uses a vision-tracked orange ball.</li>
-                            <li>Games include two 10 minute halves and a 5 minute half-time.</li>
-                            <li>Each goal is worth 1 point.</li>
-                        </ul>
-                    </article>
-
-                    <article class="league-card">
-                        <h3>OnStage</h3>
-                        <p>
-                            Teams create a robotic performance that combines engineering,
-                            programming, music, movement, storytelling, and design.
-                        </p>
-                        <ul>
-                            <li>Robots and students perform together on stage.</li>
-                            <li>Judges consider creativity, entertainment, and programming complexity.</li>
-                            <li>Robot autonomy and sensor use are considered during evaluation.</li>
-                        </ul>
-                    </article>
-
-                    <article class="league-card official-card">
-                        <h3>Official Rule Documents</h3>
-                        <p>
-                            Always check the official RoboCup Canada page for the latest rule versions,
-                            scoring details, and event-specific updates.
-                        </p>
-                        <a class="btn-outline" href="https://robocupcanada.ca/2025/index.php" target="_blank" rel="noopener">
-                            View Official Rules
-                        </a>
-                    </article>
-                </div>
-            </div>
-        </section>
-    </main>
-
-    <footer>
-        <div class="container footer-inner">
-            <p class="footer-copy">© 2026 RoboCup Junior Canada. All rights reserved.</p>
+  <!-- Main navigation: same style as homepage and about page -->
+  <nav>
+    <div class="container nav-inner">
+      <a href="index.html" class="logo">
+        <div class="logo-circle">🤖</div>
+        <div>
+          RoboCup
+          <span>Junior Canada</span>
         </div>
-    </footer>
+      </a>
 
-<script>
-    function toggleMobile() {
-        const menu = document.getElementById('mobile-menu');
-        const open = menu.classList.toggle('open');
-        document.getElementById('icon-menu').style.display = open ? 'none' : '';
-        document.getElementById('icon-x').style.display = open ? '' : 'none';
-    }
+      <div class="nav-links">
+        <a class="nav-link" href="index.html">Homepage</a>
+        <a class="nav-link" href="about.html">About Us</a>
+        <a class="nav-link active" href="leagues.html">Leagues & Rules</a>
+        <a class="nav-link" href="registration.html">Online Registration</a>
+        <a class="nav-link" href="schedule.html">Competition Schedule</a>
+        <a class="nav-link" href="gallery.html">International Image Gallery</a>
+        <a class="nav-link" href="resources.html">RoboCup Community Resources</a>
+        <a class="nav-link" href="contact.html">Contact Us</a>
+        <a class="nav-link" href="leagues_fr.html">Français</a>
+      </div>
+    </div>
+  </nav>
 
-    function closeMobile() {
-        document.getElementById('mobile-menu').classList.remove('open');
-        document.getElementById('icon-menu').style.display = '';
-        document.getElementById('icon-x').style.display = 'none';
-    }
+  <!-- Hero section: gives this page the same visual identity as the homepage -->
+  <header class="hero">
+    <div class="container hero-inner">
+      <div>
+        <h1>
+          Leagues
+          <span>& Rules</span>
+        </h1>
 
-    // Close mobile menu when a link is clicked
-    document.querySelectorAll('.mobile-menu a').forEach(link => {
-        link.addEventListener('click', closeMobile);
-    });
+        <p>
+          RoboCupJunior Canada challenges students to combine robotics, coding,
+          problem solving, creativity, and teamwork through autonomous robot
+          competitions.
+        </p>
 
-    // Animate the page on load
-    function animatePageLoad() {
-        document.body.classList.remove('page-loaded');
-        void document.body.offsetWidth;
-        requestAnimationFrame(() => document.body.classList.add('page-loaded'));
-    }
+        <a class="btn-primary" href="https://robocupcanada.ca/2025/index.php" target="_blank" rel="noopener">
+          Official Rules →
+        </a>
+      </div>
 
-    window.addEventListener('pageshow', animatePageLoad);
-</script>
+      <div class="hero-img">
+        <img src="images/robot.png" alt="RoboCup robot mascot">
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- General competition rules -->
+    <section>
+      <div class="container">
+        <h2 class="section-title">General Competition Rules</h2>
+
+        <div class="rules-panel">
+          <h3>Team & Robot Requirements</h3>
+
+          <ul>
+            <li>Teams compete in Primary or Secondary sub-leagues.</li>
+            <li>Teams must have 2 to 4 students and 1 teacher or mentor.</li>
+            <li>OnStage teams may include up to 5 students.</li>
+            <li>A team member or robot cannot be shared between teams.</li>
+            <li>Each team can compete in only one event.</li>
+            <li>Robots must be built and programmed by student team members.</li>
+            <li>Robots must operate autonomously; remote controls are not allowed.</li>
+            <li>Teams must ask the referee before touching an active robot.</li>
+            <li>Teams should arrive 5 minutes before their scheduled competition time.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- League cards -->
+    <section class="light-section">
+      <div class="container">
+        <h2 class="section-title">Leagues</h2>
+
+        <div class="grid-3">
+          <article class="league-card">
+            <div class="league-icon">🤖</div>
+            <h3>RoboParty</h3>
+            <p>
+              A beginner-friendly robotics event for new students and returning
+              competitors who want to improve their skills.
+            </p>
+            <ul>
+              <li>Maze: drive through a walled corridor without touching the sides.</li>
+              <li>Formula 1: follow a black curved line around a race track.</li>
+              <li>Performance: present a 1 minute robot routine to music.</li>
+              <li>SumoBots: push other robots out of an octagonal ring.</li>
+            </ul>
+          </article>
+
+          <article class="league-card">
+            <div class="league-icon">🚑</div>
+            <h3>Rescue Line</h3>
+            <p>
+              Robots follow a black line through a rescue course while handling
+              intersections, obstacles, gaps, speed bumps, and evacuation zones.
+            </p>
+            <ul>
+              <li>Points are awarded for completing course elements.</li>
+              <li>Robots may need to recover from gaps or obstacles.</li>
+              <li>The evacuation zone uses victim objects and point multipliers.</li>
+            </ul>
+          </article>
+
+          <article class="league-card">
+            <div class="league-icon">🧭</div>
+            <h3>Rescue Maze</h3>
+            <p>
+              Robots explore a simulated disaster maze to locate victims and deliver
+              rescue kits while operating fully autonomously.
+            </p>
+            <ul>
+              <li>Designed as preparation for international Rescue divisions.</li>
+              <li>Teams may participate in Rescue Maze and Rescue Line at qualifying events.</li>
+            </ul>
+          </article>
+
+          <article class="league-card">
+            <div class="league-icon">⚽</div>
+            <h3>Soccer</h3>
+            <p>
+              Two autonomous robots compete against another pair by detecting and
+              kicking a ball into the opponent's goal.
+            </p>
+            <ul>
+              <li>Lightweight uses an infrared ball.</li>
+              <li>Open uses a vision-tracked orange ball.</li>
+              <li>Games include two 10 minute halves and a 5 minute half-time.</li>
+              <li>Each goal is worth 1 point.</li>
+            </ul>
+          </article>
+
+          <article class="league-card">
+            <div class="league-icon">🎭</div>
+            <h3>OnStage</h3>
+            <p>
+              Teams create a robotic performance that combines engineering,
+              programming, music, movement, storytelling, and design.
+            </p>
+            <ul>
+              <li>Robots and students perform together on stage.</li>
+              <li>Judges consider creativity, entertainment, and programming complexity.</li>
+              <li>Robot autonomy and sensor use are considered during evaluation.</li>
+            </ul>
+          </article>
+
+          <article class="league-card official-card">
+            <div class="league-icon">📘</div>
+            <h3>Official Rule Documents</h3>
+            <p>
+              Always check the official RoboCup Canada page for the latest rule versions,
+              scoring details, and event-specific updates.
+            </p>
+
+            <a class="btn-outline" href="https://robocupcanada.ca/2025/index.php" target="_blank" rel="noopener">
+              View Official Rules →
+            </a>
+          </article>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    © 2026 RoboCup Junior Canada. All rights reserved.
+  </footer>
+
 </body>
 </html>
-

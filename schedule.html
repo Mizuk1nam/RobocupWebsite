@@ -1,220 +1,538 @@
 ﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Competition Schedule | RoboCup Junior Canada</title>
-    <link rel="stylesheet" href="schedule.css" />
-<style>
-  .container { max-width: 80rem; margin: 0 auto; padding: 0 1rem; }
-  @media (min-width: 640px)  { .container { padding: 0 1.5rem; } }
-  @media (min-width: 1024px) { .container { padding: 0 2rem; } }
+  <title>Competition Schedule | RoboCup Junior Canada</title>
 
-  nav { border-bottom: 1px solid #e5e7eb; position: sticky; top: 0; background: #fff; z-index: 100; }
-  .nav-inner { display: flex; align-items: center; justify-content: space-between; height: 4rem; }
-  .nav-logo { display: flex; align-items: center; gap: .5rem; font-size: 1.25rem; font-weight: 700; color: #111827; cursor: pointer; }
-  .nav-links { display: none; align-items: center; gap: 1.5rem; }
-  @media (min-width: 768px) { .nav-links { display: flex; } }
-  .nav-links .nav-link { padding: .5rem .75rem; border-radius: .375rem; }
-  .mobile-menu .nav-link { padding: .5rem .75rem; border-radius: .375rem; }
+  <style>
+    /* =========================
+       Basic setup
+    ========================== */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
-  .nav-link { color: #374151; cursor: pointer; transition: color .2s; background: none; border: none; font-size: 1rem; }
-  .nav-link:hover, .nav-link.active { color: #2563eb; }
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      background: #f8fbff;
+      color: #0f172a;
+      line-height: 1.6;
+    }
 
-  .hamburger { display: flex; align-items: center; justify-content: center; background: none; border: none; cursor: pointer; padding: .25rem; }
-  @media (min-width: 768px) { .hamburger { display: none; } }
+    a {
+      text-decoration: none;
+    }
 
-  .mobile-menu { display: none; flex-direction: column; gap: 1rem; padding: 1rem 0; border-top: 1px solid #e5e7eb; }
-  .mobile-menu.open { display: flex; }
-  .mobile-menu .nav-link { text-align: left; font-size: 1rem; }
+    .container {
+      width: min(1200px, 92%);
+      margin: auto;
+    }
 
-  body { opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease, transform 0.6s ease; }
-  body.page-loaded { opacity: 1; transform: none; }
-  .hero h1, .hero p, .hero-buttons { opacity: 0; transform: translateY(12px); transition: opacity 0.6s ease 0.2s, transform 0.6s ease 0.2s; }
-  body.page-loaded .hero h1, body.page-loaded .hero p, body.page-loaded .hero-buttons { opacity: 1; transform: none; }
-</style>
+    /* =========================
+       Navigation
+    ========================== */
+    nav {
+      background: white;
+      border-bottom: 1px solid #e5e7eb;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+
+    .nav-inner {
+      min-height: 78px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 25px;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 800;
+      color: #111827;
+      min-width: 170px;
+    }
+
+    .logo-circle {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      background: #eff6ff;
+      display: grid;
+      place-items: center;
+      font-size: 22px;
+    }
+
+    .logo span {
+      display: block;
+      color: red;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 26px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .nav-link {
+      color: #020617;
+      font-size: 15px;
+      font-weight: 700;
+      padding: 10px 0;
+      position: relative;
+    }
+
+    .nav-link:hover,
+    .nav-link.active {
+      color: #2563eb;
+    }
+
+    .nav-link.active::after,
+    .nav-link:hover::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: -8px;
+      width: 100%;
+      height: 3px;
+      background: #2563eb;
+      border-radius: 999px;
+    }
+
+    /* =========================
+       Hero section
+    ========================== */
+    .hero {
+      position: relative;
+      overflow: hidden;
+      color: white;
+      background:
+        radial-gradient(circle at 80% 45%, rgba(37, 99, 235, 0.45), transparent 25%),
+        radial-gradient(circle at 8% 45%, rgba(37, 99, 235, 0.25), transparent 24%),
+        linear-gradient(135deg, #020617 0%, #06224a 55%, #020617 100%);
+      padding: 95px 0;
+    }
+
+    .hero::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(59,130,246,.18) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(59,130,246,.18) 1px, transparent 1px);
+      background-size: 55px 55px;
+      opacity: .18;
+    }
+
+    .hero-inner {
+      position: relative;
+      z-index: 2;
+      display: grid;
+      grid-template-columns: 1.1fr .9fr;
+      gap: 50px;
+      align-items: center;
+    }
+
+    .hero h1 {
+      font-size: clamp(42px, 6vw, 70px);
+      line-height: 1.05;
+      font-weight: 900;
+      letter-spacing: -1.5px;
+      margin-bottom: 22px;
+    }
+
+    .hero h1 span {
+      display: block;
+      color: #1677ff;
+    }
+
+    .hero p {
+      max-width: 650px;
+      font-size: 20px;
+      color: #f1f5f9;
+      line-height: 1.8;
+    }
+
+    .hero-img {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .hero-img img {
+      width: min(330px, 100%);
+      animation: floatRobot 4s ease-in-out infinite;
+      filter: drop-shadow(0 25px 35px rgba(0,0,0,.55));
+    }
+
+    @keyframes floatRobot {
+      0%, 100% {
+        transform: translateY(0);
+      }
+
+      50% {
+        transform: translateY(-14px);
+      }
+    }
+
+    /* =========================
+       Main sections
+    ========================== */
+    section {
+      padding: 75px 0;
+    }
+
+    .bg-gray {
+      background: linear-gradient(180deg, #f8fbff, #eef5ff);
+    }
+
+    .section-title {
+      text-align: center;
+      font-size: 40px;
+      margin-bottom: 45px;
+      color: #0f172a;
+    }
+
+    .section-title::after {
+      content: "";
+      display: block;
+      width: 50px;
+      height: 4px;
+      background: #2563eb;
+      border-radius: 999px;
+      margin: 14px auto 0;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 26px;
+    }
+
+    /* =========================
+       Event cards
+    ========================== */
+    .info-card {
+      background: white;
+      padding: 32px;
+      border-radius: 18px;
+      box-shadow: 0 14px 35px rgba(15, 23, 42, 0.1);
+      border-top: 4px solid #2563eb;
+      transition: .25s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .info-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 20px 45px rgba(15, 23, 42, 0.16);
+    }
+
+    .info-card h3 {
+      font-size: 24px;
+      color: #0f172a;
+      margin-bottom: 18px;
+    }
+
+    .info-card p {
+      color: #475569;
+      margin-bottom: 10px;
+      font-size: 16px;
+    }
+
+    .info-card a {
+      color: #2563eb;
+      font-weight: 800;
+    }
+
+    .info-card a:hover {
+      color: #1d4ed8;
+    }
+
+    .info-card ul {
+      list-style: none;
+      margin-top: 10px;
+    }
+
+    .info-card li {
+      color: #475569;
+      margin-bottom: 9px;
+      padding-left: 24px;
+      position: relative;
+      font-size: 15px;
+    }
+
+    .info-card li::before {
+      content: "•";
+      color: #2563eb;
+      position: absolute;
+      left: 0;
+      font-size: 22px;
+      line-height: 16px;
+    }
+
+    .event-date {
+      display: inline-block;
+      background: #eff6ff;
+      color: #2563eb;
+      font-weight: 900;
+      padding: 8px 12px;
+      border-radius: 999px;
+      margin-bottom: 14px;
+      font-size: 14px;
+    }
+
+    .featured-card {
+      background:
+        radial-gradient(circle at 90% 10%, rgba(37, 99, 235, 0.28), transparent 25%),
+        linear-gradient(135deg, #020617, #06224a);
+      color: white;
+      border-top: none;
+    }
+
+    .featured-card h3 {
+      color: white;
+    }
+
+    .featured-card p,
+    .featured-card li {
+      color: #cbd5e1;
+    }
+
+    .featured-card a {
+      color: #60a5fa;
+    }
+
+    .featured-card .event-date {
+      background: rgba(37, 99, 235, 0.18);
+      color: #93c5fd;
+      border: 1px solid rgba(96, 165, 250, 0.35);
+    }
+
+    .note {
+      color: #ef4444;
+      font-weight: 800;
+    }
+
+    /* =========================
+       Footer
+    ========================== */
+    footer {
+      background: #020617;
+      color: #94a3b8;
+      text-align: center;
+      padding: 26px;
+      font-size: 14px;
+    }
+
+    /* =========================
+       Responsive design
+    ========================== */
+    @media (max-width: 950px) {
+      .nav-inner {
+        flex-direction: column;
+        padding: 16px 0;
+      }
+
+      .nav-links {
+        gap: 16px;
+      }
+
+      .hero-inner,
+      .grid-2 {
+        grid-template-columns: 1fr;
+        text-align: center;
+      }
+
+      .hero p {
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      .info-card {
+        text-align: left;
+      }
+    }
+  </style>
 </head>
-  <body>
-    <nav>
+
+<body>
+
+  <!-- Main navigation: consistent across all pages -->
+  <nav>
+    <div class="container nav-inner">
+      <a href="index.html" class="logo">
+        <div class="logo-circle">🤖</div>
+        <div>
+          RoboCup
+          <span>Junior Canada</span>
+        </div>
+      </a>
+
+      <div class="nav-links">
+        <a class="nav-link" href="index.html">Homepage</a>
+        <a class="nav-link" href="about.html">About Us</a>
+        <a class="nav-link" href="leagues.html">Leagues & Rules</a>
+        <a class="nav-link" href="registration.html">Online Registration</a>
+        <a class="nav-link active" href="schedule.html">Competition Schedule</a>
+        <a class="nav-link" href="gallery.html">International Image Gallery</a>
+        <a class="nav-link" href="resources.html">RoboCup Community Resources</a>
+        <a class="nav-link" href="contact.html">Contact Us</a>
+        <a class="nav-link" href="schedule_fr.html">Français</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Page hero -->
+  <header class="hero">
+    <div class="container hero-inner">
+      <div>
+        <h1>
+          Competition
+          <span>Schedule 2026</span>
+        </h1>
+
+        <p>
+          Explore upcoming RoboCup Junior Canada competitions and qualifying
+          events across the country.
+        </p>
+      </div>
+
+      <div class="hero-img">
+        <img src="images/robot.png" alt="RoboCup robot mascot">
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="bg-gray">
       <div class="container">
-        <div class="nav-inner">
-          <div class="nav-links">
-            <a class="nav-link" href="index.html">Homepage</a>
-            <a class="nav-link" href="about.html">About Us</a>
-            <a class="nav-link" href="leagues.html">Leagues & Rules</a>
-            <a class="nav-link" href="registration.html">Online Registration</a>
-            <a class="nav-link active" href="schedule.html">Competition Schedule</a>
-            <a class="nav-link" href="gallery.html">International Image Gallery</a>
-            <a class="nav-link" href="resources.html">RoboCup Community Resources</a>
-            <a class="nav-link" href="contact.html">Contact Us</a>
-            <a class="nav-link" href="schedule_fr.html">Français</a>
+        <h2 class="section-title">2026 Events</h2>
+
+        <div class="grid-2">
+          <!-- West Vancouver event -->
+          <div class="info-card">
+            <span class="event-date">March 7, 2026</span>
+            <h3>West Vancouver RoboCup Junior</h3>
+
+            <p><strong>Location:</strong> UBC Campus</p>
+
+            <p>
+              <strong>Website:</strong>
+              <a href="https://vancouver.robocup.ca" target="_blank" rel="noopener noreferrer">
+                Vancouver West 2026
+              </a>
+            </p>
+
+            <p><strong>Leagues:</strong></p>
+            <ul>
+              <li>Rescue Maze</li>
+              <li>Rescue Line</li>
+              <li>Soccer Infrared Lightweight</li>
+              <li>Soccer Vision Open</li>
+              <li>OnStage</li>
+            </ul>
           </div>
-          <button class="hamburger" onclick="toggleMobile()" aria-label="Menu">
-            <svg id="icon-menu" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#374151" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <line x1="4" y1="6" x2="20" y2="6"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="18" x2="20" y2="18"/>
-            </svg>
-            <svg id="icon-x" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#374151" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none">
-              <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
-            </svg>
-          </button>
-        </div>
-        <div class="mobile-menu" id="mobile-menu">
-          <a class="nav-link" href="index.html">Homepage</a>
-          <a class="nav-link" href="about.html">About Us</a>
-          <a class="nav-link" href="leagues.html">Leagues & Rules</a>
-          <a class="nav-link" href="registration.html">Online Registration</a>
-          <a class="nav-link active" href="schedule.html">Competition Schedule</a>
-          <a class="nav-link" href="gallery.html">International Image Gallery</a>
-          <a class="nav-link" href="resources.html">RoboCup Community Resources</a>
-          <a class="nav-link" href="contact.html">Contact Us</a>
-          <a class="nav-link" href="schedule_fr.html">Français</a>
-        </div>
-      </div>
-    </nav>
 
-    <main>
-      <section class="hero">
-        <div class="container">
-          <h1>Competition Schedule 2026</h1>
-          <p>
-            Explore upcoming RoboCup Junior Canada competitions and qualifying
-            events across the country.
-          </p>
-        </div>
-      </section>
+          <!-- Toronto event -->
+          <div class="info-card">
+            <span class="event-date">April 1, 2026</span>
+            <h3>Toronto Canada RoboCup Junior</h3>
 
-      <section class="bg-gray">
-        <div class="container">
-          <h2 class="section-title">2026 Events</h2>
+            <p><strong>Location:</strong> St. Andrews College</p>
 
-          <div class="grid-2">
-            <!-- West Vancouver -->
-            <div class="info-card">
-              <h3>West Vancouver RoboCup Junior</h3>
-              <p><strong>Date:</strong> March 7, 2026</p>
-              <p><strong>Location:</strong> UBC Campus</p>
-              <p>
-                <strong>Website:</strong>
-                <a href="https://vancouver.robocup.ca" target="_blank">Vancouver West 2026</a>
-              </p>
+            <p>
+              <strong>Website:</strong>
+              <a href="https://www.sac.on.ca/robocup" target="_blank" rel="noopener noreferrer">
+                St. Andrews
+              </a>
+            </p>
 
-              <p><strong>Leagues:</strong></p>
-              <ul>
-                <li>Rescue Maze</li>
-                <li>Rescue Line</li>
-                <li>Soccer (Infrared) Lightweight</li>
-                <li>Soccer (Vision) Open</li>
-                <li>OnStage</li>
-              </ul>
-            </div>
+            <p><strong>Leagues:</strong></p>
+            <ul>
+              <li>Soccer Infrared Lightweight</li>
+              <li>Rescue Maze</li>
+              <li>Rescue Line</li>
+            </ul>
 
-            <!-- Toronto -->
-            <div class="info-card">
-              <h3>Toronto Canada RoboCup Junior</h3>
-              <p><strong>Date:</strong> April 1, 2026</p>
-              <p><strong>Location:</strong> St. Andrews College</p>
-              <p>
-                <strong>Website:</strong>
-                <a href="https://www.sac.on.ca/robocup" target="_blank">St. Andrews</a>
-              </p>
+            <p><strong>Contact:</strong> Benjamin Lawrence</p>
+          </div>
 
-              <p><strong>Leagues:</strong></p>
-              <ul>
-                <li>Soccer (Infrared) Lightweight</li>
-                <li>Rescue Maze</li>
-                <li>Rescue Line</li>
-              </ul>
+          <!-- Western Canada event -->
+          <div class="info-card">
+            <span class="event-date">April 10, 2026</span>
+            <h3>Western Canada RoboCup Junior</h3>
 
-              <p><strong>Contact:</strong> Benjamin Lawrence</p>
-            </div>
+            <p><strong>Location:</strong> Okanagan College, Kelowna Campus</p>
 
-            <!-- Western Canada -->
-            <div class="info-card">
-              <h3>Western Canada RoboCup Junior</h3>
-              <p><strong>Date:</strong> April 10, 2026</p>
-              <p><strong>Location:</strong> Okanagan College, Kelowna Campus</p>
-              <p>
-                <strong>Website:</strong>
-                <a href="https://www.okanagan.bc.ca/robocup" target="_blank">www.okanagan.bc.ca/robocup</a>
-              </p>
+            <p>
+              <strong>Website:</strong>
+              <a href="https://www.okanagan.bc.ca/robocup" target="_blank" rel="noopener noreferrer">
+                Okanagan College RoboCup
+              </a>
+            </p>
 
-              <p><strong>Leagues:</strong></p>
-              <ul>
-                <li>Rescue Maze</li>
-                <li>Rescue Line</li>
-                <li>Soccer (Infrared) Lightweight</li>
-                <li>Soccer (Vision) Open</li>
-                <li>OnStage</li>
-              </ul>
-            </div>
+            <p><strong>Leagues:</strong></p>
+            <ul>
+              <li>Rescue Maze</li>
+              <li>Rescue Line</li>
+              <li>Soccer Infrared Lightweight</li>
+              <li>Soccer Vision Open</li>
+              <li>OnStage</li>
+            </ul>
+          </div>
 
-            <!-- RoboCup Americas -->
-            <div class="info-card">
-              <h3>RoboCup Americas 2026</h3>
-              <p><strong>Date:</strong><span style="color:red"> October 22–25, 2026</span></p>
-              <p>
-                <strong>Location:</strong> Sheridan College – Davis Campus, Brampton, ON, CA
-              </p>
-              <p>
-                <strong>Website:</strong>
-                <a href="https://robocupcanada.ca/asr/" target="_blank">ASR 2026</a>
-              </p>
+          <!-- Featured Americas event -->
+          <div class="info-card featured-card">
+            <span class="event-date">October 22–25, 2026</span>
+            <h3>RoboCup Americas 2026</h3>
 
-              <p><strong>Leagues:</strong></p>
-              <ul>
-                <li>Soccer (Infrared) Lightweight</li>
-                <li>Soccer (Vision) Open</li>
-                <li>Rescue Maze</li>
-                <li>Rescue Line</li>
-                <li>Rescue Simulation</li>
-                <li>OnStage</li>
-                <li><strong>Primary (Ages 10–14):</strong> <span style="color:red">Applies only to ASR event</span></li>
-                <ul>
-                    <li>Soccer (Infrared) Lightweight</li>
-                    <li>Rescue Line</li>
-                    <li>OnStage</li>
-                </ul>
-            </div>
+            <p>
+              <strong>Location:</strong>
+              Sheridan College – Davis Campus, Brampton, ON, Canada
+            </p>
+
+            <p>
+              <strong>Website:</strong>
+              <a href="https://robocupcanada.ca/asr/" target="_blank" rel="noopener noreferrer">
+                ASR 2026
+              </a>
+            </p>
+
+            <p><strong>Leagues:</strong></p>
+            <ul>
+              <li>Soccer Infrared Lightweight</li>
+              <li>Soccer Vision Open</li>
+              <li>Rescue Maze</li>
+              <li>Rescue Line</li>
+              <li>Rescue Simulation</li>
+              <li>OnStage</li>
+              <li>
+                <strong>Primary Ages 10–14:</strong>
+                <span class="note">Applies only to ASR event</span>
+              </li>
+              <li>Primary Soccer Infrared Lightweight</li>
+              <li>Primary Rescue Line</li>
+              <li>Primary OnStage</li>
+            </ul>
           </div>
         </div>
-      </section>
-    </main>
-
-    <footer>
-      <div class="container footer-inner">
-        <p class="footer-copy">© 2026 RoboCup Junior Canada. All rights reserved.</p>
       </div>
-    </footer>
-  <script>
-    function toggleMobile() {
-      const menu = document.getElementById('mobile-menu');
-      const open = menu.classList.toggle('open');
-      document.getElementById('icon-menu').style.display = open ? 'none' : '';
-      document.getElementById('icon-x').style.display = open ? '' : 'none';
-    }
+    </section>
+  </main>
 
-    function closeMobile() {
-      document.getElementById('mobile-menu').classList.remove('open');
-      document.getElementById('icon-menu').style.display = '';
-      document.getElementById('icon-x').style.display = 'none';
-    }
+  <footer>
+    © 2026 RoboCup Junior Canada. All rights reserved.
+  </footer>
 
-    // Close mobile menu when a link is clicked
-    document.querySelectorAll('.mobile-menu a').forEach(link => {
-      link.addEventListener('click', closeMobile);
-    });
-
-    // Animate the page on load
-    function animatePageLoad() {
-      document.body.classList.remove('page-loaded');
-      void document.body.offsetWidth;
-      requestAnimationFrame(() => document.body.classList.add('page-loaded'));
-    }
-
-    window.addEventListener('pageshow', animatePageLoad);
-  </script>
 </body>
 </html>
-
-

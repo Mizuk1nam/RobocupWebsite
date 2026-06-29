@@ -1,144 +1,628 @@
 ﻿<!DOCTYPE html>
-
-<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<html lang="en">
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Contact Us | RoboCup Junior Canada</title>
-        <link rel="stylesheet" href="contact.css" />
-<style>
-    .container { max-width: 80rem; margin: 0 auto; padding: 0 1rem; }
-    @media (min-width: 640px)  { .container { padding: 0 1.5rem; } }
-    @media (min-width: 1024px) { .container { padding: 0 2rem; } }
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    nav { border-bottom: 1px solid #e5e7eb; position: sticky; top: 0; background: #fff; z-index: 100; }
-    .nav-inner { display: flex; align-items: center; justify-content: space-between; height: 4rem; }
-    .nav-logo { display: flex; align-items: center; gap: .5rem; font-size: 1.25rem; font-weight: 700; color: #111827; cursor: pointer; }
-    .nav-links { display: none; align-items: center; gap: 1.5rem; }
-    @media (min-width: 768px) { .nav-links { display: flex; } }
-    .nav-links .nav-link { padding: .5rem .75rem; border-radius: .375rem; }
-    .mobile-menu .nav-link { padding: .5rem .75rem; border-radius: .375rem; }
+  <title>Contact Us | RoboCup Junior Canada</title>
 
-    .nav-link { color: #374151; cursor: pointer; transition: color .2s; background: none; border: none; font-size: 1rem; }
-    .nav-link:hover, .nav-link.active { color: #2563eb; }
+  <style>
+    /* Basic setup */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
-    .hamburger { display: flex; align-items: center; justify-content: center; background: none; border: none; cursor: pointer; padding: .25rem; }
-    @media (min-width: 768px) { .hamburger { display: none; } }
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      background: #f8fbff;
+      color: #0f172a;
+      line-height: 1.6;
+    }
 
-    .mobile-menu { display: none; flex-direction: column; gap: 1rem; padding: 1rem 0; border-top: 1px solid #e5e7eb; }
-    .mobile-menu.open { display: flex; }
-    .mobile-menu .nav-link { text-align: left; font-size: 1rem; }
+    a {
+      text-decoration: none;
+    }
 
-    body { opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease, transform 0.6s ease; }
-    body.page-loaded { opacity: 1; transform: none; }
-    .hero h1, .hero p, .hero-buttons { opacity: 0; transform: translateY(12px); transition: opacity 0.6s ease 0.2s, transform 0.6s ease 0.2s; }
-    body.page-loaded .hero h1, body.page-loaded .hero p, body.page-loaded .hero-buttons { opacity: 1; transform: none; }
-</style>
+    .container {
+      width: min(1200px, 92%);
+      margin: auto;
+    }
+
+    /* Navigation */
+    nav {
+      background: white;
+      border-bottom: 1px solid #e5e7eb;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+
+    .nav-inner {
+      min-height: 78px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 25px;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 800;
+      color: #111827;
+      min-width: 170px;
+    }
+
+    .logo-circle {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      background: #eff6ff;
+      display: grid;
+      place-items: center;
+      font-size: 22px;
+    }
+
+    .logo span {
+      display: block;
+      color: red;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 26px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .nav-link {
+      color: #020617;
+      font-size: 15px;
+      font-weight: 700;
+      padding: 10px 0;
+      position: relative;
+    }
+
+    .nav-link:hover,
+    .nav-link.active {
+      color: #2563eb;
+    }
+
+    .nav-link.active::after,
+    .nav-link:hover::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: -8px;
+      width: 100%;
+      height: 3px;
+      background: #2563eb;
+      border-radius: 999px;
+    }
+
+    /* Hero */
+    .hero {
+      position: relative;
+      overflow: hidden;
+      color: white;
+      background:
+        radial-gradient(circle at 80% 45%, rgba(37, 99, 235, 0.45), transparent 25%),
+        radial-gradient(circle at 8% 45%, rgba(37, 99, 235, 0.25), transparent 24%),
+        linear-gradient(135deg, #020617 0%, #06224a 55%, #020617 100%);
+      padding: 95px 0;
+    }
+
+    .hero::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(59,130,246,.18) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(59,130,246,.18) 1px, transparent 1px);
+      background-size: 55px 55px;
+      opacity: .18;
+    }
+
+    .hero-inner {
+      position: relative;
+      z-index: 2;
+      display: grid;
+      grid-template-columns: 1.1fr .9fr;
+      gap: 50px;
+      align-items: center;
+    }
+
+    .hero h1 {
+      font-size: clamp(42px, 6vw, 70px);
+      line-height: 1.05;
+      font-weight: 900;
+      letter-spacing: -1.5px;
+      margin-bottom: 22px;
+    }
+
+    .hero h1 span {
+      display: block;
+      color: #1677ff;
+    }
+
+    .hero p {
+      max-width: 650px;
+      font-size: 20px;
+      color: #f1f5f9;
+      line-height: 1.8;
+    }
+
+    .hero-img {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .hero-img img {
+      width: min(330px, 100%);
+      animation: floatRobot 4s ease-in-out infinite;
+      filter: drop-shadow(0 25px 35px rgba(0,0,0,.55));
+    }
+
+    @keyframes floatRobot {
+      0%, 100% {
+        transform: translateY(0);
+      }
+
+      50% {
+        transform: translateY(-14px);
+      }
+    }
+
+    /* Sections */
+    section {
+      padding: 75px 0;
+    }
+
+    .light-section {
+      background: linear-gradient(180deg, #f8fbff, #eef5ff);
+    }
+
+    .section-title {
+      text-align: center;
+      font-size: 40px;
+      margin-bottom: 16px;
+      color: #0f172a;
+    }
+
+    .section-title::after {
+      content: "";
+      display: block;
+      width: 50px;
+      height: 4px;
+      background: #2563eb;
+      border-radius: 999px;
+      margin: 14px auto 0;
+    }
+
+    .section-subtitle {
+      max-width: 720px;
+      margin: 0 auto 42px;
+      text-align: center;
+      color: #475569;
+      font-size: 17px;
+    }
+
+    /* Contact cards */
+    .contact-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 26px;
+      margin-bottom: 45px;
+    }
+
+    .contact-card {
+      background: white;
+      padding: 30px;
+      border-radius: 18px;
+      box-shadow: 0 14px 35px rgba(15, 23, 42, 0.1);
+      border-top: 4px solid #2563eb;
+      transition: .25s ease;
+    }
+
+    .contact-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 20px 45px rgba(15, 23, 42, 0.16);
+    }
+
+    .contact-icon {
+      width: 62px;
+      height: 62px;
+      border-radius: 50%;
+      background: #eff6ff;
+      display: grid;
+      place-items: center;
+      font-size: 28px;
+      margin-bottom: 18px;
+    }
+
+    .contact-card h3 {
+      font-size: 22px;
+      color: #0f172a;
+      margin-bottom: 12px;
+    }
+
+    .contact-card p {
+      color: #475569;
+      margin-bottom: 10px;
+    }
+
+    .contact-card a {
+      color: #2563eb;
+      font-weight: 800;
+    }
+
+    .contact-card a:hover {
+      color: #1d4ed8;
+    }
+
+    .featured-card {
+      background:
+        radial-gradient(circle at 90% 10%, rgba(37, 99, 235, 0.28), transparent 25%),
+        linear-gradient(135deg, #020617, #06224a);
+      color: white;
+      border-top: none;
+    }
+
+    .featured-card h3 {
+      color: white;
+    }
+
+    .featured-card p {
+      color: #cbd5e1;
+    }
+
+    .featured-card a {
+      color: #60a5fa;
+    }
+
+    /* Contact form */
+    .contact-layout {
+      display: grid;
+      grid-template-columns: .9fr 1.1fr;
+      gap: 35px;
+      align-items: start;
+    }
+
+    .info-panel {
+      background:
+        radial-gradient(circle at 90% 10%, rgba(37, 99, 235, 0.28), transparent 25%),
+        linear-gradient(135deg, #020617, #06224a);
+      color: white;
+      padding: 36px;
+      border-radius: 20px;
+      box-shadow: 0 18px 40px rgba(15, 23, 42, 0.18);
+    }
+
+    .info-panel h3 {
+      font-size: 28px;
+      margin-bottom: 18px;
+    }
+
+    .info-panel p {
+      color: #cbd5e1;
+      margin-bottom: 16px;
+    }
+
+    .info-panel ul {
+      list-style: none;
+      margin-top: 20px;
+    }
+
+    .info-panel li {
+      color: #e5e7eb;
+      margin-bottom: 12px;
+      padding-left: 26px;
+      position: relative;
+    }
+
+    .info-panel li::before {
+      content: "✓";
+      color: #60a5fa;
+      font-weight: 900;
+      position: absolute;
+      left: 0;
+    }
+
+    .contact-form {
+      background: white;
+      padding: 36px;
+      border-radius: 20px;
+      box-shadow: 0 14px 35px rgba(15, 23, 42, 0.1);
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 18px;
+    }
+
+    label {
+      display: grid;
+      gap: 8px;
+      font-weight: 800;
+      color: #0f172a;
+      font-size: 15px;
+    }
+
+    input,
+    textarea {
+      width: 100%;
+      padding: 14px 15px;
+      border-radius: 10px;
+      border: 1px solid #cbd5e1;
+      background: #f8fafc;
+      font-size: 16px;
+      color: #0f172a;
+      outline: none;
+      transition: .2s ease;
+      font-family: inherit;
+    }
+
+    textarea {
+      min-height: 140px;
+      resize: vertical;
+    }
+
+    input:focus,
+    textarea:focus {
+      border-color: #2563eb;
+      background: white;
+      box-shadow: 0 0 0 4px rgba(37, 99, 235, .12);
+    }
+
+    .full-width {
+      grid-column: 1 / -1;
+    }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 15px 26px;
+      border-radius: 10px;
+      background: #1677ff;
+      color: white;
+      font-size: 16px;
+      font-weight: 800;
+      border: none;
+      cursor: pointer;
+      transition: .25s ease;
+      margin-top: 20px;
+      box-shadow: 0 14px 30px rgba(37,99,235,.35);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-3px);
+      background: #1d4ed8;
+    }
+
+    .form-note {
+      margin-top: 14px;
+      color: #64748b;
+      font-size: 14px;
+    }
+
+    .form-message {
+      margin-top: 14px;
+      font-weight: 800;
+      color: #16a34a;
+    }
+
+    /* Footer */
+    footer {
+      background: #020617;
+      color: #94a3b8;
+      text-align: center;
+      padding: 26px;
+      font-size: 14px;
+    }
+
+    /* Mobile */
+    @media (max-width: 950px) {
+      .nav-inner {
+        flex-direction: column;
+        padding: 16px 0;
+      }
+
+      .nav-links {
+        gap: 16px;
+      }
+
+      .hero-inner,
+      .contact-grid,
+      .contact-layout,
+      .form-grid {
+        grid-template-columns: 1fr;
+        text-align: center;
+      }
+
+      .hero p {
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      .contact-icon {
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      .info-panel,
+      .contact-form {
+        text-align: left;
+      }
+    }
+  </style>
 </head>
+
 <body>
-        <nav>
-            <div class="container">
-                <div class="nav-inner">
-                    <div class="nav-links">
-                        <a class="nav-link" href="index.html">Homepage</a>
-                        <a class="nav-link" href="about.html">About Us</a>
-                        <a class="nav-link" href="leagues.html">Leagues & Rules</a>
-                        <a class="nav-link" href="registration.html">Online Registration</a>
-                        <a class="nav-link" href="schedule.html">Competition Schedule</a>
-                        <a class="nav-link" href="gallery.html">International Image Gallery</a>
-                        <a class="nav-link" href="resources.html">RoboCup Community Resources</a>
-                        <a class="nav-link active" href="contact.html">Contact Us</a>
-                        <a class="nav-link" href="contact_fr.html">Français</a>
-                    </div>
-                    <button class="hamburger" onclick="toggleMobile()" aria-label="Menu">
-                        <svg id="icon-menu" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#374151" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <line x1="4" y1="6" x2="20" y2="6"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="18" x2="20" y2="18"/>
-                        </svg>
-                        <svg id="icon-x" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#374151" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none">
-                            <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
-                        </svg>
-                    </button>
-                </div>
-                <div class="mobile-menu" id="mobile-menu">
-                    <a class="nav-link" href="index.html">Homepage</a>
-                    <a class="nav-link" href="about.html">About Us</a>
-                    <a class="nav-link" href="leagues.html">Leagues & Rules</a>
-                    <a class="nav-link" href="registration.html">Online Registration</a>
-                    <a class="nav-link" href="schedule.html">Competition Schedule</a>
-                    <a class="nav-link" href="gallery.html">International Image Gallery</a>
-                    <a class="nav-link" href="resources.html">RoboCup Community Resources</a>
-                    <a class="nav-link active" href="contact.html">Contact Us</a>
-                    <a class="nav-link" href="contact_fr.html">Français</a>
-                </div>
-            </div>
-        </nav>
 
-    <main>
-        <section class="hero">
-            <div class="container">
-                <h1>Contact Us</h1>
-                <p>We are always eager to recruit robotics enthusiasts! If you have any questions on how to get involved or about RoboCupJunior, please contact us.</p>
-            </div>
-        </section>
-
-        <section>
-            <div class="container prose">
-                <h2>Get in Touch</h2>
-                <p>We welcome students, mentors, educators, and volunteers to reach out for more information about RoboCupJunior Canada.</p>
-
-                <div class="contact-box">
-                    <div class="contact-info-grid">
-                        <div>
-                            <h3>General Information</h3>
-                            <p class="email"><a href="mailto:info@robocupcanada.ca">info@robocupcanada.ca</a></p>
-                        </div>
-                        <div>
-                            <h3>RoboCupJunior Representatives</h3>
-                            <p><strong>Québec Representative - Sarah Morgan</strong><br />
-                            <a href="mailto:director@robocupcanada.ca">director@robocupcanada.ca</a></p>
-                            <p><strong>National Representative - Shaun Callendar</strong><br />
-                            <a href="mailto:director@robocupcanada.ca">director@robocupcanada.ca</a></p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-    </main>
-
-    <footer>
-        <div class="container footer-inner">
-            <p class="footer-copy">© 2026 RoboCup Junior Canada. All rights reserved.</p>
+  <!-- Main navigation -->
+  <nav>
+    <div class="container nav-inner">
+      <a href="index.html" class="logo">
+        <div class="logo-circle">🤖</div>
+        <div>
+          RoboCup
+          <span>Junior Canada</span>
         </div>
-    </footer>
-<script>
-    function toggleMobile() {
-        const menu = document.getElementById('mobile-menu');
-        const open = menu.classList.toggle('open');
-        document.getElementById('icon-menu').style.display = open ? 'none' : '';
-        document.getElementById('icon-x').style.display = open ? '' : 'none';
-    }
+      </a>
 
-    function closeMobile() {
-        document.getElementById('mobile-menu').classList.remove('open');
-        document.getElementById('icon-menu').style.display = '';
-        document.getElementById('icon-x').style.display = 'none';
-    }
+      <div class="nav-links">
+        <a class="nav-link" href="index.html">Homepage</a>
+        <a class="nav-link" href="about.html">About Us</a>
+        <a class="nav-link" href="leagues.html">Leagues & Rules</a>
+        <a class="nav-link" href="registration.html">Online Registration</a>
+        <a class="nav-link" href="schedule.html">Competition Schedule</a>
+        <a class="nav-link" href="gallery.html">International Image Gallery</a>
+        <a class="nav-link" href="resources.html">RoboCup Community Resources</a>
+        <a class="nav-link active" href="contact.html">Contact Us</a>
+        <a class="nav-link" href="contact_fr.html">Français</a>
+      </div>
+    </div>
+  </nav>
 
-    // Close mobile menu when a link is clicked
-    document.querySelectorAll('.mobile-menu a').forEach(link => {
-        link.addEventListener('click', closeMobile);
+  <!-- Page hero -->
+  <header class="hero">
+    <div class="container hero-inner">
+      <div>
+        <h1>
+          Contact
+          <span>RoboCup Canada</span>
+        </h1>
+
+        <p>
+          We are always eager to hear from robotics enthusiasts, students,
+          educators, mentors, and volunteers interested in RoboCupJunior Canada.
+        </p>
+      </div>
+
+      <div class="hero-img">
+        <img src="images/robot.png" alt="RoboCup robot mascot">
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- Main contact information -->
+    <section class="light-section">
+      <div class="container">
+        <h2 class="section-title">Get in Touch</h2>
+
+        <p class="section-subtitle">
+          Contact us for general information, competition questions, mentoring,
+          volunteering, or support related to RoboCupJunior Canada.
+        </p>
+
+        <div class="contact-grid">
+          <div class="contact-card featured-card">
+            <div class="contact-icon">📧</div>
+            <h3>General Information</h3>
+            <p>For general questions about RoboCupJunior Canada.</p>
+            <p>
+              <a href="mailto:info@robocupcanada.ca">info@robocupcanada.ca</a>
+            </p>
+          </div>
+
+          <div class="contact-card">
+            <div class="contact-icon">👤</div>
+            <h3>Québec Representative</h3>
+            <p><strong>Sarah Morgan</strong></p>
+            <p>
+              <a href="mailto:director@robocupcanada.ca">director@robocupcanada.ca</a>
+            </p>
+          </div>
+
+          <div class="contact-card">
+            <div class="contact-icon">🇨🇦</div>
+            <h3>National Representative</h3>
+            <p><strong>Shaun Callendar</strong></p>
+            <p>
+              <a href="mailto:director@robocupcanada.ca">director@robocupcanada.ca</a>
+            </p>
+          </div>
+        </div>
+
+        <div class="contact-layout">
+          <div class="info-panel">
+            <h3>Why contact us?</h3>
+
+            <p>
+              Whether you are a student, parent, teacher, mentor, or volunteer,
+              RoboCupJunior Canada welcomes your questions and participation.
+            </p>
+
+            <ul>
+              <li>Ask about upcoming competitions</li>
+              <li>Learn how to register a team</li>
+              <li>Get support with leagues and rules</li>
+              <li>Find ways to volunteer or mentor</li>
+              <li>Connect with the RoboCupJunior community</li>
+            </ul>
+          </div>
+
+          <!-- Frontend-only form for UI purpose -->
+          <form class="contact-form" id="contactForm">
+            <div class="form-grid">
+              <label>
+                Full Name
+                <input type="text" id="name" required>
+              </label>
+
+              <label>
+                Email Address
+                <input type="email" id="email" required>
+              </label>
+
+              <label class="full-width">
+                Subject
+                <input type="text" id="subject" required>
+              </label>
+
+              <label class="full-width">
+                Message
+                <textarea id="message" required></textarea>
+              </label>
+            </div>
+
+            <button type="submit" class="btn-primary">Send Message →</button>
+
+            <p class="form-note">
+              This contact form is currently a frontend demo. For production, connect it to a backend or email service.
+            </p>
+
+            <p class="form-message" id="formMessage"></p>
+          </form>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    © 2026 RoboCup Junior Canada. All rights reserved.
+  </footer>
+
+  <script>
+    // Simple frontend-only form message for demonstration
+    const contactForm = document.getElementById("contactForm");
+    const formMessage = document.getElementById("formMessage");
+
+    contactForm.addEventListener("submit", function(event) {
+      event.preventDefault();
+
+      formMessage.textContent = "Thank you. Your message has been prepared successfully.";
+      contactForm.reset();
     });
+  </script>
 
-    // Animate the page on load
-    function animatePageLoad() {
-        document.body.classList.remove('page-loaded');
-        void document.body.offsetWidth;
-        requestAnimationFrame(() => document.body.classList.add('page-loaded'));
-    }
-
-    window.addEventListener('pageshow', animatePageLoad);
-</script>
 </body>
 </html>
-
-
