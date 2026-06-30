@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -278,7 +278,7 @@
     }
 
     .rules-panel li::before {
-      content: "✓";
+      content: "\2713";
       position: absolute;
       left: 0;
       top: 0;
@@ -302,11 +302,18 @@
       box-shadow: 0 14px 35px rgba(15, 23, 42, 0.1);
       border-top: 4px solid #2563eb;
       transition: .25s ease;
+      cursor: pointer;
     }
 
-    .league-card:hover {
+    .league-card:hover,
+    .league-card.active {
       transform: translateY(-8px);
       box-shadow: 0 20px 45px rgba(15, 23, 42, 0.16);
+    }
+
+    .league-card.active {
+      outline: 3px solid rgba(37, 99, 235, .18);
+      border-top-color: #1d4ed8;
     }
 
     .league-icon {
@@ -345,12 +352,20 @@
     }
 
     .league-card li::before {
-      content: "•";
+      content: "\2022";
       color: #2563eb;
       position: absolute;
       left: 0;
       font-size: 22px;
       line-height: 16px;
+    }
+
+    .card-action {
+      display: inline-flex;
+      margin-top: 12px;
+      color: #2563eb;
+      font-weight: 800;
+      font-size: 15px;
     }
 
     .official-card {
@@ -375,6 +390,78 @@
       color: #60a5fa;
       background: transparent;
       border-color: #2563eb;
+    }
+
+    .details-intro {
+      max-width: 760px;
+      margin: -20px auto 34px;
+      text-align: center;
+      color: #475569;
+      font-size: 17px;
+    }
+
+    .competition-detail {
+      display: none;
+      background: white;
+      border-radius: 20px;
+      box-shadow: 0 18px 44px rgba(15, 23, 42, 0.12);
+      overflow: hidden;
+    }
+
+    .competition-detail.active {
+      display: block;
+    }
+
+    .detail-header {
+      background:
+        radial-gradient(circle at 88% 30%, rgba(37, 99, 235, 0.26), transparent 24%),
+        linear-gradient(135deg, #020617, #06224a);
+      color: white;
+      padding: 34px;
+    }
+
+    .detail-header h3 {
+      font-size: 34px;
+      margin-bottom: 10px;
+    }
+
+    .detail-header p {
+      color: #dbeafe;
+      max-width: 780px;
+      font-size: 17px;
+    }
+
+    .detail-body {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 28px;
+      padding: 34px;
+    }
+
+    .detail-block h4 {
+      color: #0f172a;
+      font-size: 20px;
+      margin-bottom: 12px;
+    }
+
+    .detail-block ul,
+    .detail-block ol {
+      padding-left: 22px;
+      color: #334155;
+    }
+
+    .detail-block li {
+      margin-bottom: 9px;
+    }
+
+    .detail-note {
+      grid-column: 1 / -1;
+      background: #eff6ff;
+      border-left: 5px solid #2563eb;
+      border-radius: 12px;
+      padding: 18px 20px;
+      color: #1e3a8a;
+      font-weight: 700;
     }
 
     /* =========================
@@ -412,7 +499,8 @@
       }
 
       .grid-3,
-      .rules-panel ul {
+      .rules-panel ul,
+      .detail-body {
         grid-template-columns: 1fr;
       }
 
@@ -429,7 +517,7 @@
   <nav>
     <div class="container nav-inner">
       <a href="index.html" class="logo">
-        <div class="logo-circle">🤖</div>
+        <div class="logo-circle">&#129302;</div>
         <div>
           RoboCup
           <span>Junior Canada</span>
@@ -445,7 +533,8 @@
         <a class="nav-link" href="gallery.html">International Image Gallery</a>
         <a class="nav-link" href="resources.html">RoboCup Community Resources</a>
         <a class="nav-link" href="contact.html">Contact Us</a>
-        <a class="nav-link" href="leagues_fr.html">Français</a>
+        <a class="nav-link" href="admin/index.html">Admin</a>
+        <a class="nav-link" href="leagues_fr.html">Fran&ccedil;ais</a>
       </div>
     </div>
   </nav>
@@ -465,9 +554,6 @@
           competitions.
         </p>
 
-        <a class="btn-primary" href="https://robocupcanada.ca/2025/index.php" target="_blank" rel="noopener">
-          Official Rules →
-        </a>
       </div>
 
       <div class="hero-img">
@@ -506,23 +592,68 @@
         <h2 class="section-title">Leagues</h2>
 
         <div class="grid-3">
-          <article class="league-card">
-            <div class="league-icon">🤖</div>
-            <h3>RoboParty</h3>
+          <a class="league-card" href="maze.html">
+            <div class="league-icon">&#129521;</div>
+            <h3>Maze</h3>
             <p>
-              A beginner-friendly robotics event for new students and returning
-              competitors who want to improve their skills.
+              A RoboParty challenge where robots navigate a walled corridor from
+              start to finish.
             </p>
             <ul>
-              <li>Maze: drive through a walled corridor without touching the sides.</li>
-              <li>Formula 1: follow a black curved line around a race track.</li>
-              <li>Performance: present a 1 minute robot routine to music.</li>
-              <li>SumoBots: push other robots out of an octagonal ring.</li>
+              <li>3 attempts per robot.</li>
+              <li>120 second maximum per run.</li>
+              <li>Wall contact can reduce the score.</li>
             </ul>
-          </article>
+            <span class="card-action">View details</span>
+          </a>
 
-          <article class="league-card">
-            <div class="league-icon">🚑</div>
+          <a class="league-card" href="formula-1.html">
+            <div class="league-icon">&#127950;</div>
+            <h3>Formula 1</h3>
+            <p>
+              A RoboParty challenge where robots follow a black curved line around
+              a race track.
+            </p>
+            <ul>
+              <li>3 attempts per robot.</li>
+              <li>Best run is counted.</li>
+              <li>Fast and stable line-following is key.</li>
+            </ul>
+            <span class="card-action">View details</span>
+          </a>
+
+          <a class="league-card" href="performance.html">
+            <div class="league-icon">&#127925;</div>
+            <h3>Performance</h3>
+            <p>
+              A RoboParty challenge where teams present a short robot routine with
+              music, creativity, and technical design.
+            </p>
+            <ul>
+              <li>Usually a 1 minute routine.</li>
+              <li>Creativity and entertainment are judged.</li>
+              <li>Programming complexity matters.</li>
+            </ul>
+            <span class="card-action">View details</span>
+          </a>
+
+          <a class="league-card" href="sumobots.html">
+            <div class="league-icon">&#129302;</div>
+            <h3>SumoBots</h3>
+            <p>
+              A RoboParty challenge where robots try to push opponents out of an
+              octagonal ring.
+            </p>
+            <ul>
+              <li>Robots compete inside a ring.</li>
+              <li>Points are earned by pushing opponents out.</li>
+              <li>Size and weight limits apply.</li>
+            </ul>
+            <span class="card-action">View details</span>
+          </a>
+
+          <a class="league-card" href="rescue-line.html">
+            <div class="league-icon">&#128657;</div>
             <h3>Rescue Line</h3>
             <p>
               Robots follow a black line through a rescue course while handling
@@ -533,10 +664,11 @@
               <li>Robots may need to recover from gaps or obstacles.</li>
               <li>The evacuation zone uses victim objects and point multipliers.</li>
             </ul>
-          </article>
+            <span class="card-action">View details</span>
+          </a>
 
-          <article class="league-card">
-            <div class="league-icon">🧭</div>
+          <a class="league-card" href="rescue-maze.html">
+            <div class="league-icon">&#129517;</div>
             <h3>Rescue Maze</h3>
             <p>
               Robots explore a simulated disaster maze to locate victims and deliver
@@ -546,10 +678,11 @@
               <li>Designed as preparation for international Rescue divisions.</li>
               <li>Teams may participate in Rescue Maze and Rescue Line at qualifying events.</li>
             </ul>
-          </article>
+            <span class="card-action">View details</span>
+          </a>
 
-          <article class="league-card">
-            <div class="league-icon">⚽</div>
+          <a class="league-card" href="soccer.html">
+            <div class="league-icon">&#9917;</div>
             <h3>Soccer</h3>
             <p>
               Two autonomous robots compete against another pair by detecting and
@@ -561,10 +694,11 @@
               <li>Games include two 10 minute halves and a 5 minute half-time.</li>
               <li>Each goal is worth 1 point.</li>
             </ul>
-          </article>
+            <span class="card-action">View details</span>
+          </a>
 
-          <article class="league-card">
-            <div class="league-icon">🎭</div>
+          <a class="league-card" href="onstage.html">
+            <div class="league-icon">&#127917;</div>
             <h3>OnStage</h3>
             <p>
               Teams create a robotic performance that combines engineering,
@@ -575,27 +709,17 @@
               <li>Judges consider creativity, entertainment, and programming complexity.</li>
               <li>Robot autonomy and sensor use are considered during evaluation.</li>
             </ul>
-          </article>
+            <span class="card-action">View details</span>
+          </a>
 
-          <article class="league-card official-card">
-            <div class="league-icon">📘</div>
-            <h3>Official Rule Documents</h3>
-            <p>
-              Always check the official RoboCup Canada page for the latest rule versions,
-              scoring details, and event-specific updates.
-            </p>
-
-            <a class="btn-outline" href="https://robocupcanada.ca/2025/index.php" target="_blank" rel="noopener">
-              View Official Rules →
-            </a>
-          </article>
         </div>
       </div>
     </section>
+
   </main>
 
   <footer>
-    © 2026 RoboCup Junior Canada. All rights reserved.
+    &copy; 2026 RoboCup Junior Canada. All rights reserved.
   </footer>
 
 </body>

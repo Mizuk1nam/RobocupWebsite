@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Rescue Line Rules | RoboCup Junior Canada</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: Arial, Helvetica, sans-serif; background: #f8fbff; color: #0f172a; line-height: 1.6; }
+    a { color: inherit; text-decoration: none; }
+    .container { width: min(1100px, 92%); margin: auto; }
+    nav { background: #fff; border-bottom: 1px solid #e5e7eb; position: sticky; top: 0; z-index: 100; }
+    .nav-inner { min-height: 72px; display: flex; align-items: center; justify-content: space-between; gap: 24px; }
+    .logo { font-weight: 800; color: #111827; }
+    .logo span { color: red; display: block; }
+    .nav-links { display: flex; gap: 22px; flex-wrap: wrap; }
+    .nav-link { color: #020617; font-size: 15px; font-weight: 700; }
+    .nav-link:hover, .nav-link.active { color: #2563eb; }
+    .hero { color: white; background: linear-gradient(135deg, #020617, #06224a); padding: 80px 0; }
+    .hero h1 { font-size: clamp(42px, 6vw, 68px); margin-bottom: 18px; }
+    .hero p { max-width: 760px; color: #dbeafe; font-size: 20px; margin-bottom: 28px; }
+    .btn-primary { display: inline-flex; background: #1677ff; color: white; padding: 14px 24px; border-radius: 10px; font-weight: 800; }
+    section { padding: 64px 0; }
+    .light-section { background: linear-gradient(180deg, #f8fbff, #eef5ff); }
+    .section-title { font-size: 34px; margin-bottom: 28px; text-align: center; }
+    .content-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; }
+    .panel { background: white; border-radius: 18px; padding: 30px; box-shadow: 0 14px 35px rgba(15, 23, 42, .1); }
+    .panel h3 { font-size: 24px; margin-bottom: 16px; }
+    .panel ul { padding-left: 22px; color: #334155; }
+    .panel li { margin-bottom: 10px; }
+    footer { background: #020617; color: #94a3b8; text-align: center; padding: 26px; font-size: 14px; }
+    @media (max-width: 850px) { .nav-inner, .nav-links { flex-direction: column; align-items: flex-start; } .nav-inner { padding: 16px 0; } .content-grid { grid-template-columns: 1fr; } }
+  </style>
+  <link rel="stylesheet" href="competition.css" />
+</head>
+<body>
+  <nav>
+    <div class="container nav-inner">
+      <a href="index.html" class="logo">
+        <div class="logo-circle">🤖</div>
+        <div>
+          RoboCup
+          <span>Junior Canada</span>
+        </div>
+      </a>
+      <div class="nav-links">
+        <a class="nav-link" href="index.html">Homepage</a>
+        <a class="nav-link" href="about.html">About Us</a>
+        <a class="nav-link active" href="leagues.html">Leagues & Rules</a>
+        <a class="nav-link" href="registration.html">Online Registration</a>
+        <a class="nav-link" href="schedule.html">Competition Schedule</a>
+        <a class="nav-link" href="gallery.html">International Image Gallery</a>
+        <a class="nav-link" href="resources.html">RoboCup Community Resources</a>
+        <a class="nav-link" href="contact.html">Contact Us</a>
+        <a class="nav-link" href="admin/index.html">Admin</a>
+        <a class="nav-link" href="leagues_fr.html">Français</a>
+      </div>
+    </div>
+  </nav>
+
+  <header class="hero">
+    <div class="container hero-inner">
+      <div>
+        <h1>Rescue Line<span>Rules</span></h1>
+        <p>Artificial intelligence at its best: Rescue mirrors real-life robot missions that rescue people from life-threatening situations.</p>
+        <a class="btn-primary" href="leagues.html">Back to Leagues →</a>
+      </div>
+      <div class="hero-img">
+        <img src="images/robot.png" alt="RoboCup robot mascot">
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section>
+      <div class="container">
+        <h2 class="section-title">Field Zones</h2>
+        <div class="content-grid">
+          <div class="panel">
+            <h3>Line Follow Zone</h3>
+            <ul>
+              <li>Navigate a black line on white tiles.</li>
+              <li>Follow specific directional indicators at intersections, which may lead to dead ends if not followed.</li>
+              <li>Navigate around obstacles.</li>
+              <li>Handle possible gaps in the path.</li>
+              <li>Handle inclines such as a seesaw or ramp.</li>
+              <li>Overcome speed bumps.</li>
+            </ul>
+          </div>
+          <div class="panel">
+            <h3>Evacuation Zone</h3>
+            <ul>
+              <li>Represents a war zone or natural disaster site where victims need to be rescued.</li>
+              <li>The robot brings victims into the evacuation point.</li>
+              <li>The evacuation point is a black right-angle triangle with 30 cm x 30 cm sides.</li>
+              <li>Level 1 uses a 5 cm bump along the side that does not touch the wall.</li>
+              <li>Level 2 uses a 6 cm bump along the side that does not touch the wall.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="light-section">
+      <div class="container">
+        <h2 class="section-title">Scoring, Checkpoints & Victims</h2>
+        <div class="content-grid">
+          <div class="panel">
+            <h3>Line Follow Points</h3>
+            <ul>
+              <li>15 points for the correct path at an intersection.</li>
+              <li>10 points for overcoming obstacles.</li>
+              <li>10 points for reacquiring the line after a gap.</li>
+              <li>5 points per tile on the 1st attempt.</li>
+              <li>3 points per tile on the 2nd attempt.</li>
+              <li>1 point per tile on the 3rd attempt.</li>
+              <li>0 points per tile after the 3rd attempt.</li>
+              <li>5 points for speed bumps and inclines.</li>
+            </ul>
+          </div>
+          <div class="panel">
+            <h3>Checkpoints & Lack of Progress</h3>
+            <ul>
+              <li>A checkpoint is a tile where a robot is manually placed back when lack of progress occurs.</li>
+              <li>Checkpoints are not located on tiles with scoring elements.</li>
+              <li>The start tile is a checkpoint where the robot can restart.</li>
+              <li>A checkpoint marker indicates checkpoint tiles.</li>
+              <li>An attempt is each time the robot is moved back to a checkpoint.</li>
+              <li>Lack of progress can be declared by the team captain.</li>
+              <li>Lack of progress also occurs when the robot loses the black line without regaining it by the next tile.</li>
+              <li>Lack of progress occurs when the robot reaches a line that is not in the intended sequence.</li>
+            </ul>
+          </div>
+          <div class="panel">
+            <h3>Transition & Victims</h3>
+            <ul>
+              <li>The transition from the field to evacuation zone is identified by a silver tape line across the entrance.</li>
+              <li>There are 3 live victims represented by silver balls.</li>
+              <li>There are 3 dead victims represented by black balls.</li>
+            </ul>
+          </div>
+          <div class="panel">
+            <h3>Evacuation Multipliers</h3>
+            <ul>
+              <li>Each team chooses their evacuation zone level.</li>
+              <li>The challenge is to save the 6 victims by placing them in the evacuation point.</li>
+              <li>Victims rescued provide multipliers on points accumulated from the line follow zone.</li>
+              <li>Multipliers vary, such as 1.0, 1.1, 1.2, 1.3, 1.4, and more depending on level and victims rescued.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>© 2026 RoboCup Junior Canada. All rights reserved.</footer>
+</body>
+</html>

@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Dashboard | RoboCup Junior Canada</title>
+  <link rel="stylesheet" href="admin.css" />
+</head>
+<body>
+  <header class="admin-header">
+    <a class="brand-link" href="../index.html">
+      <span class="logo-circle">R</span>
+      <span>RoboCup <strong>Junior Canada</strong></span>
+    </a>
+    <div class="header-actions">
+      <span id="admin-email" class="admin-email"></span>
+      <a class="secondary-action button-link" href="../index.html">Back to Website</a>
+      <button id="logout-button" class="secondary-action" type="button">Log Out</button>
+    </div>
+  </header>
+
+  <main class="dashboard">
+    <section class="dashboard-hero">
+      <p class="eyebrow">Scoring administration</p>
+      <h1>Competition Tools</h1>
+      <p>Manage teams, enter scores, and prepare competition results from one protected dashboard.</p>
+    </section>
+
+    <section id="setup-warning" class="setup-warning" hidden>
+      <strong>Supabase setup needed.</strong>
+      Add your Project URL and anon public key in <code>admin/supabase-config.js</code>.
+    </section>
+
+    <section class="dashboard-grid">
+      <article class="tool-panel">
+        <h2>Add Team</h2>
+        <form id="team-form" class="stacked-form">
+          <label>
+            Team Name
+            <input id="team-name" type="text" required />
+          </label>
+          <label>
+            Competition
+            <select id="team-competition" required>
+              <option value="">Select competition</option>
+              <option>Maze</option>
+              <option>Formula 1</option>
+              <option>Performance</option>
+              <option>SumoBots</option>
+              <option>Rescue Line</option>
+              <option>Rescue Maze</option>
+              <option>Soccer</option>
+              <option>OnStage</option>
+            </select>
+          </label>
+          <label>
+            School / Organization
+            <input id="team-school" type="text" />
+          </label>
+          <button class="primary-action" type="submit">Save Team</button>
+        </form>
+      </article>
+
+      <article class="tool-panel">
+        <h2>Enter Score</h2>
+        <form id="score-form" class="stacked-form">
+          <label>
+            Team
+            <select id="score-team" required>
+              <option value="">Select team</option>
+            </select>
+          </label>
+          <label>
+            Round
+            <input id="score-round" type="number" min="1" value="1" required />
+          </label>
+          <label>
+            Score
+            <input id="score-value" type="number" step="0.01" required />
+          </label>
+          <label>
+            Notes
+            <textarea id="score-notes" rows="4"></textarea>
+          </label>
+          <button class="primary-action" type="submit">Save Score</button>
+        </form>
+      </article>
+    </section>
+
+    <section class="tool-panel teams-panel">
+      <div class="panel-heading">
+        <h2>Teams</h2>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Team</th>
+              <th>Competition</th>
+              <th>School / Organization</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody id="teams-table">
+            <tr>
+              <td colspan="4">No teams loaded yet.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="tool-panel results-panel">
+      <div class="panel-heading">
+        <h2>Recent Scores</h2>
+        <button id="refresh-button" class="secondary-action" type="button">Refresh</button>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Team</th>
+              <th>Competition</th>
+              <th>Round</th>
+              <th>Score</th>
+              <th>Notes</th>
+            </tr>
+          </thead>
+          <tbody id="scores-table">
+            <tr>
+              <td colspan="5">No scores loaded yet.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p id="dashboard-message" class="form-message" role="status" aria-live="polite"></p>
+    </section>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase-config.js"></script>
+  <script src="admin.js"></script>
+</body>
+</html>

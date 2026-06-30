@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Login | RoboCup Junior Canada</title>
+  <link rel="stylesheet" href="admin.css" />
+</head>
+<body class="auth-page">
+  <main class="auth-shell">
+    <section class="auth-panel">
+      <a class="brand-link" href="../index.html">
+        <span class="logo-circle">R</span>
+        <span>RoboCup <strong>Junior Canada</strong></span>
+      </a>
+
+      <div class="auth-copy">
+        <p class="eyebrow">Invite-only access</p>
+        <h1>Admin Login</h1>
+        <p>Use the email and password from your Supabase invite to access scoring tools.</p>
+      </div>
+
+      <form id="login-form" class="auth-form">
+        <label>
+          Email
+          <input id="email" type="email" autocomplete="email" required />
+        </label>
+        <label>
+          Password
+          <input id="password" type="password" autocomplete="current-password" required />
+        </label>
+        <button type="submit" class="primary-action">Log In</button>
+        <p id="auth-message" class="form-message" role="status" aria-live="polite"></p>
+      </form>
+
+      <a class="secondary-action button-link full-width-action" href="../index.html">Back to Website</a>
+    </section>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase-config.js"></script>
+  <script src="admin.js"></script>
+</body>
+</html>

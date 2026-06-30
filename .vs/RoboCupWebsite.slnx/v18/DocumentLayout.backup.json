@@ -3,8 +3,20 @@
   "WorkspaceRootPath": "C:\\Git\\RobocupWebsite\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{AC04F6DF-E2DD-41F1-BDEC-1E1FE734491D}|Solution Items{AC04F6DF-E2DD-41F1-BDEC-1E1FE734491D}|C:\\Git\\RobocupWebsite\\MainPage.html||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{AC04F6DF-E2DD-41F1-BDEC-1E1FE734491D}|Solution Items{AC04F6DF-E2DD-41F1-BDEC-1E1FE734491D}|solutionrelative:MainPage.html||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+      "AbsoluteMoniker": "D:0:0:{089100B1-113F-4E66-888A-E83F3999EAFD}|Solution Items{089100B1-113F-4E66-888A-E83F3999EAFD}|C:\\Git\\RobocupWebsite\\leagues.html||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{089100B1-113F-4E66-888A-E83F3999EAFD}|Solution Items{089100B1-113F-4E66-888A-E83F3999EAFD}|solutionrelative:leagues.html||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{089100B1-113F-4E66-888A-E83F3999EAFD}|Solution Items{089100B1-113F-4E66-888A-E83F3999EAFD}|C:\\Git\\RobocupWebsite\\index.html||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{089100B1-113F-4E66-888A-E83F3999EAFD}|Solution Items{089100B1-113F-4E66-888A-E83F3999EAFD}|solutionrelative:index.html||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{089100B1-113F-4E66-888A-E83F3999EAFD}|Solution Items{089100B1-113F-4E66-888A-E83F3999EAFD}|C:\\Git\\RobocupWebsite\\leagues.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}",
+      "RelativeMoniker": "D:0:0:{089100B1-113F-4E66-888A-E83F3999EAFD}|Solution Items{089100B1-113F-4E66-888A-E83F3999EAFD}|solutionrelative:leagues.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{089100B1-113F-4E66-888A-E83F3999EAFD}|Solution Items{089100B1-113F-4E66-888A-E83F3999EAFD}|C:\\Git\\RobocupWebsite\\MainPage.html||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{089100B1-113F-4E66-888A-E83F3999EAFD}|Solution Items{089100B1-113F-4E66-888A-E83F3999EAFD}|solutionrelative:MainPage.html||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     }
   ],
   "DocumentGroupContainers": [
@@ -27,6 +39,45 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
+              "Title": "leagues.html",
+              "DocumentMoniker": "C:\\Git\\RobocupWebsite\\leagues.html",
+              "RelativeDocumentMoniker": "leagues.html",
+              "ToolTip": "C:\\Git\\RobocupWebsite\\leagues.html",
+              "RelativeToolTip": "leagues.html",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAB4AAAAoAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001512|",
+              "WhenOpened": "2026-06-02T19:11:35.34Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "leagues.css",
+              "DocumentMoniker": "C:\\Git\\RobocupWebsite\\leagues.css",
+              "RelativeDocumentMoniker": "leagues.css",
+              "ToolTip": "C:\\Git\\RobocupWebsite\\leagues.css",
+              "RelativeToolTip": "leagues.css",
+              "ViewState": "AgIAACsBAAAAAAAAAAAuwGgBAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003000|",
+              "WhenOpened": "2026-06-02T19:11:24.717Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "index.html",
+              "DocumentMoniker": "C:\\Git\\RobocupWebsite\\index.html",
+              "RelativeDocumentMoniker": "index.html",
+              "ToolTip": "C:\\Git\\RobocupWebsite\\index.html",
+              "RelativeToolTip": "index.html",
+              "ViewState": "AgIAAO0AAAAAAAAAAAAAAAMBAAAIAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001512|",
+              "WhenOpened": "2026-06-02T18:21:44.978Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
               "Title": "MainPage.html",
               "DocumentMoniker": "C:\\Git\\RobocupWebsite\\MainPage.html",
               "RelativeDocumentMoniker": "MainPage.html",

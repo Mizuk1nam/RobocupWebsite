@@ -1,5 +1,11 @@
 <Solution>
   <Folder Name="/Solution Items/">
+    <File Path="admin/admin.css" />
+    <File Path="admin/admin.js" />
+    <File Path="admin/dashboard.html" />
+    <File Path="admin/index.html" />
+    <File Path="admin/supabase-config.js" />
+    <File Path="competition.css" />
     <File Path="index.html" />
     <File Path="leagues.css" />
     <File Path="leagues.html" />
