@@ -1,590 +1,521 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-  <title>Online Registration | RoboCup Junior Canada</title>
-
-  <style>
-    /* =========================
-       Basic setup
-    ========================== */
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    body {
-      font-family: Arial, Helvetica, sans-serif;
-      background: #f8fbff;
-      color: #0f172a;
-      line-height: 1.6;
-    }
-
-    a {
-      text-decoration: none;
-    }
-
-    .container {
-      width: min(1200px, 92%);
-      margin: auto;
-    }
-
-    /* =========================
-       Navigation
-    ========================== */
-    nav {
-      background: white;
-      border-bottom: 1px solid #e5e7eb;
-      position: sticky;
-      top: 0;
-      z-index: 1000;
-    }
-
-    .nav-inner {
-      min-height: 78px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 25px;
-    }
-
-    .logo {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      font-weight: 800;
-      color: #111827;
-      min-width: 170px;
-    }
-
-    .logo-circle {
-      width: 42px;
-      height: 42px;
-      border-radius: 50%;
-      background: #eff6ff;
-      display: grid;
-      place-items: center;
-      font-size: 22px;
-    }
-
-    .logo span {
-      display: block;
-      color: red;
-    }
-
-    .nav-links {
-      display: flex;
-      align-items: center;
-      gap: 26px;
-      justify-content: center;
-      flex-wrap: wrap;
-    }
-
-    .nav-link {
-      color: #020617;
-      font-size: 15px;
-      font-weight: 700;
-      padding: 10px 0;
-      position: relative;
-    }
-
-    .nav-link:hover,
-    .nav-link.active {
-      color: #2563eb;
-    }
-
-    .nav-link.active::after,
-    .nav-link:hover::after {
-      content: "";
-      position: absolute;
-      left: 0;
-      bottom: -8px;
-      width: 100%;
-      height: 3px;
-      background: #2563eb;
-      border-radius: 999px;
-    }
-
-    /* =========================
-       Hero section
-    ========================== */
-    .hero {
-      position: relative;
-      overflow: hidden;
-      color: white;
-      background:
-        radial-gradient(circle at 80% 45%, rgba(37, 99, 235, 0.45), transparent 25%),
-        radial-gradient(circle at 8% 45%, rgba(37, 99, 235, 0.25), transparent 24%),
-        linear-gradient(135deg, #020617 0%, #06224a 55%, #020617 100%);
-      padding: 95px 0;
-    }
-
-    .hero::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background-image:
-        linear-gradient(rgba(59,130,246,.18) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(59,130,246,.18) 1px, transparent 1px);
-      background-size: 55px 55px;
-      opacity: .18;
-    }
-
-    .hero-inner {
-      position: relative;
-      z-index: 2;
-      display: grid;
-      grid-template-columns: 1.1fr .9fr;
-      gap: 50px;
-      align-items: center;
-    }
-
-    .hero h1 {
-      font-size: clamp(42px, 6vw, 70px);
-      line-height: 1.05;
-      font-weight: 900;
-      letter-spacing: -1.5px;
-      margin-bottom: 22px;
-    }
-
-    .hero h1 span {
-      display: block;
-      color: #1677ff;
-    }
-
-    .hero p {
-      max-width: 650px;
-      font-size: 20px;
-      color: #f1f5f9;
-      line-height: 1.8;
-      margin-bottom: 16px;
-    }
-
-    .hero-buttons {
-      display: flex;
-      gap: 16px;
-      flex-wrap: wrap;
-      margin-top: 28px;
-    }
-
-    .hero-img {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-
-    .hero-img img {
-      width: min(330px, 100%);
-      animation: floatRobot 4s ease-in-out infinite;
-      filter: drop-shadow(0 25px 35px rgba(0,0,0,.55));
-    }
-
-    @keyframes floatRobot {
-      0%, 100% {
-        transform: translateY(0);
-      }
-
-      50% {
-        transform: translateY(-14px);
-      }
-    }
-
-    /* =========================
-       Buttons
-    ========================== */
-    .btn-primary,
-    .btn-outline {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      padding: 15px 26px;
-      border-radius: 10px;
-      font-size: 16px;
-      font-weight: 800;
-      cursor: pointer;
-      transition: .25s ease;
-      border: none;
-    }
-
-    .btn-primary {
-      background: #1677ff;
-      color: white;
-      box-shadow: 0 14px 30px rgba(37,99,235,.35);
-    }
-
-    .btn-outline {
-      border: 2px solid #1677ff;
-      color: #2563eb;
-      background: white;
-    }
-
-    .btn-primary:hover,
-    .btn-outline:hover {
-      transform: translateY(-3px);
-    }
-
-    .btn-link {
-      background: transparent;
-      border: none;
-      color: #2563eb;
-      font-weight: 800;
-      cursor: pointer;
-      font-size: 15px;
-    }
-
-    .btn-link:hover {
-      color: #1d4ed8;
-    }
-
-    .is-disabled {
-      opacity: .5;
-      cursor: not-allowed;
-    }
-
-    /* =========================
-       Sections
-    ========================== */
-    section {
-      padding: 75px 0;
-    }
-
-    .bg-gray {
-      background: linear-gradient(180deg, #f8fbff, #eef5ff);
-    }
-
-    .section-title {
-      text-align: center;
-      font-size: 40px;
-      margin-bottom: 16px;
-      color: #0f172a;
-    }
-
-    .section-title::after {
-      content: "";
-      display: block;
-      width: 50px;
-      height: 4px;
-      background: #2563eb;
-      border-radius: 999px;
-      margin: 14px auto 0;
-    }
-
-    .section-subtitle {
-      max-width: 760px;
-      margin: 0 auto 42px;
-      text-align: center;
-      color: #475569;
-      font-size: 17px;
-    }
-
-    .grid-2,
-    .grid-3,
-    .forms-grid {
-      display: grid;
-      gap: 24px;
-    }
-
-    .grid-2 {
-      grid-template-columns: repeat(2, 1fr);
-    }
-
-    .grid-3,
-    .forms-grid {
-      grid-template-columns: repeat(3, 1fr);
-    }
-
-    .forms-grid {
-      grid-template-columns: repeat(2, 1fr);
-    }
-
-    /* =========================
-       Information cards
-    ========================== */
-    .info-box,
-    .option-card,
-    .team-card {
-      background: white;
-      padding: 32px;
-      border-radius: 18px;
-      box-shadow: 0 14px 35px rgba(15, 23, 42, 0.1);
-      border-top: 4px solid #2563eb;
-      transition: .25s ease;
-    }
-
-    .info-box:hover,
-    .option-card:hover,
-    .team-card:hover {
-      transform: translateY(-6px);
-      box-shadow: 0 20px 45px rgba(15, 23, 42, 0.16);
-    }
-
-    .info-box h3,
-    .option-card h3 {
-      font-size: 22px;
-      margin-bottom: 12px;
-      color: #0f172a;
-    }
-
-    .info-box p,
-    .option-card p {
-      color: #475569;
-      margin-bottom: 8px;
-      font-size: 16px;
-    }
-
-    /* =========================
-       Registration form
-    ========================== */
-    #registration-form {
-      max-width: 1100px;
-      margin: auto;
-    }
-
-    #teams-container {
-      display: grid;
-      gap: 28px;
-    }
-
-    .team-card {
-      border-top: none;
-    }
-
-    .team-card-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 20px;
-      margin-bottom: 28px;
-      padding-bottom: 18px;
-      border-bottom: 1px solid #e5e7eb;
-    }
-
-    .team-card-header h3 {
-      font-size: 28px;
-      color: #0f172a;
-    }
-
-    .team-card h4 {
-      font-size: 20px;
-      margin: 28px 0 16px;
-      color: #0f172a;
-    }
-
-    .form-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 20px;
-    }
-
-    label {
-      display: grid;
-      gap: 8px;
-      color: #0f172a;
-      font-weight: 800;
-      font-size: 15px;
-    }
-
-    input,
-    select {
-      width: 100%;
-      padding: 14px 15px;
-      border-radius: 10px;
-      border: 1px solid #cbd5e1;
-      font-size: 16px;
-      background: #f8fafc;
-      color: #0f172a;
-      outline: none;
-      transition: .2s ease;
-    }
-
-    input:focus,
-    select:focus {
-      border-color: #2563eb;
-      background: white;
-      box-shadow: 0 0 0 4px rgba(37, 99, 235, .12);
-    }
-
-    .member-constraint {
-      background: #eff6ff;
-      color: #2563eb;
-      font-weight: 800;
-      padding: 12px 16px;
-      border-radius: 10px;
-      margin-bottom: 18px;
-    }
-
-    .members {
-      display: grid;
-      gap: 16px;
-    }
-
-    .member-row {
-      display: grid;
-      grid-template-columns: 1fr 140px auto;
-      gap: 16px;
-      align-items: end;
-      background: #f8fafc;
-      border: 1px solid #e5e7eb;
-      padding: 18px;
-      border-radius: 14px;
-    }
-
-    .member-actions,
-    .workspace-actions {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 16px;
-      margin-top: 24px;
-    }
-
-    .workspace-actions {
-      justify-content: center;
-      margin-top: 38px;
-    }
-
-    .form-hint {
-      text-align: center;
-      color: #64748b;
-      margin-top: 20px;
-      font-size: 15px;
-    }
-
-    .form-message {
-      text-align: center;
-      margin-top: 14px;
-      font-weight: 800;
-    }
-
-    .form-message.success {
-      color: #16a34a;
-    }
-
-    /* =========================
-       Footer
-    ========================== */
-    footer {
-      background: #020617;
-      color: #94a3b8;
-      text-align: center;
-      padding: 26px;
-      font-size: 14px;
-    }
-
-    /* =========================
-       Responsive design
-    ========================== */
-    @media (max-width: 950px) {
-      .nav-inner {
-        flex-direction: column;
-        padding: 16px 0;
-      }
-
-      .nav-links {
-        gap: 16px;
-      }
-
-      .hero-inner,
-      .grid-2,
-      .grid-3,
-      .forms-grid,
-      .form-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .hero {
-        text-align: center;
-      }
-
-      .hero p {
-        margin-left: auto;
-        margin-right: auto;
-      }
-
-      .hero-buttons {
-        justify-content: center;
-      }
-
-      .member-row {
-        grid-template-columns: 1fr;
-      }
-
-      .team-card-header {
-        flex-direction: column;
-        align-items: flex-start;
-      }
-    }
-  </style>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Online Registration | RoboCup Junior Canada</title>
+    <link rel="stylesheet" href="registration.css" />
+    <style>
+        .container { max-width: 80rem; margin: 0 auto; padding: 0 1rem; }
+        @media (min-width: 640px)  { .container { padding: 0 1.5rem; } }
+        @media (min-width: 1024px) { .container { padding: 0 2rem; } }
+
+        nav { border-bottom: 1px solid #e5e7eb; position: sticky; top: 0; background: #fff; z-index: 100; }
+        .nav-inner { display: flex; align-items: center; justify-content: space-between; height: 4rem; }
+        .nav-links { display: none; align-items: center; gap: 1.5rem; }
+        @media (min-width: 768px) { .nav-links { display: flex; } }
+        .nav-links .nav-link { padding: .5rem .75rem; border-radius: .375rem; }
+        .mobile-menu .nav-link { padding: .5rem .75rem; border-radius: .375rem; }
+
+        .nav-link { color: #374151; cursor: pointer; transition: color .2s; background: none; border: none; font-size: 1rem; }
+        .nav-link:hover, .nav-link.active { color: #2563eb; }
+
+        .hamburger { display: flex; align-items: center; justify-content: center; background: none; border: none; cursor: pointer; padding: .25rem; }
+        @media (min-width: 768px) { .hamburger { display: none; } }
+
+        .mobile-menu { display: none; flex-direction: column; gap: 1rem; padding: 1rem 0; border-top: 1px solid #e5e7eb; }
+        .mobile-menu.open { display: flex; }
+
+        body { opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease, transform 0.6s ease; }
+        body.page-loaded { opacity: 1; transform: none; }
+    </style>
 </head>
-
 <body>
-
-  <!-- Main navigation: same style used across the RoboCup website -->
-  <nav>
-    <div class="container nav-inner">
-      <a href="index.html" class="logo">
-        <div class="logo-circle">🤖</div>
-        <div>
-          RoboCup
-          <span>Junior Canada</span>
+    <nav>
+        <div class="container">
+            <div class="nav-inner">
+                <div class="nav-links">
+                    <a class="nav-link" href="index.html">Homepage</a>
+                    <a class="nav-link" href="about.html">About Us</a>
+                    <a class="nav-link" href="leagues.html">Leagues & Rules</a>
+                    <a class="nav-link active" href="registration.html">Online Registration</a>
+                    <a class="nav-link" href="schedule.html">Competition Schedule</a>
+                    <a class="nav-link" href="gallery.html">International Image Gallery</a>
+                    <a class="nav-link" href="resources.html">RoboCup Community Resources</a>
+                    <a class="nav-link" href="contact.html">Contact Us</a>
+                    <a class="nav-link" href="registration_fr.html">Francais</a>
+                </div>
+                <button class="hamburger" onclick="toggleMobile()" aria-label="Menu">
+                    <svg id="icon-menu" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#374151" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="4" y1="6" x2="20" y2="6"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="18" x2="20" y2="18"/>
+                    </svg>
+                    <svg id="icon-x" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#374151" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none">
+                        <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+                    </svg>
+                </button>
+            </div>
+            <div class="mobile-menu" id="mobile-menu">
+                <a class="nav-link" href="index.html">Homepage</a>
+                <a class="nav-link" href="about.html">About Us</a>
+                <a class="nav-link" href="leagues.html">Leagues & Rules</a>
+                <a class="nav-link active" href="registration.html">Online Registration</a>
+                <a class="nav-link" href="schedule.html">Competition Schedule</a>
+                <a class="nav-link" href="gallery.html">International Image Gallery</a>
+                <a class="nav-link" href="resources.html">RoboCup Community Resources</a>
+                <a class="nav-link" href="contact.html">Contact Us</a>
+                <a class="nav-link" href="registration_fr.html">Francais</a>
+            </div>
         </div>
-      </a>
+    </nav>
 
-      <div class="nav-links">
-        <a class="nav-link" href="index.html">Homepage</a>
-        <a class="nav-link" href="about.html">About Us</a>
-        <a class="nav-link" href="leagues.html">Leagues & Rules</a>
-        <a class="nav-link active" href="registration.html">Online Registration</a>
-        <a class="nav-link" href="schedule.html">Competition Schedule</a>
-        <a class="nav-link" href="gallery.html">International Image Gallery</a>
-        <a class="nav-link" href="resources.html">RoboCup Community Resources</a>
-        <a class="nav-link" href="contact.html">Contact Us</a>
-        <a class="nav-link" href="registration_fr.html">Français</a>
-      </div>
-    </div>
-  </nav>
-
-  <!-- Page hero -->
-  <header class="hero">
-    <div class="container hero-inner">
-      <div>
-        <h1>
-          Online
-          <span>Registration</span>
-        </h1>
-
-        <p>
-          <strong>RoboCupJunior Quebec 2026 Canada Robotics Competition</strong>
-        </p>
-
-        <p>
-          Build your team profile, review details, and generate release forms in one place.
-        </p>
-
-        <div class="hero-buttons">
-          <a class="btn-primary" href="#registration-workspace">Start Registration →</a>
-          <a class="btn-outline" href="#forms-downloads">Forms & Downloads →</a>
+    <section class="hero">
+        <div class="container">
+            <h1>Online Registration</h1>
+            <p><strong>RoboCupJunior Quebec 2026 Canada Robotics Competition</strong></p>
+            <p>Build your team profile, review details, and generate release forms in one place.</p>
+            <div class="hero-buttons">
+                <a class="btn-primary" href="#registration-workspace">Start Registration</a>
+                <a class="btn-outline" href="#forms-downloads">Forms & Downloads</a>
+            </div>
         </div>
-      </div>
+    </section>
 
-      <div class="hero-img">
-        <img src="images/robot.png" alt="RoboCup robot mascot">
-      </div>
-    </div>
-  </header>
+    <main>
+        <section>
+            <div class="container">
+                <h2 class="section-title">Event Information</h2>
+                <div class="grid-2">
+                    <div class="info-box">
+                        <h3>Competition Dates</h3>
+                        <p>Friday, April 10th, 2026 and Saturday, April 11th, 2026</p>
+                    </div>
+                    <div class="info-box">
+                        <h3>Location</h3>
+                        <p>Ecole Royal Vale School</p>
+                        <p>5851 avenue Somerled, Montreal (QC) H3X 2A5 Canada</p>
+                    </div>
+                </div>
+            </div>
+        </section>
 
-  <main>
-    <!-- Event details -->
-    <section>
-      <div class="container">
-        <h2 class="section-title">Event Information</h2>
+        <section class="bg-gray" id="registration-workspace">
+            <div class="container">
+                <h2 class="section-title">Team Registration Workspace</h2>
+                <p class="section-subtitle">Register one or more teams in one submission. OnStage allows up to 5 members. Other leagues allow 2 to 4 members.</p>
 
-        <div class="grid-2">
-          <div class="info-box">
-            <h3>📅 Competition Dates</h3>
-            <p>Friday, April 10th, 2026 and Saturday, April 11th, 2026</p>
-          </div>
+                <form id="registration-form" novalidate>
+                    <div id="teams-container"></div>
 
-          <div class="info-box">
+                    <div class="workspace-actions">
+                        <button type="button" class="btn-outline" id="add-team-btn">Add Another Team</button>
+                        <button type="button" class="btn-outline" id="generate-pdf-btn">Generate Release Form PDF</button>
+                        <button type="submit" class="btn-primary">Submit Registration</button>
+                    </div>
+
+                    <p class="form-hint">This page stores data in memory for demo use. Connect to a backend for production submissions.</p>
+                    <p id="form-message" class="form-message" role="status" aria-live="polite"></p>
+                </form>
+            </div>
+        </section>
+
+        <section>
+            <div class="container">
+                <h2 class="section-title">Registration Details</h2>
+                <div class="grid-3">
+                    <div class="option-card">
+                        <h3>Team Requirements</h3>
+                        <p>A team must be a minimum of 2 with a maximum of 4 members and 1 teacher/mentor.</p>
+                        <p>OnStage competition league allows up to 5 members per team.</p>
+                    </div>
+                    <div class="option-card">
+                        <h3>Team Rules</h3>
+                        <p>A team member and robot cannot be shared between teams.</p>
+                        <p>A team can compete in only one league.</p>
+                    </div>
+                    <div class="option-card">
+                        <h3>Registration Fee</h3>
+                        <p>Registration fee is $350 per team.</p>
+                        <p>Each student receives a T-shirt and a branded silicone bracelet.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="bg-gray" id="forms-downloads">
+            <div class="container">
+                <h2 class="section-title">Forms & Downloads</h2>
+                <div class="forms-grid">
+                    <div class="option-card">
+                        <h3>Registration Form 2026</h3>
+                        <p>Download the official registration form for the 2026 competition.</p>
+                        <a class="btn-outline" href="#registration-workspace">Open Online Registration</a>
+                    </div>
+                    <div class="option-card">
+                        <h3>Release Form 2026</h3>
+                        <p>Generate a release form PDF directly from the data you entered above.</p>
+                        <a class="btn-primary" href="#registration-workspace">Generate Release Form</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container footer-inner">
+            <p class="footer-copy">Copyright 2026 RoboCup Junior Canada. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
+    <script>
+        const teamsContainer = document.getElementById('teams-container');
+        const form = document.getElementById('registration-form');
+        const formMessage = document.getElementById('form-message');
+        const addTeamButton = document.getElementById('add-team-btn');
+        const generatePdfButton = document.getElementById('generate-pdf-btn');
+
+        function toggleMobile() {
+            const menu = document.getElementById('mobile-menu');
+            const open = menu.classList.toggle('open');
+            document.getElementById('icon-menu').style.display = open ? 'none' : '';
+            document.getElementById('icon-x').style.display = open ? '' : 'none';
+        }
+
+        function closeMobile() {
+            document.getElementById('mobile-menu').classList.remove('open');
+            document.getElementById('icon-menu').style.display = '';
+            document.getElementById('icon-x').style.display = 'none';
+        }
+
+        document.querySelectorAll('.mobile-menu a').forEach((link) => {
+            link.addEventListener('click', closeMobile);
+        });
+
+        function animatePageLoad() {
+            document.body.classList.remove('page-loaded');
+            void document.body.offsetWidth;
+            requestAnimationFrame(() => document.body.classList.add('page-loaded'));
+        }
+
+        window.addEventListener('pageshow', animatePageLoad);
+
+        function createMemberRow(teamIndex, memberIndex) {
+            return `
+                <div class="member-row" data-member-index="${memberIndex}">
+                    <label>
+                        Member Name
+                        <input type="text" name="team_${teamIndex}_member_name_${memberIndex}" required />
+                    </label>
+                    <label>
+                        Age
+                        <input type="number" name="team_${teamIndex}_member_age_${memberIndex}" min="8" max="22" required />
+                    </label>
+                    <button type="button" class="btn-link remove-member-btn">Remove</button>
+                </div>
+            `;
+        }
+
+        function createTeamCard(teamIndex) {
+            return `
+                <article class="team-card" data-team-index="${teamIndex}">
+                    <div class="team-card-header">
+                        <h3>Team ${teamIndex + 1}</h3>
+                        <button type="button" class="btn-link remove-team-btn">Remove Team</button>
+                    </div>
+
+                    <div class="form-grid">
+                        <label>
+                            Team Name
+                            <input type="text" name="team_${teamIndex}_name" required />
+                        </label>
+                        <label>
+                            League
+                            <select name="team_${teamIndex}_league" required>
+                                <option value="">Select League</option>
+                                <option value="Rescue Line">Rescue Line</option>
+                                <option value="Rescue Maze">Rescue Maze</option>
+                                <option value="Soccer">Soccer</option>
+                                <option value="OnStage">OnStage</option>
+                            </select>
+                        </label>
+                        <label>
+                            School / Organization
+                            <input type="text" name="team_${teamIndex}_school" required />
+                        </label>
+                    </div>
+
+                    <h4>Mentor Information</h4>
+                    <div class="form-grid">
+                        <label>
+                            Mentor Name
+                            <input type="text" name="team_${teamIndex}_mentor_name" required />
+                        </label>
+                        <label>
+                            Mentor Email
+                            <input type="email" name="team_${teamIndex}_mentor_email" required />
+                        </label>
+                        <label>
+                            Mentor Phone
+                            <input type="tel" name="team_${teamIndex}_mentor_phone" required />
+                        </label>
+                    </div>
+
+                    <h4>Team Members</h4>
+                    <p class="member-constraint" data-constraint>Allowed: 2 to 4 members (up to 5 for OnStage)</p>
+                    <div class="members" data-members>
+                        ${createMemberRow(teamIndex, 0)}
+                        ${createMemberRow(teamIndex, 1)}
+                    </div>
+                    <div class="member-actions">
+                        <button type="button" class="btn-outline add-member-btn">Add Member</button>
+                    </div>
+                </article>
+            `;
+        }
+
+        function addTeam() {
+            const teamIndex = teamsContainer.querySelectorAll('.team-card').length;
+            teamsContainer.insertAdjacentHTML('beforeend', createTeamCard(teamIndex));
+            reindexTeams();
+        }
+
+        function reindexTeams() {
+            const cards = teamsContainer.querySelectorAll('.team-card');
+            cards.forEach((card, teamIndex) => {
+                card.dataset.teamIndex = teamIndex;
+                card.querySelector('h3').textContent = `Team ${teamIndex + 1}`;
+                const allFields = card.querySelectorAll('input, select');
+                allFields.forEach((field) => {
+                    field.name = field.name
+                        .replace(/team_\d+_/, `team_${teamIndex}_`)
+                        .replace(/_\d+$/, (match) => match);
+                });
+                reindexMembers(card, teamIndex);
+            });
+
+            cards.forEach((card) => {
+                const removeButton = card.querySelector('.remove-team-btn');
+                removeButton.disabled = cards.length === 1;
+                removeButton.classList.toggle('is-disabled', cards.length === 1);
+            });
+        }
+
+        function reindexMembers(teamCard, teamIndex) {
+            const memberRows = teamCard.querySelectorAll('.member-row');
+            memberRows.forEach((row, memberIndex) => {
+                row.dataset.memberIndex = memberIndex;
+                const nameInput = row.querySelector('input[type="text"]');
+                const ageInput = row.querySelector('input[type="number"]');
+                nameInput.name = `team_${teamIndex}_member_name_${memberIndex}`;
+                ageInput.name = `team_${teamIndex}_member_age_${memberIndex}`;
+            });
+        }
+
+        function getTeamLimits(teamCard) {
+            const league = teamCard.querySelector('select[name*="_league"]').value;
+            if (league === 'OnStage') {
+                return { min: 2, max: 5 };
+            }
+            return { min: 2, max: 4 };
+        }
+
+        function updateConstraintMessage(teamCard) {
+            const limits = getTeamLimits(teamCard);
+            const constraint = teamCard.querySelector('[data-constraint]');
+            const membersCount = teamCard.querySelectorAll('.member-row').length;
+            constraint.textContent = `Allowed: ${limits.min} to ${limits.max} members. Current: ${membersCount}.`;
+        }
+
+        function addMember(teamCard) {
+            const teamIndex = Number(teamCard.dataset.teamIndex);
+            const membersBox = teamCard.querySelector('[data-members]');
+            const currentCount = membersBox.querySelectorAll('.member-row').length;
+            const limits = getTeamLimits(teamCard);
+            if (currentCount >= limits.max) {
+                alert(`Maximum ${limits.max} members allowed for this league.`);
+                return;
+            }
+            membersBox.insertAdjacentHTML('beforeend', createMemberRow(teamIndex, currentCount));
+            reindexMembers(teamCard, teamIndex);
+            updateConstraintMessage(teamCard);
+        }
+
+        function removeMember(teamCard, memberRow) {
+            const membersBox = teamCard.querySelector('[data-members]');
+            const limits = getTeamLimits(teamCard);
+            const currentCount = membersBox.querySelectorAll('.member-row').length;
+            if (currentCount <= limits.min) {
+                alert(`A team needs at least ${limits.min} members.`);
+                return;
+            }
+            memberRow.remove();
+            reindexMembers(teamCard, Number(teamCard.dataset.teamIndex));
+            updateConstraintMessage(teamCard);
+        }
+
+        function collectRegistrationData() {
+            const teams = [];
+            const cards = teamsContainer.querySelectorAll('.team-card');
+
+            cards.forEach((card) => {
+                const team = {
+                    teamName: card.querySelector('input[name*="_name"]').value.trim(),
+                    league: card.querySelector('select[name*="_league"]').value,
+                    school: card.querySelector('input[name*="_school"]').value.trim(),
+                    mentorName: card.querySelector('input[name*="_mentor_name"]').value.trim(),
+                    mentorEmail: card.querySelector('input[name*="_mentor_email"]').value.trim(),
+                    mentorPhone: card.querySelector('input[name*="_mentor_phone"]').value.trim(),
+                    members: []
+                };
+
+                const memberRows = card.querySelectorAll('.member-row');
+                memberRows.forEach((row) => {
+                    const memberName = row.querySelector('input[type="text"]').value.trim();
+                    const memberAge = row.querySelector('input[type="number"]').value.trim();
+                    team.members.push({ memberName, memberAge });
+                });
+
+                teams.push(team);
+            });
+
+            return teams;
+        }
+
+        function validateTeamSizes() {
+            const cards = teamsContainer.querySelectorAll('.team-card');
+            for (const card of cards) {
+                const limits = getTeamLimits(card);
+                const count = card.querySelectorAll('.member-row').length;
+                if (count < limits.min || count > limits.max) {
+                    return `A team has ${count} members. Allowed range is ${limits.min}-${limits.max}.`;
+                }
+            }
+            return '';
+        }
+
+        function validateForm() {
+            if (!form.checkValidity()) {
+                form.reportValidity();
+                return false;
+            }
+
+            const teamSizeError = validateTeamSizes();
+            if (teamSizeError) {
+                alert(teamSizeError);
+                return false;
+            }
+
+            return true;
+        }
+
+        function generatePdf(teams) {
+            const jsPdfApi = window.jspdf;
+            if (!jsPdfApi || !jsPdfApi.jsPDF) {
+                alert('PDF library did not load. Please check your internet connection and try again.');
+                return;
+            }
+
+            const pdf = new jsPdfApi.jsPDF();
+            let y = 15;
+
+            pdf.setFontSize(16);
+            pdf.text('RoboCup Junior Canada - Release Form 2026', 10, y);
+            y += 10;
+
+            pdf.setFontSize(11);
+            teams.forEach((team, index) => {
+                if (y > 250) {
+                    pdf.addPage();
+                    y = 15;
+                }
+
+                pdf.setFont(undefined, 'bold');
+                pdf.text(`Team ${index + 1}: ${team.teamName}`, 10, y);
+                y += 7;
+
+                pdf.setFont(undefined, 'normal');
+                pdf.text(`League: ${team.league}`, 10, y); y += 6;
+                pdf.text(`School/Organization: ${team.school}`, 10, y); y += 6;
+                pdf.text(`Mentor: ${team.mentorName}`, 10, y); y += 6;
+                pdf.text(`Mentor Email: ${team.mentorEmail}`, 10, y); y += 6;
+                pdf.text(`Mentor Phone: ${team.mentorPhone}`, 10, y); y += 8;
+
+                pdf.text('Participants:', 10, y); y += 6;
+                team.members.forEach((member, memberIndex) => {
+                    if (y > 270) {
+                        pdf.addPage();
+                        y = 15;
+                    }
+                    pdf.text(`${memberIndex + 1}. ${member.memberName} (Age ${member.memberAge})`, 14, y);
+                    y += 5;
+                    pdf.text('Participant Signature: ____________________', 18, y);
+                    y += 5;
+                    pdf.text('Parent/Guardian Signature: _______________', 18, y);
+                    y += 7;
+                });
+
+                pdf.text('Date: ____________________', 10, y);
+                y += 10;
+            });
+
+            pdf.save('robocup-release-forms-2026.pdf');
+        }
+
+        teamsContainer.addEventListener('click', (event) => {
+            const teamCard = event.target.closest('.team-card');
+            if (!teamCard) {
+                return;
+            }
+
+            if (event.target.classList.contains('remove-team-btn')) {
+                const cards = teamsContainer.querySelectorAll('.team-card');
+                if (cards.length > 1) {
+                    teamCard.remove();
+                    reindexTeams();
+                }
+            }
+
+            if (event.target.classList.contains('add-member-btn')) {
+                addMember(teamCard);
+            }
+
+            if (event.target.classList.contains('remove-member-btn')) {
+                const memberRow = event.target.closest('.member-row');
+                removeMember(teamCard, memberRow);
+            }
+        });
+
+        teamsContainer.addEventListener('change', (event) => {
+            if (event.target.matches('select[name*="_league"]')) {
+                const teamCard = event.target.closest('.team-card');
+                updateConstraintMessage(teamCard);
+            }
+        });
+
+        addTeamButton.addEventListener('click', addTeam);
+
+        generatePdfButton.addEventListener('click', () => {
+            if (!validateForm()) {
+                return;
+            }
+            const teams = collectRegistrationData();
+            generatePdf(teams);
+            formMessage.textContent = 'Release form PDF generated successfully.';
+            formMessage.classList.add('success');
+        });
+
+        form.addEventListener('submit', (event) => {
+            event.preventDefault();
+            if (!validateForm()) {
+                return;
+            }
+
+            const teams = collectRegistrationData();
+            formMessage.textContent = `Registration submitted for ${teams.length} team(s).`; 
+            formMessage.classList.add('success');
+        });
+
+        addTeam();
+    </script>
+</body>
+</html>
