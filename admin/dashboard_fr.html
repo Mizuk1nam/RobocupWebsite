@@ -1,49 +1,49 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Admin Dashboard | RoboCup Junior Canada</title>
+  <title>Tableau de bord administrateur | RoboCup Junior Canada</title>
   <link rel="stylesheet" href="admin.css" />
 </head>
 <body>
   <header class="admin-header">
-    <a class="brand-link" href="../index.html">
+    <a class="brand-link" href="../index_fr.html">
       <span class="logo-circle">R</span>
       <span>RoboCup <strong>Junior Canada</strong></span>
     </a>
     <div class="header-actions">
       <span id="admin-email" class="admin-email"></span>
-      <a class="secondary-action button-link" href="dashboard_fr.html">Français</a>
-      <a class="secondary-action button-link" href="../index.html">Back to Website</a>
-      <button id="logout-button" class="secondary-action" type="button">Log Out</button>
+      <a class="secondary-action button-link" href="dashboard.html">English</a>
+      <a class="secondary-action button-link" href="../index_fr.html">Retour au site</a>
+      <button id="logout-button" class="secondary-action" type="button">Déconnexion</button>
     </div>
   </header>
 
   <main class="dashboard">
     <section class="dashboard-hero">
-      <p class="eyebrow">Scoring administration</p>
-      <h1>Competition Tools</h1>
-      <p>Manage teams, enter scores, and prepare competition results from one protected dashboard.</p>
+      <p class="eyebrow">Administration du pointage</p>
+      <h1>Outils de compétition</h1>
+      <p>Gérez les équipes, entrez les scores et préparez les résultats de compétition à partir d'un tableau de bord protégé.</p>
     </section>
 
     <section id="setup-warning" class="setup-warning" hidden>
-      <strong>Supabase setup needed.</strong>
-      Add your Project URL and anon public key in <code>admin/supabase-config.js</code>.
+      <strong>Configuration Supabase requise.</strong>
+      Ajoutez l'URL du projet et la clé publique anon dans <code>admin/supabase-config.js</code>.
     </section>
 
     <section class="dashboard-grid">
       <article class="tool-panel">
-        <h2>Add Team</h2>
+        <h2>Ajouter une équipe</h2>
         <form id="team-form" class="stacked-form">
           <label>
-            Team Name
+            Nom de l'équipe
             <input id="team-name" type="text" required />
           </label>
           <label>
-            Competition
+            Compétition
             <select id="team-competition" required>
-              <option value="">Select competition</option>
+              <option value="">Sélectionner une compétition</option>
               <option>Maze</option>
               <option>Formula 1</option>
               <option>Performance</option>
@@ -55,24 +55,24 @@
             </select>
           </label>
           <label>
-            School / Organization
+            École / Organisation
             <input id="team-school" type="text" />
           </label>
-          <button class="primary-action" type="submit">Save Team</button>
+          <button class="primary-action" type="submit">Enregistrer l'équipe</button>
         </form>
       </article>
 
       <article class="tool-panel">
-        <h2>Enter Score</h2>
+        <h2>Entrer un score</h2>
         <form id="score-form" class="stacked-form">
           <label>
-            Team
+            Équipe
             <select id="score-team" required>
-              <option value="">Select team</option>
+              <option value="">Sélectionner une équipe</option>
             </select>
           </label>
           <label>
-            Round
+            Ronde
             <input id="score-round" type="number" min="1" value="1" required />
           </label>
           <label>
@@ -83,28 +83,28 @@
             Notes
             <textarea id="score-notes" rows="4"></textarea>
           </label>
-          <button class="primary-action" type="submit">Save Score</button>
+          <button class="primary-action" type="submit">Enregistrer le score</button>
         </form>
       </article>
     </section>
 
     <section class="tool-panel teams-panel">
       <div class="panel-heading">
-        <h2>Teams</h2>
+        <h2>Équipes</h2>
       </div>
       <div class="table-wrap">
         <table>
           <thead>
             <tr>
-              <th>Team</th>
-              <th>Competition</th>
-              <th>School / Organization</th>
+              <th>Équipe</th>
+              <th>Compétition</th>
+              <th>École / Organisation</th>
               <th>Action</th>
             </tr>
           </thead>
           <tbody id="teams-table">
             <tr>
-              <td colspan="4">No teams loaded yet.</td>
+              <td colspan="4">Aucune équipe chargée.</td>
             </tr>
           </tbody>
         </table>
@@ -113,23 +113,23 @@
 
     <section class="tool-panel results-panel">
       <div class="panel-heading">
-        <h2>Recent Scores</h2>
-        <button id="refresh-button" class="secondary-action" type="button">Refresh</button>
+        <h2>Scores récents</h2>
+        <button id="refresh-button" class="secondary-action" type="button">Actualiser</button>
       </div>
       <div class="table-wrap">
         <table>
           <thead>
             <tr>
-              <th>Team</th>
-              <th>Competition</th>
-              <th>Round</th>
+              <th>Équipe</th>
+              <th>Compétition</th>
+              <th>Ronde</th>
               <th>Score</th>
               <th>Notes</th>
             </tr>
           </thead>
           <tbody id="scores-table">
             <tr>
-              <td colspan="5">No scores loaded yet.</td>
+              <td colspan="5">Aucun score chargé.</td>
             </tr>
           </tbody>
         </table>

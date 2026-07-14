@@ -1,0 +1,903 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Competition Rules | RoboCup Junior Canada</title>
+  <link rel="stylesheet" href="competition.css" />
+</head>
+<body>
+  <nav>
+    <div class="container nav-inner">
+      <a id="home-link" href="index.html" class="logo">
+        <div class="logo-circle">&#129302;</div>
+        <div>
+          RoboCup
+          <span>Junior Canada</span>
+        </div>
+      </a>
+
+      <div class="nav-links" id="nav-links"></div>
+    </div>
+  </nav>
+
+  <header class="hero">
+    <div class="container hero-inner">
+      <div>
+        <h1 id="page-title">Competition<span>Rules</span></h1>
+        <p id="page-summary"></p>
+        <a class="btn-primary" id="back-link" href="leagues.html">Back to Leagues &rarr;</a>
+      </div>
+
+      <div class="hero-img">
+        <img src="images/robot.png" alt="RoboCup robot mascot" id="hero-image">
+      </div>
+    </div>
+  </header>
+
+  <main id="content"></main>
+
+  <footer id="footer-text">&copy; 2026 RoboCup Junior Canada. All rights reserved.</footer>
+
+  <script>
+    const pageData = {
+      en: {
+        nav: [
+          ['Homepage', 'index.html'],
+          ['About Us', 'about.html'],
+          ['Leagues & Rules', 'leagues.html'],
+          ['Online Registration', 'registration.html'],
+          ['Competition Schedule', 'schedule.html'],
+          ['International Image Gallery', 'gallery.html'],
+          ['RoboCup Community Resources', 'resources.html'],
+          ['Contact Us', 'contact.html'],
+          ['Admin', 'admin/index.html'],
+          ['Français', 'competition.html?lang=fr&type={type}']
+        ],
+        home: 'index.html',
+        back: 'Back to Leagues →',
+        backHref: 'leagues.html',
+        rulesWord: 'Rules',
+        footer: '© 2026 RoboCup Junior Canada. All rights reserved.',
+        heroAlt: 'RoboCup robot mascot',
+        sections: {
+          rules: 'Rules',
+          points: 'Points',
+          setup: 'Rules',
+          field: 'Field Zones',
+          scoring: 'Scoring, Checkpoints & Victims',
+          info: 'Challenge Information',
+          divisions: 'Divisions',
+          ranking: 'Rules, Points & Ranking',
+          team: 'Team Effort'
+        },
+        competitions: {
+          maze: {
+            title: 'Maze',
+            summary: 'Robot needs to drive through a walled corridor without touching the sides as fast as possible.',
+            sections: [
+              {
+                title: 'Rules',
+                panels: [
+                  {
+                    title: 'Robot & Field',
+                    items: [
+                      'There are no restrictions on robot size.',
+                      'All walls, including the entrance and the exit, are at least 30 cm apart.',
+                      'Walls are at least 15 cm high and painted white.',
+                      'Walls may be removed, added, or changed just before a run starts to prevent pre-mapping.',
+                      'Each round will feature a new maze design, while organizers avoid changing the level of difficulty.'
+                    ]
+                  },
+                  {
+                    title: 'Attempts',
+                    items: [
+                      'Teams are allowed 3 attempts to complete the maze.',
+                      'The referee retains the best score.',
+                      'Maximum time per attempt is 120 seconds.',
+                      'If a robot gets stuck, the team captain may return it to the entrance area.',
+                      'Returning the robot cancels wall bump deductions, but the countdown continues.'
+                    ]
+                  }
+                ]
+              },
+              {
+                title: 'Points',
+                light: true,
+                panels: [
+                  {
+                    title: 'Scoring Formula',
+                    formula: 'Final score per round = Time - Bump',
+                    items: [
+                      'Bump = -5 points every time the robot touches a wall.',
+                      'Completion time = time to get from beginning to end of maze.',
+                      'Time = 120 - completion time.',
+                      'Example: If a robot exits the maze in 40 seconds having bumped the wall twice, it earns 120 - 40 - 5 - 5 = 70 points.'
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          'formula-1': {
+            title: 'Formula 1',
+            summary: 'Robot follows a black curved line on a Formula 1 race track as fast as possible.',
+            sections: [
+              {
+                title: 'Rules',
+                panels: [
+                  {
+                    title: 'Track & Robot',
+                    items: [
+                      'The robot follows a black curved line on a Formula 1 race track.',
+                      'The black line will be approximately 2 cm wide.',
+                      'Robots are subject to a size limit of 22 cm in diameter and height.'
+                    ]
+                  },
+                  {
+                    title: 'Timing',
+                    items: [
+                      'This is a timed challenge.',
+                      'Teams are allowed 3 attempts to complete the track.',
+                      'The referee retains the best score.',
+                      'The timer starts once the robot starts moving.'
+                    ]
+                  }
+                ]
+              },
+              {
+                title: 'Points',
+                light: true,
+                panels: [
+                  {
+                    title: 'Timing Score',
+                    items: [
+                      'The score is based on the time to get from the beginning to the end of the track.',
+                      'Fast, accurate, and reliable line following is the main goal.'
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          performance: {
+            title: 'Performance',
+            summary: 'A robot performs a 1 minute choreographed performance routine to music, entertaining the audience.',
+            sections: [
+              {
+                title: 'Rules',
+                panels: [
+                  {
+                    title: 'Performance Setup',
+                    items: [
+                      'Teams use creativity to construct and decorate 1-2 robots.',
+                      'Robots perform a choreographed routine to music.',
+                      'The performance area is approximately 2 meters by 2 meters.',
+                      'There is no size limit.'
+                    ]
+                  },
+                  {
+                    title: 'Timing & Music',
+                    items: [
+                      'The performance can last a maximum of 60 seconds.',
+                      'Teams are granted 5 minutes for setup before the performance.',
+                      'Teams are granted 3 minutes for cleanup after the performance.',
+                      'Teams may provide background music on a USB key or use their own speakers.'
+                    ]
+                  }
+                ]
+              },
+              {
+                title: 'Points',
+                light: true,
+                panels: [
+                  {
+                    title: 'Evaluation',
+                    items: [
+                      'Teams present their performance concept and explain their program.',
+                      'Judges evaluate creativity, entertainment, and program complexity.',
+                      'Use of sensors and robot autonomy are taken into consideration.'
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          sumobots: {
+            title: 'SumoBots',
+            summary: 'Four robots are set on the corners of an octagon trying to push one another out in a battle royal. Last robot standing wins.',
+            sections: [
+              {
+                title: 'Rules',
+                panels: [
+                  {
+                    title: 'Match Rules',
+                    items: [
+                      'Four robots compete on an octagonal ring, attempting to push one another out.',
+                      'A robot is eliminated when it does not move for more than 10 seconds or all wheels exit the ring.',
+                      'The referee applies a colour label to each robot for identification.'
+                    ]
+                  },
+                  {
+                    title: 'Ring & Robot Limits',
+                    items: [
+                      'The ring is approximately 150 cm from side to opposite side.',
+                      'The ring base is white with a 2 cm black octagonal border along the perimeter.',
+                      'A reversal of colours is possible.',
+                      'The ring is elevated off the floor, making it difficult for a robot to return once it moves beyond the line.',
+                      'Robots are subject to a 22 cm diameter and height limit.',
+                      'The robot mass must not exceed 1000 grams or 1 kg.'
+                    ]
+                  }
+                ]
+              },
+              {
+                title: 'Points',
+                light: true,
+                panels: [
+                  {
+                    title: 'Scoring',
+                    items: [
+                      'A robot receives 5 points for each opponent it pushes out of the ring.',
+                      'A robot receives 20 points for being the last robot in the ring.',
+                      'Teams are combined together and must pick one robot to compete in a new surprise challenge presented at RoboCup that builds on the existing challenges.'
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          'rescue-line': {
+            title: 'Rescue Line',
+            summary: 'Artificial intelligence at its best: Rescue mirrors real-life robot missions that rescue people from life-threatening situations.',
+            sections: [
+              {
+                title: 'Field Zones',
+                panels: [
+                  {
+                    title: 'Line Follow Zone',
+                    items: [
+                      'Navigate a black line on white tiles.',
+                      'Follow specific directional indicators at intersections, which may lead to dead ends if not followed.',
+                      'Navigate around obstacles.',
+                      'Handle possible gaps in the path.',
+                      'Handle inclines such as a seesaw or ramp.',
+                      'Overcome speed bumps.'
+                    ]
+                  },
+                  {
+                    title: 'Evacuation Zone',
+                    items: [
+                      'Represents a war zone or natural disaster site where victims need to be rescued.',
+                      'The robot brings victims into the evacuation point.',
+                      'The evacuation point is a black right-angle triangle with 30 cm x 30 cm sides.',
+                      'Level 1 uses a 5 cm bump along the side that does not touch the wall.',
+                      'Level 2 uses a 6 cm bump along the side that does not touch the wall.'
+                    ]
+                  }
+                ]
+              },
+              {
+                title: 'Scoring, Checkpoints & Victims',
+                light: true,
+                panels: [
+                  {
+                    title: 'Line Follow Points',
+                    items: [
+                      '15 points for the correct path at an intersection.',
+                      '10 points for overcoming obstacles.',
+                      '10 points for reacquiring the line after a gap.',
+                      '5 points per tile on the 1st attempt.',
+                      '3 points per tile on the 2nd attempt.',
+                      '1 point per tile on the 3rd attempt.',
+                      '0 points per tile after the 3rd attempt.',
+                      '5 points for speed bumps and inclines.'
+                    ]
+                  },
+                  {
+                    title: 'Checkpoints & Lack of Progress',
+                    items: [
+                      'A checkpoint is a tile where a robot is manually placed back when lack of progress occurs.',
+                      'Checkpoints are not located on tiles with scoring elements.',
+                      'The start tile is a checkpoint where the robot can restart.',
+                      'A checkpoint marker indicates checkpoint tiles.',
+                      'An attempt is each time the robot is moved back to a checkpoint.',
+                      'Lack of progress can be declared by the team captain.',
+                      'Lack of progress also occurs when the robot loses the black line without regaining it by the next tile.',
+                      'Lack of progress occurs when the robot reaches a line that is not in the intended sequence.'
+                    ]
+                  },
+                  {
+                    title: 'Transition & Victims',
+                    items: [
+                      'The transition from the field to evacuation zone is identified by a silver tape line across the entrance.',
+                      'There are 3 live victims represented by silver balls.',
+                      'There are 3 dead victims represented by black balls.'
+                    ]
+                  },
+                  {
+                    title: 'Evacuation Multipliers',
+                    items: [
+                      'Each team chooses their evacuation zone level.',
+                      'The challenge is to save the 6 victims by placing them in the evacuation point.',
+                      'Victims rescued provide multipliers on points accumulated from the line follow zone.',
+                      'Multipliers vary, such as 1.0, 1.1, 1.2, 1.3, 1.4, and more depending on level and victims rescued.'
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          'rescue-maze': {
+            title: 'Rescue Maze',
+            summary: 'A fully autonomous robot enters a hazardous maze to locate heated victims and drop rescue packages.',
+            sections: [
+              {
+                title: 'Challenge Information',
+                panels: [
+                  {
+                    title: 'Mission',
+                    paragraphs: [
+                      'Rescue Maze is offered in preparation for the International divisions.',
+                      'Teams are able to participate in Rescue Maze and Rescue Line at the qualifying RoboCup event. The Rescue Maze challenge is open to all RoboCuppers.',
+                      'A disaster has occurred and it is too dangerous for a human to enter. A rescue mission is necessary.'
+                    ],
+                    items: [
+                      'A fully autonomous robot is sent into the hazardous maze.',
+                      'The robot locates heated victims so humans know where they are.',
+                      'The robot drops a rescue package for the humans that will locate them and keep them alive, such as simulated water.'
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          soccer: {
+            title: 'Soccer',
+            summary: 'Two robots compete against an opposing pair by kicking a ball into their designated goal.',
+            sections: [
+              {
+                title: 'Divisions',
+                panels: [
+                  {
+                    title: 'Soccer Lightweight',
+                    items: [
+                      'Students design and program two robots.',
+                      'Robots compete against an opposing pair.',
+                      'Robots kick an infrared transmitting ball into their designated goal.'
+                    ]
+                  },
+                  {
+                    title: 'Soccer Open',
+                    items: [
+                      'Students design and program two robots.',
+                      'Robots compete against an opposing pair.',
+                      'Robots kick a brightly colored orange ball into their designated goal.',
+                      'Teams intending to compete in Soccer Open should consult RoboCup Junior representatives to ensure enough teams are available.'
+                    ]
+                  }
+                ]
+              },
+              {
+                title: 'Rules, Points & Ranking',
+                light: true,
+                panels: [
+                  {
+                    title: 'Rules',
+                    items: [
+                      'There are no goalies. A goalie is defined as a robot that stays within the penalty box.',
+                      'A soccer game consists of two 10 minute halves with a 5 minute half-time.',
+                      'Robots are subject to a 22 cm diameter and height limit.',
+                      'The mass of the robot must not exceed 1.4 kg. Soccer Open robots may be up to 2.2 kg.',
+                      'Robots may have a ball-capturing zone of up to 3.0 cm. Soccer Open robots may have up to 1.5 cm.',
+                      'Robots cannot take full control of the ball by removing all degrees of freedom.',
+                      'Robots must stay within the field bounds defined by the white line.',
+                      'Players can only touch robots with referee permission.',
+                      'Robots subject to penalties are removed from play for 1 minute.',
+                      'Damaged robots are removed from play for a minimum of 1 minute. Structural repairs can be made, but code cannot be modified.',
+                      'The referee makes all final decisions during the game.'
+                    ]
+                  },
+                  {
+                    title: 'Points & Ranking',
+                    items: [
+                      '1 point is given for each goal.',
+                      'A goal occurs when the ball touches the back of a soccer net.',
+                      'If a robot scores on its own net, the opponent is awarded 1 point.',
+                      'A team receives 2 ranking points for a win.',
+                      'Each team receives 1 ranking point for a draw.',
+                      'Final games include overtime in the event of a draw.',
+                      'Open League and Lightweight League may be combined depending on entries.'
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          onstage: {
+            title: 'OnStage',
+            summary: 'RoboCupJunior OnStage integrates Science, Technology, Engineering, Arts, and Mathematics.',
+            sections: [
+              {
+                title: 'Challenge Information',
+                panels: [
+                  {
+                    title: 'What Teams Do',
+                    paragraphs: ['Participants program their robots to move to music while robots move and humans perform on the stage.'],
+                    items: [
+                      'Competitors are encouraged to lightly costume their robots.',
+                      'Engaging robot movements should give the robots real personality.',
+                      'Teams can approach OnStage in many different creative ways.'
+                    ]
+                  },
+                  {
+                    title: 'Creative Possibilities',
+                    items: [
+                      'Robots dancing together in tightly choreographed teams.',
+                      'Students interacting with robots while they perform.',
+                      'Students creating their own music and choreography.',
+                      'Students telling a story while robots act it out.'
+                    ]
+                  }
+                ]
+              },
+              {
+                title: 'Team Effort',
+                light: true,
+                panels: [
+                  {
+                    title: 'Collaboration',
+                    paragraphs: ['The OnStage challenge strongly encourages a team effort where students design their own costumes, build their robot prototypes, build robot costumes, program the robots, and create the full performance.']
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      },
+      fr: {
+        nav: [
+          ['Accueil', 'index_fr.html'],
+          ['À propos', 'about_fr.html'],
+          ['Ligues & Règles', 'leagues_fr.html'],
+          ['Inscription en ligne', 'registration_fr.html'],
+          ['Calendrier', 'schedule_fr.html'],
+          ['Galerie internationale', 'gallery_fr.html'],
+          ['Ressources', 'resources_fr.html'],
+          ['Contact', 'contact_fr.html'],
+          ['English', 'competition.html?lang=en&type={type}']
+        ],
+        home: 'index_fr.html',
+        back: 'Retour aux ligues →',
+        backHref: 'leagues_fr.html',
+        rulesWord: 'Règles',
+        footer: '© 2026 RoboCup Junior Canada. Tous droits réservés.',
+        heroAlt: 'Mascotte robot RoboCup',
+        competitions: {
+          maze: {
+            title: 'Maze',
+            summary: 'Le robot doit traverser un corridor avec des murs sans toucher les côtés, le plus rapidement possible.',
+            sections: [
+              {
+                title: 'Règles',
+                panels: [
+                  {
+                    title: 'Robot et terrain',
+                    items: [
+                      'Il n’y a aucune restriction sur la taille du robot.',
+                      'Tous les murs, y compris l’entrée et la sortie, sont espacés d’au moins 30 cm.',
+                      'Les murs mesurent au moins 15 cm de haut et sont peints en blanc.',
+                      'Des murs peuvent être enlevés, ajoutés ou changés juste avant un essai pour empêcher la cartographie à l’avance.',
+                      'Chaque ronde présente une nouvelle conception de labyrinthe, tout en évitant de changer le niveau de difficulté.'
+                    ]
+                  },
+                  {
+                    title: 'Essais',
+                    items: [
+                      'Les équipes ont droit à 3 essais pour compléter le labyrinthe.',
+                      'L’arbitre conserve le meilleur score.',
+                      'Le temps maximum par essai est de 120 secondes.',
+                      'Si un robot reste coincé, le capitaine peut le ramener à la zone d’entrée.',
+                      'Ramener le robot annule les pénalités de contact avec les murs, mais le compte à rebours continue.'
+                    ]
+                  }
+                ]
+              },
+              {
+                title: 'Points',
+                light: true,
+                panels: [
+                  {
+                    title: 'Formule de pointage',
+                    formula: 'Score final par ronde = Temps - Contacts',
+                    items: [
+                      'Contact = -5 points chaque fois que le robot touche un mur.',
+                      'Temps de complétion = temps nécessaire pour aller du début à la fin du labyrinthe.',
+                      'Temps = 120 - temps de complétion.',
+                      'Exemple : si un robot sort du labyrinthe en 40 secondes avec deux contacts, il gagne 120 - 40 - 5 - 5 = 70 points.'
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          'formula-1': {
+            title: 'Formula 1',
+            summary: 'Le robot suit une ligne noire courbée sur une piste de Formula 1 le plus rapidement possible.',
+            sections: [
+              {
+                title: 'Règles',
+                panels: [
+                  {
+                    title: 'Piste et robot',
+                    items: [
+                      'Le robot suit une ligne noire courbée sur une piste de Formula 1.',
+                      'La ligne noire mesure environ 2 cm de largeur.',
+                      'Les robots doivent respecter une limite de 22 cm de diamètre et de hauteur.'
+                    ]
+                  },
+                  {
+                    title: 'Chronométrage',
+                    items: [
+                      'C’est un défi chronométré.',
+                      'Les équipes ont droit à 3 essais pour compléter la piste.',
+                      'L’arbitre conserve le meilleur score.',
+                      'Le chronomètre démarre lorsque le robot commence à bouger.'
+                    ]
+                  }
+                ]
+              },
+              {
+                title: 'Points',
+                light: true,
+                panels: [
+                  {
+                    title: 'Score de temps',
+                    items: [
+                      'Le score est basé sur le temps nécessaire pour aller du début à la fin de la piste.',
+                      'Le but principal est un suivi de ligne rapide, précis et fiable.'
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          performance: {
+            title: 'Performance',
+            summary: 'Un robot présente une routine chorégraphiée d’une minute en musique pour divertir le public.',
+            sections: [
+              {
+                title: 'Règles',
+                panels: [
+                  {
+                    title: 'Préparation',
+                    items: [
+                      'Les équipes utilisent leur créativité pour construire et décorer 1 à 2 robots.',
+                      'Les robots présentent une routine chorégraphiée en musique.',
+                      'L’aire de performance mesure environ 2 mètres par 2 mètres.',
+                      'Il n’y a aucune limite de taille.'
+                    ]
+                  },
+                  {
+                    title: 'Temps et musique',
+                    items: [
+                      'La performance peut durer un maximum de 60 secondes.',
+                      'Les équipes ont 5 minutes pour l’installation avant la performance.',
+                      'Les équipes ont 3 minutes pour le nettoyage après la performance.',
+                      'Les équipes peuvent fournir de la musique sur clé USB ou utiliser leurs propres haut-parleurs.'
+                    ]
+                  }
+                ]
+              },
+              {
+                title: 'Points',
+                light: true,
+                panels: [
+                  {
+                    title: 'Évaluation',
+                    items: [
+                      'Les équipes présentent leur concept de performance et expliquent leur programme.',
+                      'Les juges évaluent la créativité, le divertissement et la complexité du programme.',
+                      'L’utilisation de capteurs et l’autonomie des robots sont prises en compte.'
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          sumobots: {
+            title: 'SumoBots',
+            summary: 'Quatre robots sont placés aux coins d’un octogone et tentent de se pousser hors de l’anneau. Le dernier robot restant gagne.',
+            sections: [
+              {
+                title: 'Règles',
+                panels: [
+                  {
+                    title: 'Règles du match',
+                    items: [
+                      'Quatre robots s’affrontent sur un anneau octogonal et tentent de se pousser hors de l’anneau.',
+                      'Un robot est éliminé s’il ne bouge pas pendant plus de 10 secondes ou si toutes ses roues sortent de l’anneau.',
+                      'L’arbitre applique une étiquette de couleur sur chaque robot pour l’identification.'
+                    ]
+                  },
+                  {
+                    title: 'Anneau et limites',
+                    items: [
+                      'L’anneau mesure environ 150 cm d’un côté au côté opposé.',
+                      'La base est blanche avec une bordure octogonale noire de 2 cm.',
+                      'Une inversion des couleurs est possible.',
+                      'L’anneau est surélevé, ce qui rend le retour difficile une fois que le robot dépasse la ligne.',
+                      'Les robots doivent respecter une limite de 22 cm de diamètre et de hauteur.',
+                      'La masse du robot ne doit pas dépasser 1000 grammes ou 1 kg.'
+                    ]
+                  }
+                ]
+              },
+              {
+                title: 'Points',
+                light: true,
+                panels: [
+                  {
+                    title: 'Pointage',
+                    items: [
+                      'Un robot reçoit 5 points pour chaque adversaire qu’il pousse hors de l’anneau.',
+                      'Un robot reçoit 20 points s’il est le dernier robot dans l’anneau.',
+                      'Les équipes sont combinées et doivent choisir un robot pour participer à un nouveau défi surprise présenté à RoboCup.'
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          'rescue-line': {
+            title: 'Rescue Line',
+            summary: 'L’intelligence artificielle à son meilleur : Rescue reflète l’utilisation réelle de robots pour secourir des personnes en danger.',
+            sections: [
+              {
+                title: 'Zones du terrain',
+                panels: [
+                  {
+                    title: 'Zone de suivi de ligne',
+                    items: [
+                      'Naviguer sur une ligne noire sur des tuiles blanches.',
+                      'Suivre des indicateurs directionnels précis aux intersections, qui peuvent mener à des impasses s’ils ne sont pas suivis.',
+                      'Contourner des obstacles.',
+                      'Gérer des écarts possibles dans le trajet.',
+                      'Gérer des inclinaisons comme une bascule ou une rampe.',
+                      'Surmonter des bosses de vitesse.'
+                    ]
+                  },
+                  {
+                    title: 'Zone d’évacuation',
+                    items: [
+                      'Représente une zone de guerre ou de catastrophe naturelle où des victimes doivent être secourues.',
+                      'Le robot amène les victimes au point d’évacuation.',
+                      'Le point d’évacuation est un triangle rectangle noir de 30 cm par 30 cm.',
+                      'Le niveau 1 utilise une bosse de 5 cm du côté qui ne touche pas le mur.',
+                      'Le niveau 2 utilise une bosse de 6 cm du côté qui ne touche pas le mur.'
+                    ]
+                  }
+                ]
+              },
+              {
+                title: 'Pointage, checkpoints et victimes',
+                light: true,
+                panels: [
+                  {
+                    title: 'Points du suivi de ligne',
+                    items: [
+                      '15 points pour le bon chemin à une intersection.',
+                      '10 points pour surmonter des obstacles.',
+                      '10 points pour retrouver la ligne après un écart.',
+                      '5 points par tuile au 1er essai.',
+                      '3 points par tuile au 2e essai.',
+                      '1 point par tuile au 3e essai.',
+                      '0 point par tuile après le 3e essai.',
+                      '5 points pour les bosses de vitesse et les inclinaisons.'
+                    ]
+                  },
+                  {
+                    title: 'Checkpoints et manque de progrès',
+                    items: [
+                      'Un checkpoint est une tuile où le robot est replacé manuellement lorsqu’il y a un manque de progrès.',
+                      'Les checkpoints ne se trouvent pas sur des tuiles avec des éléments de pointage.',
+                      'La tuile de départ est un checkpoint où le robot peut recommencer.',
+                      'Un marqueur de checkpoint indique les tuiles concernées.',
+                      'Un essai correspond à chaque fois que le robot est replacé à un checkpoint.',
+                      'Le capitaine peut déclarer un manque de progrès.',
+                      'Il y a aussi manque de progrès si le robot perd la ligne noire sans la retrouver à la tuile suivante.',
+                      'Il y a manque de progrès si le robot atteint une ligne qui n’est pas dans la séquence prévue.'
+                    ]
+                  },
+                  {
+                    title: 'Transition et victimes',
+                    items: [
+                      'La transition vers la zone d’évacuation est indiquée par une ligne de ruban argenté à l’entrée.',
+                      'Il y a 3 victimes vivantes représentées par des balles argentées.',
+                      'Il y a 3 victimes mortes représentées par des balles noires.'
+                    ]
+                  },
+                  {
+                    title: 'Multiplicateurs d’évacuation',
+                    items: [
+                      'Chaque équipe choisit son niveau de zone d’évacuation.',
+                      'Le défi consiste à sauver les 6 victimes en les plaçant dans le point d’évacuation.',
+                      'Les victimes sauvées fournissent des multiplicateurs sur les points accumulés dans la zone de suivi de ligne.',
+                      'Les multiplicateurs varient, par exemple 1.0, 1.1, 1.2, 1.3, 1.4 et plus selon le niveau et le nombre de victimes sauvées.'
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          'rescue-maze': {
+            title: 'Rescue Maze',
+            summary: 'Un robot entièrement autonome entre dans un labyrinthe dangereux pour localiser des victimes chauffées et déposer des trousses de secours.',
+            sections: [
+              {
+                title: 'Information sur le défi',
+                panels: [
+                  {
+                    title: 'Mission',
+                    paragraphs: [
+                      'Rescue Maze est offert en préparation aux divisions internationales.',
+                      'Les équipes peuvent participer à Rescue Maze et Rescue Line lors de l’événement de qualification RoboCup. Le défi Rescue Maze est ouvert à tous les RoboCuppers.',
+                      'Une catastrophe s’est produite et il est trop dangereux pour un humain d’entrer. Une mission de sauvetage est nécessaire.'
+                    ],
+                    items: [
+                      'Un robot entièrement autonome est envoyé dans le labyrinthe dangereux.',
+                      'Le robot localise des victimes chauffées afin que les humains sachent où elles se trouvent.',
+                      'Le robot dépose une trousse de secours, comme de l’eau simulée, pour aider les humains à les retrouver et à les maintenir en vie.'
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          soccer: {
+            title: 'Soccer',
+            summary: 'Deux robots affrontent une paire adverse en frappant une balle dans leur but désigné.',
+            sections: [
+              {
+                title: 'Divisions',
+                panels: [
+                  {
+                    title: 'Soccer Lightweight',
+                    items: [
+                      'Les élèves conçoivent et programment deux robots.',
+                      'Les robots affrontent une paire adverse.',
+                      'Les robots frappent une balle infrarouge dans leur but désigné.'
+                    ]
+                  },
+                  {
+                    title: 'Soccer Open',
+                    items: [
+                      'Les élèves conçoivent et programment deux robots.',
+                      'Les robots affrontent une paire adverse.',
+                      'Les robots frappent une balle orange très visible dans leur but désigné.',
+                      'Les équipes qui veulent participer à Soccer Open devraient consulter les représentants RoboCup Junior pour confirmer qu’il y a assez d’équipes.'
+                    ]
+                  }
+                ]
+              },
+              {
+                title: 'Règles, points et classement',
+                light: true,
+                panels: [
+                  {
+                    title: 'Règles',
+                    items: [
+                      'Il n’y a pas de gardiens. Un gardien est un robot qui reste dans la surface de pénalité.',
+                      'Un match comprend deux demies de 10 minutes avec une mi-temps de 5 minutes.',
+                      'Les robots doivent respecter une limite de 22 cm de diamètre et de hauteur.',
+                      'La masse du robot ne doit pas dépasser 1,4 kg. Les robots Soccer Open peuvent atteindre 2,2 kg.',
+                      'Les robots peuvent avoir une zone de capture de balle jusqu’à 3,0 cm. En Soccer Open, la limite est de 1,5 cm.',
+                      'Les robots ne peuvent pas prendre le contrôle complet de la balle en supprimant tous ses degrés de liberté.',
+                      'Les robots doivent rester dans les limites du terrain définies par la ligne blanche.',
+                      'Les joueurs peuvent toucher leurs robots seulement avec la permission de l’arbitre.',
+                      'Les robots pénalisés sont retirés du jeu pendant 1 minute.',
+                      'Les robots endommagés sont retirés du jeu pour au moins 1 minute. Des réparations structurelles peuvent être faites, mais le code ne peut pas être modifié.',
+                      'L’arbitre prend toutes les décisions finales pendant le match.'
+                    ]
+                  },
+                  {
+                    title: 'Points et classement',
+                    items: [
+                      '1 point est accordé pour chaque but.',
+                      'Un but est marqué lorsque la balle touche le fond du filet.',
+                      'Si un robot marque dans son propre filet, l’adversaire reçoit 1 point.',
+                      'Une équipe reçoit 2 points de classement pour une victoire.',
+                      'Chaque équipe reçoit 1 point de classement pour une égalité.',
+                      'Les finales incluent une prolongation en cas d’égalité.',
+                      'Les ligues Open et Lightweight peuvent être combinées selon les inscriptions.'
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          onstage: {
+            title: 'OnStage',
+            summary: 'RoboCupJunior OnStage intègre les sciences, la technologie, l’ingénierie, les arts et les mathématiques.',
+            sections: [
+              {
+                title: 'Information sur le défi',
+                panels: [
+                  {
+                    title: 'Ce que font les équipes',
+                    paragraphs: ['Les participants programment leurs robots pour bouger en musique pendant que les robots et les humains performent sur scène.'],
+                    items: [
+                      'Les concurrents sont encouragés à costumer légèrement leurs robots.',
+                      'Des mouvements engageants donnent une vraie personnalité aux robots.',
+                      'Les équipes peuvent aborder OnStage de plusieurs façons créatives.'
+                    ]
+                  },
+                  {
+                    title: 'Possibilités créatives',
+                    items: [
+                      'Des robots dansant ensemble dans des chorégraphies serrées.',
+                      'Des élèves interagissant avec leurs robots pendant la performance.',
+                      'Des élèves créant leur propre musique et chorégraphie.',
+                      'Des élèves racontant une histoire pendant que les robots la jouent.'
+                    ]
+                  }
+                ]
+              },
+              {
+                title: 'Travail d’équipe',
+                light: true,
+                panels: [
+                  {
+                    title: 'Collaboration',
+                    paragraphs: ['Le défi OnStage encourage fortement le travail d’équipe : les élèves créent leurs costumes, construisent leurs prototypes de robots, fabriquent les costumes des robots, programment les robots et conçoivent toute la performance.']
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      }
+    };
+
+    const params = new URLSearchParams(window.location.search);
+    const type = params.get('type') || 'maze';
+    const lang = params.get('lang') === 'fr' ? 'fr' : 'en';
+    const locale = pageData[lang];
+    const competition = locale.competitions[type] || locale.competitions.maze;
+
+    document.documentElement.lang = lang;
+    document.title = `${competition.title} ${locale.rulesWord} | RoboCup Junior Canada`;
+    document.getElementById('home-link').href = locale.home;
+    document.getElementById('page-title').innerHTML = `${competition.title}<span>${locale.rulesWord}</span>`;
+    document.getElementById('page-summary').textContent = competition.summary;
+    document.getElementById('back-link').href = locale.backHref;
+    document.getElementById('back-link').textContent = locale.back;
+    document.getElementById('footer-text').textContent = locale.footer;
+    document.getElementById('hero-image').alt = locale.heroAlt;
+
+    document.getElementById('nav-links').innerHTML = locale.nav.map(([label, href]) => {
+      const url = href.replace('{type}', type);
+      const active = label.includes('League') || label.includes('Ligue') ? ' active' : '';
+      return `<a class="nav-link${active}" href="${url}">${label}</a>`;
+    }).join('');
+
+    document.getElementById('content').innerHTML = competition.sections.map(section => `
+      <section class="${section.light ? 'light-section' : ''}">
+        <div class="container">
+          <h2 class="section-title">${section.title}</h2>
+          <div class="content-grid">
+            ${section.panels.map(panel => `
+              <div class="panel">
+                <h3>${panel.title}</h3>
+                ${panel.formula ? `<p class="formula">${panel.formula}</p>` : ''}
+                ${(panel.paragraphs || []).map(paragraph => `<p>${paragraph}</p>`).join('')}
+                ${panel.items ? `<ul>${panel.items.map(item => `<li>${item}</li>`).join('')}</ul>` : ''}
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      </section>
+    `).join('');
+  </script>
+</body>
+</html>

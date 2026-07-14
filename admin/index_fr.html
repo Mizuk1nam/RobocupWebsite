@@ -1,44 +1,44 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Admin Login | RoboCup Junior Canada</title>
+  <title>Connexion administrateur | RoboCup Junior Canada</title>
   <link rel="stylesheet" href="admin.css" />
 </head>
 <body class="auth-page">
   <main class="auth-shell">
     <section class="auth-panel">
-      <a class="brand-link" href="../index.html">
+      <a class="brand-link" href="../index_fr.html">
         <span class="logo-circle">R</span>
         <span>RoboCup <strong>Junior Canada</strong></span>
       </a>
 
       <div class="language-switch">
-        <span>English</span>
-        <a href="index_fr.html">Français</a>
+        <a href="index.html">English</a>
+        <span>Français</span>
       </div>
 
       <div class="auth-copy">
-        <p class="eyebrow">Invite-only access</p>
-        <h1>Admin Login</h1>
-        <p>Use the email and password from your Supabase invite to access scoring tools.</p>
+        <p class="eyebrow">Accès sur invitation</p>
+        <h1>Connexion administrateur</h1>
+        <p>Utilisez l'adresse courriel et le mot de passe de votre invitation Supabase pour accéder aux outils de pointage.</p>
       </div>
 
       <form id="login-form" class="auth-form">
         <label>
-          Email
+          Courriel
           <input id="email" type="email" autocomplete="email" required />
         </label>
         <label>
-          Password
+          Mot de passe
           <input id="password" type="password" autocomplete="current-password" required />
         </label>
-        <button type="submit" class="primary-action">Log In</button>
+        <button type="submit" class="primary-action">Se connecter</button>
         <p id="auth-message" class="form-message" role="status" aria-live="polite"></p>
       </form>
 
-      <a class="secondary-action button-link full-width-action" href="../index.html">Back to Website</a>
+      <a class="secondary-action button-link full-width-action" href="../index_fr.html">Retour au site</a>
     </section>
   </main>
 

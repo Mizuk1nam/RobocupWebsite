@@ -1,5 +1,31 @@
 (function () {
   const message = document.getElementById("auth-message") || document.getElementById("dashboard-message");
+  const isFrench = document.documentElement.lang === "fr";
+  const loginPage = isFrench ? "index_fr.html" : "index.html";
+  const dashboardPage = isFrench ? "dashboard_fr.html" : "dashboard.html";
+  const labels = {
+    supabaseMissing: isFrench
+      ? "Supabase n'est pas encore configuré. Ajoutez l'URL du projet et la clé publique anon."
+      : "Supabase is not configured yet. Add your project URL and anon public key.",
+    checkingLogin: isFrench ? "Vérification de la connexion..." : "Checking login...",
+    notAdmin: isFrench
+      ? "Ce compte n'est pas approuvé comme administrateur."
+      : "This account is not approved as an admin.",
+    missingProfile: isFrench
+      ? "Profil administrateur introuvable. Vérifiez la table profiles."
+      : "Admin profile was not found. Check the profiles table.",
+    selectTeam: isFrench ? "Sélectionner une équipe" : "Select team",
+    noTeams: isFrench ? "Aucune équipe enregistrée." : "No teams saved yet.",
+    delete: isFrench ? "Supprimer" : "Delete",
+    deleteConfirm: (teamName) => isFrench
+      ? `Supprimer ${teamName}? Les scores liés seront aussi supprimés.`
+      : `Delete ${teamName}? This will also remove related scores.`,
+    teamDeleted: isFrench ? "Équipe supprimée." : "Team deleted.",
+    noScores: isFrench ? "Aucun score enregistré." : "No scores saved yet.",
+    teamSaved: isFrench ? "Équipe enregistrée." : "Team saved.",
+    scoreSaved: isFrench ? "Score enregistré." : "Score saved.",
+    refreshed: isFrench ? "Tableau de bord actualisé." : "Dashboard refreshed."
+  };
 
   function setMessage(text, type) {
     if (!message) return;
@@ -15,7 +41,7 @@
 
     const warning = document.getElementById("setup-warning");
     if (warning) warning.hidden = false;
-    setMessage("Supabase is not configured yet. Add your project URL and anon public key.", "error");
+    setMessage(labels.supabaseMissing, "error");
     return false;
   }
 
@@ -44,7 +70,7 @@
 
     const { data: sessionData, error: sessionError } = await supabaseClient.auth.getSession();
     if (sessionError || !sessionData.session) {
-      window.location.href = "index.html";
+      window.location.href = loginPage;
       return null;
     }
 
@@ -52,7 +78,7 @@
     const profile = await getProfile(user.id);
     if (!profile || profile.role !== "admin") {
       await supabaseClient.auth.signOut();
-      window.location.href = "index.html";
+      window.location.href = loginPage;
       return null;
     }
 
@@ -62,7 +88,7 @@
   async function login(email, password) {
     if (!requireSupabase()) return;
 
-    setMessage("Checking login...");
+    setMessage(labels.checkingLogin);
     const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password });
     if (error) {
       setMessage(error.message, "error");
@@ -73,13 +99,13 @@
       const profile = await getProfile(data.user.id);
       if (!profile || profile.role !== "admin") {
         await supabaseClient.auth.signOut();
-        setMessage("This account is not approved as an admin.", "error");
+        setMessage(labels.notAdmin, "error");
         return;
       }
-      window.location.href = "dashboard.html";
+      window.location.href = dashboardPage;
     } catch (profileError) {
       await supabaseClient.auth.signOut();
-      setMessage("Admin profile was not found. Check the profiles table.", "error");
+      setMessage(labels.missingProfile, "error");
     }
   }
 
@@ -96,7 +122,7 @@
     if (error) throw error;
 
     if (teamSelect) {
-      teamSelect.innerHTML = '<option value="">Select team</option>';
+      teamSelect.innerHTML = `<option value="">${labels.selectTeam}</option>`;
     }
 
     data.forEach((team) => {
@@ -110,7 +136,7 @@
 
     if (teamsTable) {
       if (!data.length) {
-        teamsTable.innerHTML = '<tr><td colspan="4">No teams saved yet.</td></tr>';
+        teamsTable.innerHTML = `<tr><td colspan="4">${labels.noTeams}</td></tr>`;
       } else {
         teamsTable.innerHTML = data.map((team) => `
           <tr>
@@ -124,7 +150,7 @@
                 data-team-id="${team.id}"
                 data-team-name="${escapeHtml(team.team_name)}"
               >
-                Delete
+                ${labels.delete}
               </button>
             </td>
           </tr>
@@ -136,7 +162,7 @@
   }
 
   async function deleteTeam(teamId, teamName) {
-    const confirmed = window.confirm(`Delete ${teamName}? This will also remove related scores.`);
+    const confirmed = window.confirm(labels.deleteConfirm(teamName));
     if (!confirmed) return;
 
     const { error } = await supabaseClient
@@ -148,7 +174,7 @@
 
     await loadTeams();
     await loadScores();
-    setMessage("Team deleted.", "success");
+    setMessage(labels.teamDeleted, "success");
   }
 
   async function loadScores() {
@@ -164,7 +190,7 @@
     if (error) throw error;
 
     if (!data.length) {
-      tableBody.innerHTML = '<tr><td colspan="5">No scores saved yet.</td></tr>';
+      tableBody.innerHTML = `<tr><td colspan="5">${labels.noScores}</td></tr>`;
       return;
     }
 
@@ -221,7 +247,7 @@
         teamForm.reset();
         await loadTeams();
         await loadScores();
-        setMessage("Team saved.", "success");
+        setMessage(labels.teamSaved, "success");
       } catch (error) {
         setMessage(error.message, "error");
       }
@@ -247,7 +273,7 @@
         scoreForm.reset();
         document.getElementById("score-round").value = "1";
         await loadScores();
-        setMessage("Score saved.", "success");
+        setMessage(labels.scoreSaved, "success");
       } catch (error) {
         setMessage(error.message, "error");
       }
@@ -274,7 +300,7 @@
       try {
         await loadTeams();
         await loadScores();
-        setMessage("Dashboard refreshed.", "success");
+        setMessage(labels.refreshed, "success");
       } catch (error) {
         setMessage(error.message, "error");
       }
@@ -287,7 +313,7 @@
       if (requireSupabase()) {
         await supabaseClient.auth.signOut();
       }
-      window.location.href = "index.html";
+      window.location.href = loginPage;
     });
   }
 })();

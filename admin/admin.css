@@ -68,6 +68,20 @@ a {
   margin: 34px 0 24px;
 }
 
+.language-switch {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 24px;
+  color: #475569;
+  font-size: 14px;
+  font-weight: 800;
+}
+
+.language-switch a {
+  color: #2563eb;
+}
+
 .eyebrow {
   color: #2563eb;
   font-size: 13px;
