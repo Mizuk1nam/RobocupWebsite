@@ -4,9 +4,162 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>RoboCupJunior Canada — Accueil</title>
-  <link rel="stylesheet" href="fr.css" />
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      background: #f8fbff;
+      color: #0f172a;
+    }
+
+    a { text-decoration: none; }
+
+    .container {
+      width: min(1200px, 92%);
+      margin: auto;
+    }
+
+    nav {
+      background: white;
+      border-bottom: 1px solid #e5e7eb;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+
+    .nav-inner {
+      min-height: 78px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 25px;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 800;
+      color: #111827;
+      min-width: 170px;
+    }
+
+    .logo-circle {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      background: #f1f5f9;
+      display: grid;
+      place-items: center;
+      font-size: 22px;
+    }
+
+    .logo span { display: block; color: red; }
+
+    .nav-links {
+      display: none;
+      align-items: center;
+      gap: 26px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .hamburger { display: flex; align-items: center; justify-content: center; background: none; border: none; cursor: pointer; padding: .25rem; }
+    .mobile-menu { display: none; flex-direction: column; gap: 1rem; padding: 1rem 0; border-top: 1px solid #e5e7eb; }
+    .mobile-menu.open { display: flex; }
+
+    @media (min-width: 768px) {
+      .nav-links { display: flex; }
+      .hamburger { display: none; }
+      .mobile-menu { display: none; }
+    }
+
+    .nav-link {
+      color: #020617;
+      font-size: 15px;
+      font-weight: 700;
+      padding: 10px 0;
+      position: relative;
+    }
+
+    .nav-link:hover,
+    .nav-link.active { color: #2563eb; }
+
+    .nav-link.active::after,
+    .nav-link:hover::after {
+      content: ""; position: absolute; left: 0; bottom: -8px; width: 100%; height: 3px; background: #2563eb; border-radius: 999px;
+    }
+
+    .hero {
+      min-height: 560px;
+      display: flex;
+      align-items: center;
+      color: white;
+      overflow: hidden;
+      position: relative;
+      background:
+        radial-gradient(circle at 78% 45%, rgba(37,99,235,.45), transparent 24%),
+        radial-gradient(circle at 5% 55%, rgba(37,99,235,.25), transparent 22%),
+        linear-gradient(135deg, #020617 0%, #06224a 52%, #020617 100%);
+    }
+
+    .hero::before {
+      content: ""; position: absolute; inset: 0; background-image: linear-gradient(rgba(59,130,246,.18) 1px, transparent 1px), linear-gradient(90deg, rgba(59,130,246,.18) 1px, transparent 1px); background-size: 55px 55px; opacity: .18;
+    }
+
+    .hero::after { content: ""; position: absolute; inset: 0; background: radial-gradient(circle at 0% 48%, transparent 0 90px, rgba(37,99,235,.35) 92px, transparent 94px), radial-gradient(circle at 83% 44%, transparent 0 125px, rgba(37,99,235,.45) 127px, transparent 130px); opacity: .9; }
+
+    .hero-inner { position: relative; z-index: 2; display: grid; grid-template-columns: 1.05fr .95fr; align-items: center; gap: 55px; padding: 80px 0; }
+
+    .hero h1 { font-size: clamp(48px, 6vw, 76px); line-height: 1.05; font-weight: 900; letter-spacing: -2px; margin-bottom: 24px; }
+    .hero h1 span { color: #1677ff; display: block; }
+
+    .hero p { max-width: 620px; font-size: 19px; line-height: 1.8; color: #f1f5f9; margin-bottom: 34px; }
+
+    .hero-buttons { display: flex; gap: 18px; flex-wrap: wrap; }
+
+    .btn { padding: 16px 30px; border-radius: 10px; font-size: 17px; font-weight: 800; transition: .25s ease; display: inline-block; }
+    .btn-primary { background: #1677ff; color: white; box-shadow: 0 14px 30px rgba(37,99,235,.35); }
+    .btn-outline { border: 2px solid #1677ff; color: #60a5fa; background: rgba(2,6,23,.45); }
+    .btn:hover { transform: translateY(-3px); }
+
+    .robot-wrap { display: flex; align-items: center; justify-content: center; position: relative; }
+    .robot-wrap img { width: min(420px, 100%); position: relative; z-index: 2; animation: floatRobot 4s ease-in-out infinite; filter: drop-shadow(0 28px 35px rgba(0,0,0,.55)); }
+
+    @keyframes floatRobot { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-14px); } }
+
+    .about { padding: 80px 0; background: linear-gradient(180deg, #f8fbff, #eef5ff); }
+    .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; }
+    .label { color: #2563eb; font-weight: 900; text-transform: uppercase; margin-bottom: 18px; }
+    .label::after { content: ""; display: block; width: 34px; height: 3px; background: #2563eb; margin-top: 10px; border-radius: 999px; }
+    .about h2 { font-size: 36px; margin-bottom: 22px; color: #0f172a; }
+    .about p { font-size: 17px; line-height: 1.8; color: #334155; margin-bottom: 26px; }
+    .about a { color: #2563eb; font-weight: 900; }
+    .cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
+    .card { background: white; padding: 30px 22px; border-radius: 16px; text-align: center; box-shadow: 0 14px 35px rgba(15,23,42,.12); transition: .25s ease; }
+    .card:hover { transform: translateY(-8px); }
+    .icon { width: 72px; height: 72px; border-radius: 50%; background: #eff6ff; display: grid; place-items: center; font-size: 30px; margin: 0 auto 20px; }
+    .card h3 { margin-bottom: 12px; font-size: 16px; color: #0f172a; }
+    .card p { font-size: 15px; line-height: 1.6; color: #475569; margin: 0; }
+
+    footer { background: #020617; color: #94a3b8; text-align: center; padding: 26px; font-size: 14px; }
+
+    @media (max-width: 900px) {
+      .nav-inner { flex-direction: column; padding: 16px 0; }
+      .nav-links { gap: 16px; }
+      .hero-inner, .about-grid { grid-template-columns: 1fr; text-align: center; }
+      .hero p { margin-left: auto; margin-right: auto; }
+      .hero-buttons { justify-content: center; }
+      .label::after { margin-left: auto; margin-right: auto; }
+      .cards { grid-template-columns: 1fr; }
+    }
+  </style>
 </head>
 <body>
+  <noscript>
+    <style>body{opacity:1;transform:none!important}</style>
+  </noscript>
   <nav>
     <div class="container">
       <div class="nav-inner">
@@ -46,12 +199,57 @@
 
   <main style="flex:1">
     <section class="hero">
-      <div class="container">
-        <h1>RoboCupJunior Canada</h1>
-        <p>L'organisation RoboCup offre des opportunités éducatives en robotique pour les élèves de tous âges.</p>
-        <div class="hero-buttons">
-          <a class="btn-primary" href="registration_fr.html">Inscrivez-vous</a>
-          <a class="btn-outline" href="about_fr.html">En savoir plus</a>
+      <div class="container hero-inner">
+        <div>
+          <h1>
+            RoboCupJunior
+            <span>Canada</span>
+          </h1>
+
+          <p>
+            L'organisation RoboCup est animée par une équipe de bénévoles, chercheurs et professionnels. RoboCup offre des opportunités éducatives pour les élèves.
+          </p>
+
+          <div class="hero-buttons">
+            <a class="btn btn-primary" href="registration_fr.html">Inscrivez-vous</a>
+            <a class="btn btn-outline" href="about_fr.html">En savoir plus</a>
+          </div>
+        </div>
+
+        <div class="robot-wrap">
+          <img src="images/robocup_white_world-horizontal.png" alt="RoboCup logo">
+        </div>
+      </div>
+    </section>
+    <section class="about">
+      <div class="container about-grid">
+        <div>
+          <p class="label">Compétitions</p>
+          <h2>Compétitions RoboCupJunior</h2>
+          <p>Découvrez les compétitions nationales et régionales — défis de rescue, courses, soccer et performances scéniques. Chaque ligue propose des règles et objectifs différents adaptés aux âges et niveaux des équipes.</p>
+          <a class="btn btn-outline" href="leagues_fr.html">Voir les compétitions →</a>
+        </div>
+
+        <div>
+          <div class="cards">
+            <div class="card">
+              <div class="icon">🤖</div>
+              <h3>Rescue Line &amp; Maze</h3>
+              <p>Défis d'autonomie où les robots suivent des lignes ou explorent des labyrinthes pour localiser des victimes et accomplir des tâches.</p>
+            </div>
+
+            <div class="card">
+              <div class="icon">🏎️</div>
+              <h3>Formula / Speed</h3>
+              <p>Courses et épreuves de vitesse où la stabilité et la précision de la trajectoire sont essentielles.</p>
+            </div>
+
+            <div class="card">
+              <div class="icon">🎭</div>
+              <h3>OnStage / Performance</h3>
+              <p>Performances créatives combinant robotique, musique et mise en scène — la créativité est au cœur de cette ligue.</p>
+            </div>
+          </div>
         </div>
       </div>
     </section>
@@ -73,6 +271,8 @@
       document.getElementById('icon-x').style.display = open ? '' : 'none';
     }
     window.addEventListener('pageshow', () => document.body.classList.add('page-loaded'));
+    window.addEventListener('load', () => document.body.classList.add('page-loaded'));
+    window.addEventListener('DOMContentLoaded', () => document.body.classList.add('page-loaded'));
   </script>
 </body>
 </html>
