@@ -238,31 +238,89 @@
     .grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; }
     .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
 
-    /* Cards */
-    .info-box {
+    /* Resource cards */
+    .resources-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 26px;
+    }
+
+    .resource-card {
       background: white;
-      padding: 32px;
+      padding: 30px;
       border-radius: 18px;
-      box-shadow: 0 14px 35px rgba(15,23,42,0.1);
+      box-shadow: 0 14px 35px rgba(15, 23, 42, 0.1);
       border-top: 4px solid #2563eb;
       transition: .25s ease;
     }
 
-    .info-box:hover {
-      transform: translateY(-6px);
-      box-shadow: 0 20px 45px rgba(15,23,42,0.16);
+    .resource-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 20px 45px rgba(15, 23, 42, 0.16);
     }
 
-    .info-box h3 {
+    .resource-icon {
+      width: 62px;
+      height: 62px;
+      border-radius: 50%;
+      background: #eff6ff;
+      display: grid;
+      place-items: center;
+      font-size: 28px;
+      margin-bottom: 18px;
+    }
+
+    .resource-card h3 {
       font-size: 22px;
-      margin-bottom: 12px;
       color: #0f172a;
+      margin-bottom: 12px;
     }
 
-    .info-box p {
+    .resource-card p {
       color: #475569;
-      margin-bottom: 8px;
       font-size: 16px;
+      margin-bottom: 20px;
+    }
+
+    .btn-outline {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 14px 24px;
+      border-radius: 10px;
+      border: 2px solid #1677ff;
+      color: #2563eb;
+      background: white;
+      font-size: 16px;
+      font-weight: 800;
+      transition: .25s ease;
+    }
+
+    .btn-outline:hover {
+      transform: translateY(-3px);
+      background: #eff6ff;
+    }
+
+    .featured-card {
+      background:
+        radial-gradient(circle at 90% 10%, rgba(37, 99, 235, 0.28), transparent 25%),
+        linear-gradient(135deg, #020617, #06224a);
+      color: white;
+      border-top: none;
+    }
+
+    .featured-card h3 {
+      color: white;
+    }
+
+    .featured-card p {
+      color: #cbd5e1;
+    }
+
+    .featured-card .btn-outline {
+      background: transparent;
+      color: #60a5fa;
+      border-color: #2563eb;
     }
 
     /* Footer */
@@ -278,106 +336,239 @@
     @media (max-width: 950px) {
       .nav-inner { flex-direction: column; padding: 16px 0; }
       .nav-links { gap: 16px; }
-      .hero-inner,
-      .grid-2,
-      .grid-3 { grid-template-columns: 1fr; }
-      .hero { text-align: center; }
+      .hero-inner { grid-template-columns: 1fr; text-align: center; }
       .hero p { margin-left: auto; margin-right: auto; }
       .hero-buttons { justify-content: center; }
+      .resources-grid { grid-template-columns: 1fr; }
+      .resource-icon { margin-left: auto; margin-right: auto; }
     }
   </style>
 </head>
 <body>
-    <nav>
-        <div class="container">
-            <div class="nav-inner">
-                <div class="nav-links">
-                    <a class="nav-link" href="index_fr.html">Accueil</a>
-                    <a class="nav-link" href="about_fr.html">À propos</a>
-                    <a class="nav-link" href="leagues_fr.html">Ligues & Règles</a>
-                    <a class="nav-link" href="registration_fr.html">Inscription en ligne</a>
-                    <a class="nav-link" href="schedule_fr.html">Calendrier</a>
-                    <a class="nav-link" href="gallery_fr.html">Galerie</a>
-                    <a class="nav-link active" href="resources_fr.html">Ressources</a>
-                    <a class="nav-link" href="contact_fr.html">Contact</a>
-                    <a class="nav-link" href="resources.html">English</a>
-                </div>
-                <button class="hamburger" onclick="toggleMobile()" aria-label="Menu">
-                    <svg id="icon-menu" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#374151" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <line x1="4" y1="6" x2="20" y2="6"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="18" x2="20" y2="18"/>
-                    </svg>
-                    <svg id="icon-x" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#374151" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none">
-                        <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
-                    </svg>
-                </button>
-            </div>
-            <div class="mobile-menu" id="mobile-menu">
-                <a class="nav-link" href="index_fr.html">Accueil</a>
-                <a class="nav-link" href="about_fr.html">À propos</a>
-                <a class="nav-link" href="leagues_fr.html">Ligues & Règles</a>
-                <a class="nav-link" href="registration_fr.html">Inscription en ligne</a>
-                <a class="nav-link" href="schedule_fr.html">Calendrier</a>
-                <a class="nav-link" href="gallery_fr.html">Galerie</a>
-                <a class="nav-link active" href="resources_fr.html">Ressources</a>
-                <a class="nav-link" href="contact_fr.html">Contact</a>
-                <a class="nav-link" href="resources.html">English</a>
-            </div>
+
+  <!-- Main navigation -->
+  <nav>
+    <div class="container nav-inner">
+      <a href="index_fr.html" class="logo">
+        <div class="logo-circle">&#129302;</div>
+        <div>
+          RoboCupJunior
+          <span>Canada</span>
         </div>
-    </nav>
+      </a>
 
-    <main>
-        <section class="hero">
-            <div class="container">
-                <h1>Ressources de la communauté RoboCup</h1>
-                <p>Liens vers la communauté, la documentation et les sites régionaux.</p>
-            </div>
-        </section>
+      <div class="nav-links">
+        <a class="nav-link" href="index_fr.html">Accueil</a>
+        <a class="nav-link" href="about_fr.html">À propos</a>
+        <a class="nav-link" href="leagues_fr.html">Ligues & Règles</a>
+        <a class="nav-link" href="registration_fr.html">Inscription en ligne</a>
+        <a class="nav-link" href="schedule_fr.html">Calendrier</a>
+        <a class="nav-link" href="gallery_fr.html">Galerie</a>
+        <a class="nav-link active" href="resources_fr.html">Ressources de la communauté RoboCup</a>
+        <a class="nav-link" href="contact_fr.html">Contact</a>
+        <a class="nav-link" href="admin/index.html">Admin</a>
+        <a class="nav-link" href="resources.html">English</a>
+      </div>
+    </div>
+  </nav>
 
-        <section>
-            <div class="container">
-                <h2 class="section-title">Officiel & Documentation</h2>
-                <div class="links-grid">
-                    <a class="btn-outline" href="https://junior.robocup.org//" target="_blank" rel="noopener noreferrer">RoboCupJr International</a>
-                    <a class="btn-outline" href="https://junior.forum.robocup.org/" target="_blank" rel="noopener noreferrer">Forums RoboCupJr</a>
-                    <a class="btn-outline" href="https://robocupjunior.slack.com/" target="_blank" rel="noopener noreferrer">Slack RoboCupJr</a>
-                    <a class="btn-outline" href="https://github.com/robocup-junior/awesome-rcj-soccer/" target="_blank" rel="noopener noreferrer">Compilation Soccer RoboCupJr</a>
-                    <a class="btn-outline" href="https://rescue.rcj.cloud/documents" target="_blank" rel="noopener noreferrer">Documentation Rescue RoboCupJr</a>
-                    <a class="btn-outline" href="https://docs.google.com/document/d/1d97f-1gQnpQa3BZidJXpBIZX4N7Hgf3Q-El1FVgRXS8/edit?tab=t.0" target="_blank" rel="noopener noreferrer">Spécifications de construction Rescue</a>
-                </div>
-            </div>
-        </section>
+  <!-- Page hero -->
+  <header class="hero">
+    <div class="container hero-inner">
+      <div>
+        <h1>
+          Ressources
+          <span>RoboCup</span>
+        </h1>
 
-        <section class="bg-gray">
-            <div class="container">
-                <h2 class="section-title">Communauté & discussions</h2>
-                <div class="links-grid">
-                    <a class="btn-outline" href="https://discord.com/invite/45pxMQY4nJ" target="_blank" rel="noopener noreferrer">Discord RoboCup Junior</a>
-                    <a class="btn-outline" href="https://discord.com/invite/dcFgqFTeCy" target="_blank" rel="noopener noreferrer">Discord RoboCup International</a>
-                </div>
-            </div>
-        </section>
+        <p>
+          Liens curatés vers les plateformes officielles de la communauté RoboCupJunior,
+          la documentation, les guides techniques et les ressources robotiques régionales.
+        </p>
+      </div>
 
-        <section>
-            <div class="container">
-                <h2 class="section-title">Ressources régionales</h2>
-                <div class="links-grid">
-                    <a class="btn-outline" href="https://www.robocupjunior.us/" target="_blank" rel="noopener noreferrer">RoboCup USA</a>
-                    <a class="btn-outline" href="https://www.robocupjunior.org.au/" target="_blank" rel="noopener noreferrer">RoboCup Australia (Ressources de démarrage)</a>
-                </div>
-            </div>
-        </section>
-    </main>
+      <div class="hero-img">
+        <img src="images/robocup_white_world-horizontal.png" alt="RoboCup logo">
+      </div>
+    </div>
+  </header>
 
-    <footer>
-        <div class="container footer-inner">
-            <p class="footer-copy">© 2026 RoboCupJunior Canada. Tous droits réservés.</p>
+  <main>
+    <!-- Official resources -->
+    <section class="light-section">
+      <div class="container">
+        <h2 class="section-title">Officiel & Documentation</h2>
+
+        <p class="section-subtitle">
+          Ces ressources aident les étudiants, les mentors et les équipes à accéder aux informations officielles de RoboCupJunior, aux documents et aux références techniques.
+        </p>
+
+        <div class="resources-grid">
+          <div class="resource-card featured-card">
+            <div class="resource-icon">&#127757;</div>
+            <h3>RoboCupJr International</h3>
+            <p>
+              Visitez le site Web officiel international de RoboCupJunior pour les mises à jour mondiales, les informations sur les ligues et les ressources de compétition.
+            </p>
+            <a class="btn-outline" href="https://junior.robocup.org/" target="_blank" rel="noopener noreferrer">
+              Ouvrir la ressource &rarr;
+            </a>
+          </div>
+
+          <div class="resource-card">
+            <div class="resource-icon">&#128172;</div>
+            <h3>Forums RoboCupJr</h3>
+            <p>
+              Participez aux discussions, posez des questions et suivez les conversations officielles de la communauté RoboCupJunior.
+            </p>
+            <a class="btn-outline" href="https://junior.forum.robocup.org/" target="_blank" rel="noopener noreferrer">
+              Ouvrir le forum &rarr;
+            </a>
+          </div>
+
+          <div class="resource-card">
+            <div class="resource-icon">&#128226;</div>
+            <h3>Slack RoboCupJr</h3>
+            <p>
+              Accédez à Slack RoboCupJunior pour la communication, la collaboration et les mises à jour de l'équipe.
+            </p>
+            <a class="btn-outline" href="https://robocupjunior.slack.com/" target="_blank" rel="noopener noreferrer">
+              Ouvrir Slack &rarr;
+            </a>
+          </div>
+
+          <div class="resource-card">
+            <div class="resource-icon">&#9917;</div>
+            <h3>Compilation Soccer</h3>
+            <p>
+              Explorez les ressources utiles de RoboCupJunior Soccer, les exemples, les références et les matériaux curatés par la communauté.
+            </p>
+            <a class="btn-outline" href="https://github.com/robocup-junior/awesome-rcj-soccer/" target="_blank" rel="noopener noreferrer">
+              Voir GitHub &rarr;
+            </a>
+          </div>
+
+          <div class="resource-card">
+            <div class="resource-icon">&#128657;</div>
+            <h3>Documentation Rescue</h3>
+            <p>
+              Lisez la documentation officielle Rescue, les guides et les références techniques pour les ligues RoboCupJunior Rescue.
+            </p>
+            <a class="btn-outline" href="https://rescue.rcj.cloud/documents" target="_blank" rel="noopener noreferrer">
+              Voir les documents &rarr;
+            </a>
+          </div>
+
+          <div class="resource-card">
+            <div class="resource-icon">&#128196;</div>
+            <h3>Spécifications de construction Rescue</h3>
+            <p>
+              Consultez les spécifications de construction et les directives techniques pour la préparation des robots RoboCupJunior Rescue.
+            </p>
+            <a class="btn-outline" href="https://docs.google.com/document/d/1d97f-1gQnpQa3BZidJXpBIZX4N7Hgf3Q-El1FVgRXS8/edit?tab=t.0" target="_blank" rel="noopener noreferrer">
+              Ouvrir les spécifications &rarr;
+            </a>
+          </div>
         </div>
-    </footer>
+      </div>
+    </section>
 
-    <script>
-        function toggleMobile() { const menu = document.getElementById('mobile-menu'); const open = menu.classList.toggle('open'); document.getElementById('icon-menu').style.display = open ? 'none' : ''; document.getElementById('icon-x').style.display = open ? '' : 'none'; }
-        window.addEventListener('pageshow', () => document.body.classList.add('page-loaded'));
-        window.addEventListener('load', () => document.body.classList.add('page-loaded'));
-    </script>
+    <!-- Community platforms -->
+    <section>
+      <div class="container">
+        <h2 class="section-title">Communauté & Discussion</h2>
+
+        <p class="section-subtitle">
+          Connectez-vous avec d'autres participants de RoboCupJunior, des mentors et des organisateurs par le biais de plateformes de discussion communautaires.
+        </p>
+
+        <div class="resources-grid">
+          <div class="resource-card">
+            <div class="resource-icon">&#127918;</div>
+            <h3>Discord RoboCup Junior</h3>
+            <p>
+              Rejoignez le serveur Discord RoboCup Junior pour communiquer avec d'autres étudiants, équipes, mentors et membres de la communauté.
+            </p>
+            <a class="btn-outline" href="https://discord.com/invite/45pxMQY4nJ" target="_blank" rel="noopener noreferrer">
+              Rejoindre Discord &rarr;
+            </a>
+          </div>
+
+          <div class="resource-card featured-card">
+            <div class="resource-icon">&#127760;</div>
+            <h3>Discord RoboCup International</h3>
+            <p>
+              Connectez-vous avec la communauté RoboCup internationale plus large et suivez les discussions dans différentes divisions de RoboCup.
+            </p>
+            <a class="btn-outline" href="https://discord.com/invite/dcFgqFTeCy" target="_blank" rel="noopener noreferrer">
+              Rejoindre le serveur &rarr;
+            </a>
+          </div>
+
+          <div class="resource-card">
+            <div class="resource-icon">&#129309;</div>
+            <h3>Support communautaire</h3>
+            <p>
+              Utilisez les espaces communautaires pour poser des questions, partager des idées et apprendre de participants RoboCup expérimentés.
+            </p>
+            <a class="btn-outline" href="https://junior.forum.robocup.org/" target="_blank" rel="noopener noreferrer">
+              Poser des questions &rarr;
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Regional resources -->
+    <section class="light-section">
+      <div class="container">
+        <h2 class="section-title">Ressources régionales</h2>
+
+        <p class="section-subtitle">
+          Ces sites régionaux fournissent des exemples, des matériels d'apprentissage et des informations sur les événements des communautés RoboCup d'autres pays.
+        </p>
+
+        <div class="resources-grid">
+          <div class="resource-card">
+            <div class="resource-icon">US</div>
+            <h3>RoboCup USA</h3>
+            <p>
+              Visitez le site Web de RoboCupJunior USA pour les informations régionales, les événements et les ressources éducatives de robotique.
+            </p>
+            <a class="btn-outline" href="https://www.robocupjunior.us/" target="_blank" rel="noopener noreferrer">
+              Visiter le site USA &rarr;
+            </a>
+          </div>
+
+          <div class="resource-card">
+            <div class="resource-icon">AU</div>
+            <h3>RoboCup Australia</h3>
+            <p>
+              Explorez les ressources de démarrage et les matériels éducatifs de la communauté RoboCupJunior Australia.
+            </p>
+            <a class="btn-outline" href="https://www.robocupjunior.org.au/" target="_blank" rel="noopener noreferrer">
+              Visiter le site Australia &rarr;
+            </a>
+          </div>
+
+          <div class="resource-card featured-card">
+            <div class="resource-icon">&#128218;</div>
+            <h3>Ressources d'apprentissage</h3>
+            <p>
+              Les ressources régionales peuvent aider les nouvelles équipes à comprendre la robotique, la programmation, la préparation aux compétitions et l'organisation d'équipe.
+            </p>
+            <a class="btn-outline" href="https://junior.robocup.org/" target="_blank" rel="noopener noreferrer">
+              Commencer l'apprentissage &rarr;
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    &copy; 2026 RoboCup Junior Canada. Tous droits réservés.
+  </footer>
+
 </body>
 </html>

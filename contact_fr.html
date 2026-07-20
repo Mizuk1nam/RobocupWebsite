@@ -264,6 +264,196 @@
       font-size: 16px;
     }
 
+    /* Contact cards */
+    .contact-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 26px;
+      margin-bottom: 45px;
+    }
+
+    .contact-card {
+      background: white;
+      padding: 30px;
+      border-radius: 18px;
+      box-shadow: 0 14px 35px rgba(15, 23, 42, 0.1);
+      border-top: 4px solid #2563eb;
+      transition: .25s ease;
+    }
+
+    .contact-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 20px 45px rgba(15, 23, 42, 0.16);
+    }
+
+    .contact-icon {
+      width: 62px;
+      height: 62px;
+      border-radius: 50%;
+      background: #eff6ff;
+      display: grid;
+      place-items: center;
+      font-size: 28px;
+      margin-bottom: 18px;
+    }
+
+    .contact-card h3 {
+      font-size: 22px;
+      color: #0f172a;
+      margin-bottom: 12px;
+    }
+
+    .contact-card p {
+      color: #475569;
+      font-size: 16px;
+      margin-bottom: 12px;
+    }
+
+    .contact-card a {
+      color: #2563eb;
+      font-weight: 700;
+    }
+
+    .contact-card a:hover {
+      color: #1d4ed8;
+    }
+
+    .featured-card {
+      background:
+        radial-gradient(circle at 90% 10%, rgba(37, 99, 235, 0.28), transparent 25%),
+        linear-gradient(135deg, #020617, #06224a);
+      color: white;
+      border-top: none;
+    }
+
+    .featured-card h3 {
+      color: white;
+    }
+
+    .featured-card p {
+      color: #cbd5e1;
+    }
+
+    .featured-card a {
+      color: #60a5fa;
+    }
+
+    /* Contact layout with form */
+    .contact-layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      align-items: start;
+    }
+
+    .info-panel h3 {
+      font-size: 26px;
+      color: #0f172a;
+      margin-bottom: 16px;
+    }
+
+    .info-panel p {
+      color: #475569;
+      margin-bottom: 16px;
+      font-size: 16px;
+    }
+
+    .info-panel ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .info-panel li {
+      color: #475569;
+      padding: 10px 0;
+      border-bottom: 1px solid #e5e7eb;
+      font-size: 15px;
+    }
+
+    .info-panel li:last-child {
+      border-bottom: none;
+    }
+
+    /* Contact form */
+    .contact-form {
+      background: #f8fafc;
+      padding: 30px;
+      border-radius: 18px;
+      border: 1px solid #e5e7eb;
+    }
+
+    .form-grid {
+      display: grid;
+      gap: 8px;
+      font-weight: 800;
+      color: #0f172a;
+      font-size: 15px;
+    }
+
+    input,
+    textarea {
+      width: 100%;
+      padding: 14px 15px;
+      border-radius: 10px;
+      border: 1px solid #cbd5e1;
+      background: #f8fafc;
+      font-size: 16px;
+      color: #0f172a;
+      outline: none;
+      transition: .2s ease;
+      font-family: inherit;
+    }
+
+    textarea {
+      min-height: 140px;
+      resize: vertical;
+    }
+
+    input:focus,
+    textarea:focus {
+      border-color: #2563eb;
+      background: white;
+      box-shadow: 0 0 0 4px rgba(37, 99, 235, .12);
+    }
+
+    .full-width {
+      grid-column: 1 / -1;
+    }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 15px 26px;
+      border-radius: 10px;
+      background: #1677ff;
+      color: white;
+      font-size: 16px;
+      font-weight: 800;
+      border: none;
+      cursor: pointer;
+      transition: .25s ease;
+      margin-top: 20px;
+      box-shadow: 0 14px 30px rgba(37,99,235,.35);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-3px);
+      background: #1d4ed8;
+    }
+
+    .form-note {
+      margin-top: 14px;
+      color: #64748b;
+      font-size: 14px;
+    }
+
+    .form-message {
+      margin-top: 14px;
+      font-weight: 800;
+      color: #16a34a;
+    }
+
     /* Footer */
     footer {
       background: #020617;
@@ -278,93 +468,176 @@
       .nav-inner { flex-direction: column; padding: 16px 0; }
       .nav-links { gap: 16px; }
       .hero-inner,
-      .grid-2 { grid-template-columns: 1fr; }
-      .hero { text-align: center; }
+      .contact-grid,
+      .contact-layout,
+      .form-grid { grid-template-columns: 1fr; text-align: center; }
       .hero p { margin-left: auto; margin-right: auto; }
-      .hero-buttons { justify-content: center; }
+      .contact-icon { margin-left: auto; margin-right: auto; }
+      .info-panel,
+      .contact-form { text-align: left; }
     }
   </style>
 </head>
 <body>
-    <nav>
-        <div class="container">
-            <div class="nav-inner">
-                <div class="nav-links">
-                    <a class="nav-link" href="index_fr.html">Accueil</a>
-                    <a class="nav-link" href="about_fr.html">À propos</a>
-                    <a class="nav-link" href="leagues_fr.html">Ligues & Règles</a>
-                    <a class="nav-link" href="registration_fr.html">Inscription en ligne</a>
-                    <a class="nav-link" href="schedule_fr.html">Calendrier</a>
-                    <a class="nav-link" href="gallery_fr.html">Galerie</a>
-                    <a class="nav-link" href="resources_fr.html">Ressources</a>
-                    <a class="nav-link active" href="contact_fr.html">Contact</a>
-                    <a class="nav-link" href="contact.html">English</a>
-                </div>
-                <button class="hamburger" onclick="toggleMobile()" aria-label="Menu">
-                    <svg id="icon-menu" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#374151" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <line x1="4" y1="6" x2="20" y2="6"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="18" x2="20" y2="18"/>
-                    </svg>
-                    <svg id="icon-x" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#374151" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none">
-                        <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
-                    </svg>
-                </button>
-            </div>
-            <div class="mobile-menu" id="mobile-menu">
-                <a class="nav-link" href="index_fr.html">Accueil</a>
-                <a class="nav-link" href="about_fr.html">À propos</a>
-                <a class="nav-link" href="leagues_fr.html">Ligues & Règles</a>
-                <a class="nav-link" href="registration_fr.html">Inscription en ligne</a>
-                <a class="nav-link" href="schedule_fr.html">Calendrier</a>
-                <a class="nav-link" href="gallery_fr.html">Galerie</a>
-                <a class="nav-link" href="resources_fr.html">Ressources</a>
-                <a class="nav-link active" href="contact_fr.html">Contact</a>
-                <a class="nav-link" href="contact.html">English</a>
-            </div>
+
+  <!-- Main navigation -->
+  <nav>
+    <div class="container nav-inner">
+      <a href="index_fr.html" class="logo">
+        <div class="logo-circle">&#129302;</div>
+        <div>
+          RoboCupJunior
+          <span>Canada</span>
         </div>
-    </nav>
+      </a>
 
-    <main>
-        <section class="hero">
-            <div class="container">
-                <h1>Contactez-nous</h1>
-                <p>Nous sommes toujours ravis d'accueillir des passionnés de robotique ! Pour toute question, contactez-nous.</p>
-            </div>
-        </section>
+      <div class="nav-links">
+        <a class="nav-link" href="index_fr.html">Accueil</a>
+        <a class="nav-link" href="about_fr.html">À propos</a>
+        <a class="nav-link" href="leagues_fr.html">Ligues & Règles</a>
+        <a class="nav-link" href="registration_fr.html">Inscription en ligne</a>
+        <a class="nav-link" href="schedule_fr.html">Calendrier</a>
+        <a class="nav-link" href="gallery_fr.html">Galerie</a>
+        <a class="nav-link" href="resources_fr.html">Ressources</a>
+        <a class="nav-link active" href="contact_fr.html">Contact</a>
+        <a class="nav-link" href="admin/index.html">Admin</a>
+        <a class="nav-link" href="contact.html">English</a>
+      </div>
+    </div>
+  </nav>
 
-        <section>
-            <div class="container prose">
-                <h2>Prendre contact</h2>
-                <p>Nous accueillons les élèves, mentors, enseignants et bénévoles souhaitant en savoir plus sur RoboCupJunior Canada.</p>
+  <!-- Page hero -->
+  <header class="hero">
+    <div class="container hero-inner">
+      <div>
+        <h1>
+          Contact
+          <span>RoboCup Canada</span>
+        </h1>
 
-                <div class="contact-box">
-                    <div class="contact-info-grid">
-                        <div>
-                            <h3>Informations générales</h3>
-                            <p class="email"><a href="mailto:info@robocupcanada.ca">info@robocupcanada.ca</a></p>
-                        </div>
-                        <div>
-                            <h3>Représentants RoboCupJunior</h3>
-                            <p><strong>Représentante Québec - Sarah Morgan</strong><br />
-                            <a href="mailto:director@robocupcanada.ca">director@robocupcanada.ca</a></p>
-                            <p><strong>Représentant national - Shaun Callendar</strong><br />
-                            <a href="mailto:director@robocupcanada.ca">director@robocupcanada.ca</a></p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-    </main>
+        <p>
+          Nous sommes toujours heureux d'entendre parler de passionnés de robotique, d'étudiants,
+          d'éducateurs, de mentors et de bénévoles intéressés par RoboCupJunior Canada.
+        </p>
+      </div>
 
-    <footer>
-        <div class="container footer-inner">
-            <p class="footer-copy">© 2026 RoboCupJunior Canada. Tous droits réservés.</p>
+      <div class="hero-img">
+        <img src="images/robocup_white_world-horizontal.png" alt="RoboCup logo">
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- Main contact information -->
+    <section class="light-section">
+      <div class="container">
+        <h2 class="section-title">Entrez en contact</h2>
+
+        <p class="section-subtitle">
+          Contactez-nous pour des informations générales, des questions sur les compétitions, du mentorat,
+          du bénévolat ou du support lié à RoboCupJunior Canada.
+        </p>
+
+        <div class="contact-grid">
+          <div class="contact-card featured-card">
+            <div class="contact-icon">&#128231;</div>
+            <h3>Informations générales</h3>
+            <p>Pour les questions générales sur RoboCupJunior Canada.</p>
+            <p>
+              <a href="mailto:info@robocupcanada.ca">info@robocupcanada.ca</a>
+            </p>
+          </div>
+
+          <div class="contact-card">
+            <div class="contact-icon">&#128100;</div>
+            <h3>Représentante Québec</h3>
+            <p><strong>Sarah Morgan</strong></p>
+            <p>
+              <a href="mailto:director@robocupcanada.ca">director@robocupcanada.ca</a>
+            </p>
+          </div>
+
+          <div class="contact-card">
+            <div class="contact-icon">CA</div>
+            <h3>Représentant national</h3>
+            <p><strong>Shaun Callendar</strong></p>
+            <p>
+              <a href="mailto:director@robocupcanada.ca">director@robocupcanada.ca</a>
+            </p>
+          </div>
         </div>
-    </footer>
 
-    <script>
-        function toggleMobile() { const menu = document.getElementById('mobile-menu'); const open = menu.classList.toggle('open'); document.getElementById('icon-menu').style.display = open ? 'none' : ''; document.getElementById('icon-x').style.display = open ? '' : 'none'; }
-        window.addEventListener('pageshow', () => document.body.classList.add('page-loaded'));
-        window.addEventListener('load', () => document.body.classList.add('page-loaded'));
-    </script>
+        <div class="contact-layout">
+          <div class="info-panel">
+            <h3>Pourquoi nous contacter?</h3>
+
+            <p>
+              Que vous soyez un étudiant, un parent, un enseignant, un mentor ou un bénévole,
+              RoboCupJunior Canada accueille vos questions et votre participation.
+            </p>
+
+            <ul>
+              <li>Renseignez-vous sur les compétitions à venir</li>
+              <li>Apprenez comment inscrire une équipe</li>
+              <li>Obtenez du support sur les ligues et les règles</li>
+              <li>Trouvez des façons de faire du bénévolat ou du mentorat</li>
+              <li>Connectez-vous avec la communauté RoboCupJunior</li>
+            </ul>
+          </div>
+
+          <!-- Frontend-only form for UI purpose -->
+          <form class="contact-form" id="contactForm">
+            <div class="form-grid">
+              <label>
+                Nom complet
+                <input type="text" id="name" required>
+              </label>
+
+              <label>
+                Adresse e-mail
+                <input type="email" id="email" required>
+              </label>
+
+              <label class="full-width">
+                Sujet
+                <input type="text" id="subject" required>
+              </label>
+
+              <label class="full-width">
+                Message
+                <textarea id="message" required></textarea>
+              </label>
+            </div>
+
+            <button type="submit" class="btn-primary">Envoyer le message &rarr;</button>
+
+            <p class="form-note">
+              Ce formulaire de contact est actuellement une démo frontale. Pour la production, connectez-le à un service de backend ou d'email.
+            </p>
+
+            <p class="form-message" id="formMessage"></p>
+          </form>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    &copy; 2026 RoboCupJunior Canada. Tous droits réservés.
+  </footer>
+
+  <script>
+    // Simple frontend-only form message for demonstration
+    const contactForm = document.getElementById("contactForm");
+    const formMessage = document.getElementById("formMessage");
+
+    contactForm.addEventListener("submit", function(event) {
+      event.preventDefault();
+
+      formMessage.textContent = "Merci. Votre message a été préparé avec succès.";
+      contactForm.reset();
+    });
+  </script>
+
 </body>
 </html>
