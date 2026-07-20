@@ -4,125 +4,498 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Calendrier | RoboCupJunior Canada</title>
-    <style>
-    /* Inlined fr.css */
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
 
-    html, body { height: 100%; }
     body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-      color: #111827;
-      background: #fff;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      opacity: 0;
-      transform: translateY(20px);
-      transition: opacity 0.6s ease, transform 0.6s ease;
+      font-family: Arial, Helvetica, sans-serif;
+      background: #f8fbff;
+      color: #0f172a;
+      line-height: 1.6;
     }
-    body.page-loaded { opacity: 1; transform: none; }
 
-    .container { max-width: 80rem; margin: 0 auto; padding: 0 1rem; }
-    @media (min-width: 640px)  { .container { padding: 0 1.5rem; } }
-    @media (min-width: 1024px) { .container { padding: 0 2rem; } }
+    a { text-decoration: none; }
 
-    a { color: inherit; text-decoration: none; }
+    .container {
+      width: min(1200px, 92%);
+      margin: auto;
+    }
 
-    .btn-primary { display: inline-flex; align-items: center; gap: .5rem; background: #2563eb; color: #fff; padding: .75rem 1.5rem; border-radius: .5rem; border: none; font-size: 1rem; font-weight: 500; cursor: pointer; transition: background .2s; }
-    .btn-primary:hover { background: #1d4ed8; }
-    .btn-outline { display: inline-flex; align-items: center; gap: .5rem; background: #fff; color: #2563eb; padding: .75rem 1.5rem; border-radius: .5rem; border: 2px solid #2563eb; font-size: 1rem; font-weight: 500; cursor: pointer; transition: background .2s; }
-    .btn-outline:hover { background: #eff6ff; }
+    /* Navigation */
+    nav {
+      background: white;
+      border-bottom: 1px solid #e5e7eb;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
 
-    nav { border-bottom: 1px solid #e5e7eb; position: sticky; top: 0; background: #fff; z-index: 100; }
-    .nav-inner { display: flex; align-items: center; justify-content: space-between; height: 4rem; }
-    .nav-links { display: none; align-items: center; gap: 1.5rem; }
-    @media (min-width: 768px) { .nav-links { display: flex; } }
-    .nav-links .nav-link, .nav-link { color: #374151; cursor: pointer; transition: color .2s; background: none; border: none; font-size: 1rem; }
-    .nav-links .nav-link:hover, .nav-links .nav-link.active, .nav-link:hover, .nav-link.active { color: #2563eb; }
-    .hamburger { display: flex; align-items: center; justify-content: center; background: none; border: none; cursor: pointer; padding: .25rem; }
-    @media (min-width: 768px) { .hamburger { display: none; } }
-    .mobile-menu { display: none; flex-direction: column; gap: 1rem; padding: 1rem 0; border-top: 1px solid #e5e7eb; }
-    .mobile-menu.open { display: flex; }
-    .mobile-menu .nav-link { text-align: left; font-size: 1rem; }
+    .nav-inner {
+      min-height: 78px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 25px;
+    }
 
-    .hero { background: linear-gradient(135deg, #eff6ff 0%, #eef2ff 100%); padding: 4rem 0; text-align: center; }
-    .hero h1 { font-size: clamp(2rem, 5vw, 3rem); font-weight: 700; margin-bottom: 1rem; color: #111827; }
-    .hero p { font-size: 1.125rem; color: #374151; max-width: 38rem; margin: 0 auto 2rem; line-height: 1.7; }
-    .hero-buttons { display: flex; flex-wrap: wrap; gap: 1rem; justify-content: center; }
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 800;
+      color: #111827;
+      min-width: 170px;
+    }
 
-    section { padding: 3rem 0; }
-    section.bg-gray { background: #f9fafb; }
+    .logo-circle {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      background: #eff6ff;
+      display: grid;
+      place-items: center;
+      font-size: 22px;
+    }
 
-    h2.section-title { font-size: 1.875rem; font-weight: 700; color: #111827; margin-bottom: 2.5rem; text-align: center; }
+    .logo span { display: block; color: red; }
 
-    main { flex: 1; }
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 26px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
 
-    footer { background: #111827; color: #fff; padding: 2rem 0; margin-top: auto; }
-    .footer-inner { display: flex; flex-direction: column; align-items: center; gap: 1rem; }
-    @media (min-width: 768px) { .footer-inner { flex-direction: row; justify-content: space-between; } }
-    .footer-copy { font-size: .875rem; color: #9ca3af; }
+    .nav-link {
+      color: #020617;
+      font-size: 15px;
+      font-weight: 700;
+      padding: 10px 0;
+      position: relative;
+    }
 
-    .prose h2 { font-size: 1.875rem; font-weight: 700; color: #111827; margin-bottom: 1rem; margin-top: 3rem; }
-    .prose p { color: #374151; line-height: 1.7; margin-bottom: 1.5rem; }
+    .nav-link:hover,
+    .nav-link.active { color: #2563eb; }
 
-    /* small utility */
-    .links-grid { display: grid; gap: 1rem; grid-template-columns: repeat(1, minmax(0, 1fr)); }
-    @media (min-width: 640px) { .links-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
-    @media (min-width: 1024px) { .links-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
-    </style>
-    <link rel="stylesheet" href="schedule.css" />
+    .nav-link.active::after,
+    .nav-link:hover::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: -8px;
+      width: 100%;
+      height: 3px;
+      background: #2563eb;
+      border-radius: 999px;
+    }
+
+    /* Hero */
+    .hero {
+      position: relative;
+      overflow: hidden;
+      color: white;
+      background:
+        radial-gradient(circle at 80% 45%, rgba(37,99,235,0.45), transparent 25%),
+        radial-gradient(circle at 8% 45%, rgba(37,99,235,0.25), transparent 24%),
+        linear-gradient(135deg, #020617 0%, #06224a 55%, #020617 100%);
+      padding: 95px 0;
+    }
+
+    .hero::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(59,130,246,.18) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(59,130,246,.18) 1px, transparent 1px);
+      background-size: 55px 55px;
+      opacity: .18;
+    }
+
+    .hero-inner {
+      position: relative;
+      z-index: 2;
+      display: grid;
+      grid-template-columns: 1.1fr .9fr;
+      gap: 50px;
+      align-items: center;
+    }
+
+    .hero h1 {
+      font-size: clamp(42px, 6vw, 70px);
+      line-height: 1.05;
+      font-weight: 900;
+      letter-spacing: -1.5px;
+      margin-bottom: 22px;
+    }
+
+    .hero h1 span { display: block; color: #1677ff; }
+
+    .hero p {
+      max-width: 650px;
+      font-size: 20px;
+      color: #f1f5f9;
+      line-height: 1.8;
+      margin-bottom: 16px;
+    }
+
+    .hero-buttons {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      margin-top: 28px;
+    }
+
+    .hero-img {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .hero-img img {
+      width: min(330px, 100%);
+      animation: floatRobot 4s ease-in-out infinite;
+      filter: drop-shadow(0 25px 35px rgba(0,0,0,.55));
+    }
+
+    @keyframes floatRobot {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-14px); }
+    }
+
+    /* Buttons */
+    .btn-primary,
+    .btn-outline {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 15px 26px;
+      border-radius: 10px;
+      font-size: 16px;
+      font-weight: 800;
+      cursor: pointer;
+      transition: .25s ease;
+      border: none;
+    }
+
+    .btn-primary {
+      background: #1677ff;
+      color: white;
+      box-shadow: 0 14px 30px rgba(37,99,235,.35);
+    }
+
+    .btn-outline {
+      border: 2px solid #1677ff;
+      color: #2563eb;
+      background: white;
+    }
+
+    .btn-primary:hover,
+    .btn-outline:hover { transform: translateY(-3px); }
+
+    .btn-link {
+      background: transparent;
+      border: none;
+      color: #2563eb;
+      font-weight: 800;
+      cursor: pointer;
+      font-size: 15px;
+    }
+
+    .btn-link:hover { color: #1d4ed8; }
+
+    /* Sections */
+    section { padding: 75px 0; }
+
+    .bg-gray { background: linear-gradient(180deg, #f8fbff, #eef5ff); }
+
+    .section-title {
+      text-align: center;
+      font-size: 40px;
+      margin-bottom: 16px;
+      color: #0f172a;
+    }
+
+    .section-title::after {
+      content: "";
+      display: block;
+      width: 50px;
+      height: 4px;
+      background: #2563eb;
+      border-radius: 999px;
+      margin: 14px auto 0;
+    }
+
+    .section-subtitle {
+      max-width: 760px;
+      margin: 0 auto 42px;
+      text-align: center;
+      color: #475569;
+      font-size: 17px;
+    }
+
+    .grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+
+    /* Cards */
+    .info-card {
+      background: white;
+      padding: 32px;
+      border-radius: 18px;
+      box-shadow: 0 14px 35px rgba(15,23,42,0.1);
+      border-top: 4px solid #2563eb;
+      transition: .25s ease;
+    }
+
+    .info-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 20px 45px rgba(15,23,42,0.16);
+    }
+
+    .info-card h3 {
+      font-size: 22px;
+      margin-bottom: 12px;
+      color: #0f172a;
+    }
+
+    .info-card p {
+      color: #475569;
+      margin-bottom: 8px;
+      font-size: 16px;
+    }
+
+    .event-date {
+      display: inline-block;
+      background: #2563eb;
+      color: white;
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-size: 13px;
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+
+    .featured-card {
+      border-top-color: #f59e0b;
+    }
+
+    .note {
+      color: #f59e0b;
+      font-weight: 700;
+    }
+
+    .info-card ul {
+      padding-left: 20px;
+      margin-bottom: 8px;
+    }
+
+    .info-card li {
+      color: #475569;
+      font-size: 16px;
+      margin-bottom: 4px;
+    }
+
+    /* Footer */
+    footer {
+      background: #020617;
+      color: #94a3b8;
+      text-align: center;
+      padding: 26px;
+      font-size: 14px;
+    }
+
+    /* Responsive */
+    @media (max-width: 950px) {
+      .nav-inner { flex-direction: column; padding: 16px 0; }
+      .nav-links { gap: 16px; }
+      .hero-inner,
+      .grid-2,
+      .grid-3 { grid-template-columns: 1fr; }
+      .hero { text-align: center; }
+      .hero p { margin-left: auto; margin-right: auto; }
+      .hero-buttons { justify-content: center; }
+    }
+  </style>
   </head>
   <body>
+    <!-- Main navigation: consistent across all pages -->
     <nav>
-      <div class="container">
-        <div class="nav-inner">
-          <div class="nav-links">
-            <a class="nav-link" href="index_fr.html">Accueil</a>
-            <a class="nav-link" href="about_fr.html">À propos</a>
-            <a class="nav-link" href="leagues_fr.html">Ligues & Règles</a>
-            <a class="nav-link" href="registration_fr.html">Inscription en ligne</a>
-            <a class="nav-link active" href="schedule_fr.html">Calendrier</a>
-            <a class="nav-link" href="gallery_fr.html">Galerie</a>
-            <a class="nav-link" href="resources_fr.html">Ressources</a>
-            <a class="nav-link" href="contact_fr.html">Contact</a>
-            <a class="nav-link" href="schedule.html">English</a>
+      <div class="container nav-inner">
+        <a href="index_fr.html" class="logo">
+          <div class="logo-circle">&#129302;</div>
+          <div>
+            RoboCupJunior
+            <span>Canada</span>
           </div>
+        </a>
+
+        <div class="nav-links">
+          <a class="nav-link" href="index_fr.html">Accueil</a>
+          <a class="nav-link" href="about_fr.html">À propos</a>
+          <a class="nav-link" href="leagues_fr.html">Ligues & Règles</a>
+          <a class="nav-link" href="registration_fr.html">Inscription en ligne</a>
+          <a class="nav-link active" href="schedule_fr.html">Calendrier</a>
+          <a class="nav-link" href="gallery_fr.html">Galerie</a>
+          <a class="nav-link" href="resources_fr.html">Ressources</a>
+          <a class="nav-link" href="contact_fr.html">Contact</a>
+          <a class="nav-link" href="admin/index.html">Admin</a>
+          <a class="nav-link" href="schedule.html">English</a>
         </div>
       </div>
     </nav>
 
-    <main>
-      <section class="hero">
-        <div class="container">
-          <h1>Calendrier des compétitions 2026</h1>
-          <p>Consultez les événements RoboCupJunior Canada et les qualifications à venir.</p>
+    <!-- Page hero -->
+    <header class="hero">
+      <div class="container hero-inner">
+        <div>
+          <h1>
+            Competition
+            <span>Schedule 2026</span>
+          </h1>
+          <p>Explorez les compétitions RoboCupJunior Canada à venir et les événements de qualification dans tout le pays.</p>
         </div>
-      </section>
 
+        <div class="hero-img">
+          <img src="images/robocup_white_world-horizontal.png" alt="RoboCup logo">
+        </div>
+      </div>
+    </header>
+
+    <main>
       <section class="bg-gray">
         <div class="container">
           <h2 class="section-title">Événements 2026</h2>
+
           <div class="grid-2">
+            <!-- West Vancouver event -->
             <div class="info-card">
+              <span class="event-date">7 mars 2026</span>
               <h3>West Vancouver RoboCupJunior</h3>
-              <p><strong>Date :</strong> 7 mars 2026</p>
+
               <p><strong>Lieu :</strong> Campus UBC</p>
+
+              <p>
+                <strong>Site Web :</strong>
+                <a
+                  href="https://vancouver.robocup.ca"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Vancouver West 2026
+                </a>
+              </p>
+
+              <p><strong>Ligues :</strong></p>
+              <ul>
+                <li>Rescue Maze</li>
+                <li>Rescue Line</li>
+                <li>Soccer Infrared Lightweight</li>
+                <li>Soccer Vision Open</li>
+                <li>OnStage</li>
+              </ul>
             </div>
+
+            <!-- Toronto event -->
             <div class="info-card">
-              <h3>Toronto RoboCupJunior</h3>
-              <p><strong>Date :</strong> 1er avril 2026</p>
+              <span class="event-date">1er avril 2026</span>
+              <h3>Toronto Canada RoboCupJunior</h3>
+
               <p><strong>Lieu :</strong> St. Andrews College</p>
+
+              <p>
+                <strong>Site Web :</strong>
+                <a
+                  href="https://www.sac.on.ca/robocup"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  St. Andrews
+                </a>
+              </p>
+
+              <p><strong>Ligues :</strong></p>
+              <ul>
+                <li>Soccer Infrared Lightweight</li>
+                <li>Rescue Maze</li>
+                <li>Rescue Line</li>
+              </ul>
+
+              <p><strong>Contact :</strong> Benjamin Lawrence</p>
+            </div>
+
+            <!-- Western Canada event -->
+            <div class="info-card">
+              <span class="event-date">10 avril 2026</span>
+              <h3>Western Canada RoboCupJunior</h3>
+
+              <p><strong>Lieu :</strong> Okanagan College, Campus Kelowna</p>
+
+              <p>
+                <strong>Site Web :</strong>
+                <a
+                  href="https://www.okanagan.bc.ca/robocup"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Okanagan College RoboCup
+                </a>
+              </p>
+
+              <p><strong>Ligues :</strong></p>
+              <ul>
+                <li>Rescue Maze</li>
+                <li>Rescue Line</li>
+                <li>Soccer Infrared Lightweight</li>
+                <li>Soccer Vision Open</li>
+                <li>OnStage</li>
+              </ul>
+            </div>
+
+            <!-- Featured Americas event -->
+            <div class="info-card featured-card">
+              <span class="event-date">22&ndash;25 octobre 2026</span>
+              <h3>RoboCup Americas 2026</h3>
+
+              <p>
+                <strong>Lieu :</strong>
+                Sheridan College &ndash; Davis Campus, Brampton, ON, Canada
+              </p>
+
+              <p>
+                <strong>Site Web :</strong>
+                <a
+                  href="https://robocupcanada.ca/asr/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  ASR 2026
+                </a>
+              </p>
+
+              <p><strong>Ligues :</strong></p>
+              <ul>
+                <li>Soccer Infrared Lightweight</li>
+                <li>Soccer Vision Open</li>
+                <li>Rescue Maze</li>
+                <li>Rescue Line</li>
+                <li>Rescue Simulation</li>
+                <li>OnStage</li>
+                <li>
+                  <strong>Primary Ages 10&ndash;14 :</strong>
+                  <span class="note">S'applique uniquement à l'événement ASR</span>
+                </li>
+                <li>Primary Soccer Infrared Lightweight</li>
+                <li>Primary Rescue Line</li>
+                <li>Primary OnStage</li>
+              </ul>
             </div>
           </div>
         </div>
       </section>
     </main>
 
-    <footer>
-      <div class="container footer-inner">
-        <p class="footer-copy">© 2026 RoboCupJunior Canada. Tous droits réservés.</p>
-      </div>
-    </footer>
+    <footer>&copy; 2026 RoboCupJunior Canada. Tous droits réservés.</footer>
     <script>
       window.addEventListener('pageshow', () => document.body.classList.add('page-loaded'));
       window.addEventListener('load', () => document.body.classList.add('page-loaded'));
