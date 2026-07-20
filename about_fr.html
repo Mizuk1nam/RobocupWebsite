@@ -4,137 +4,530 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>À propos | RoboCupJunior Canada</title>
-        <style>
-        /* Inlined fr.css */
-        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-        html, body { height: 100%; }
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            color: #111827;
-            background: #fff;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            opacity: 0;
-            transform: translateY(20px);
-            transition: opacity 0.6s ease, transform 0.6s ease;
-        }
-        body.page-loaded { opacity: 1; transform: none; }
+  <style>
+    /* =========================
+       Basic reset and page setup
+    ========================== */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
-        .container { max-width: 80rem; margin: 0 auto; padding: 0 1rem; }
-        @media (min-width: 640px)  { .container { padding: 0 1.5rem; } }
-        @media (min-width: 1024px) { .container { padding: 0 2rem; } }
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      background: #f8fbff;
+      color: #0f172a;
+      line-height: 1.6;
+    }
 
-        a { color: inherit; text-decoration: none; }
+    a {
+      text-decoration: none;
+    }
 
-        .btn-primary { display: inline-flex; align-items: center; gap: .5rem; background: #2563eb; color: #fff; padding: .75rem 1.5rem; border-radius: .5rem; border: none; font-size: 1rem; font-weight: 500; cursor: pointer; transition: background .2s; }
-        .btn-primary:hover { background: #1d4ed8; }
-        .btn-outline { display: inline-flex; align-items: center; gap: .5rem; background: #fff; color: #2563eb; padding: .75rem 1.5rem; border-radius: .5rem; border: 2px solid #2563eb; font-size: 1rem; font-weight: 500; cursor: pointer; transition: background .2s; }
-        .btn-outline:hover { background: #eff6ff; }
+    .container {
+      width: min(1200px, 92%);
+      margin: auto;
+    }
 
-        nav { border-bottom: 1px solid #e5e7eb; position: sticky; top: 0; background: #fff; z-index: 100; }
-        .nav-inner { display: flex; align-items: center; justify-content: space-between; height: 4rem; }
-        .nav-links { display: none; align-items: center; gap: 1.5rem; }
-        @media (min-width: 768px) { .nav-links { display: flex; } }
-        .nav-links .nav-link, .nav-link { color: #374151; cursor: pointer; transition: color .2s; background: none; border: none; font-size: 1rem; }
-        .nav-links .nav-link:hover, .nav-links .nav-link.active, .nav-link:hover, .nav-link.active { color: #2563eb; }
-        .hamburger { display: flex; align-items: center; justify-content: center; background: none; border: none; cursor: pointer; padding: .25rem; }
-        @media (min-width: 768px) { .hamburger { display: none; } }
-        .mobile-menu { display: none; flex-direction: column; gap: 1rem; padding: 1rem 0; border-top: 1px solid #e5e7eb; }
-        .mobile-menu.open { display: flex; }
-        .mobile-menu .nav-link { text-align: left; font-size: 1rem; }
+    /* =========================
+       Navigation
+    ========================== */
+    nav {
+      background: white;
+      border-bottom: 1px solid #e5e7eb;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
 
-        .hero { background: linear-gradient(135deg, #eff6ff 0%, #eef2ff 100%); padding: 4rem 0; text-align: center; }
-        .hero h1 { font-size: clamp(2rem, 5vw, 3rem); font-weight: 700; margin-bottom: 1rem; color: #111827; }
-        .hero p { font-size: 1.125rem; color: #374151; max-width: 38rem; margin: 0 auto 2rem; line-height: 1.7; }
-        .hero-buttons { display: flex; flex-wrap: wrap; gap: 1rem; justify-content: center; }
+    .nav-inner {
+      min-height: 78px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 25px;
+    }
 
-        section { padding: 3rem 0; }
-        section.bg-gray { background: #f9fafb; }
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 800;
+      color: #111827;
+      min-width: 170px;
+    }
 
-        h2.section-title { font-size: 1.875rem; font-weight: 700; color: #111827; margin-bottom: 2.5rem; text-align: center; }
+    .logo-circle {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      background: #eff6ff;
+      display: grid;
+      place-items: center;
+      font-size: 22px;
+    }
 
-        main { flex: 1; }
+    .logo span {
+      display: block;
+      color: red;
+    }
 
-        footer { background: #111827; color: #fff; padding: 2rem 0; margin-top: auto; }
-        .footer-inner { display: flex; flex-direction: column; align-items: center; gap: 1rem; }
-        @media (min-width: 768px) { .footer-inner { flex-direction: row; justify-content: space-between; } }
-        .footer-copy { font-size: .875rem; color: #9ca3af; }
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 26px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
 
-        .prose h2 { font-size: 1.875rem; font-weight: 700; color: #111827; margin-bottom: 1rem; margin-top: 3rem; }
-        .prose p { color: #374151; line-height: 1.7; margin-bottom: 1.5rem; }
+    .nav-link {
+      color: #020617;
+      font-size: 15px;
+      font-weight: 700;
+      padding: 10px 0;
+      position: relative;
+    }
 
-        /* small utility */
-        .links-grid { display: grid; gap: 1rem; grid-template-columns: repeat(1, minmax(0, 1fr)); }
-        @media (min-width: 640px) { .links-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
-        @media (min-width: 1024px) { .links-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
-        </style>
-    <link rel="stylesheet" href="about.css" />
+    .nav-link:hover,
+    .nav-link.active {
+      color: #2563eb;
+    }
+
+    .nav-link.active::after,
+    .nav-link:hover::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: -8px;
+      width: 100%;
+      height: 3px;
+      background: #2563eb;
+      border-radius: 999px;
+    }
+
+    /* =========================
+       Hero section
+    ========================== */
+    .hero {
+      position: relative;
+      overflow: hidden;
+      color: white;
+      background:
+        radial-gradient(circle at 80% 45%, rgba(37, 99, 235, 0.45), transparent 25%),
+        radial-gradient(circle at 8% 45%, rgba(37, 99, 235, 0.25), transparent 24%),
+        linear-gradient(135deg, #020617 0%, #06224a 55%, #020617 100%);
+      padding: 95px 0;
+    }
+
+    .hero::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(59,130,246,.18) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(59,130,246,.18) 1px, transparent 1px);
+      background-size: 55px 55px;
+      opacity: .18;
+    }
+
+    .hero-inner {
+      position: relative;
+      z-index: 2;
+      display: grid;
+      grid-template-columns: 1.1fr .9fr;
+      gap: 50px;
+      align-items: center;
+    }
+
+    .hero h1 {
+      font-size: clamp(42px, 6vw, 70px);
+      line-height: 1.05;
+      font-weight: 900;
+      letter-spacing: -1.5px;
+      margin-bottom: 22px;
+    }
+
+    .hero h1 span {
+      display: block;
+      color: #1677ff;
+    }
+
+    .hero p {
+      max-width: 650px;
+      font-size: 20px;
+      color: #f1f5f9;
+      line-height: 1.8;
+    }
+
+    .hero-img {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .hero-img img {
+      width: min(330px, 100%);
+      animation: floatRobot 4s ease-in-out infinite;
+      filter: drop-shadow(0 25px 35px rgba(0,0,0,.55));
+    }
+
+    @keyframes floatRobot {
+      0%, 100% {
+        transform: translateY(0);
+      }
+
+      50% {
+        transform: translateY(-14px);
+      }
+    }
+
+    /* =========================
+       Main content sections
+    ========================== */
+    section {
+      padding: 75px 0;
+    }
+
+    .light-section {
+      background: linear-gradient(180deg, #f8fbff, #eef5ff);
+    }
+
+    .section-label {
+      color: #2563eb;
+      font-weight: 900;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+
+    .section-label::after {
+      content: "";
+      display: block;
+      width: 36px;
+      height: 3px;
+      background: #2563eb;
+      margin-top: 10px;
+      border-radius: 999px;
+    }
+
+    .content-grid {
+      display: grid;
+      grid-template-columns: .9fr 1.1fr;
+      gap: 50px;
+      align-items: start;
+    }
+
+    .content-card {
+      background: white;
+      padding: 35px;
+      border-radius: 18px;
+      box-shadow: 0 14px 35px rgba(15, 23, 42, 0.1);
+    }
+
+    .content-card h2 {
+      font-size: 34px;
+      margin-bottom: 18px;
+      color: #0f172a;
+    }
+
+    .content-card p {
+      font-size: 17px;
+      color: #334155;
+      margin-bottom: 18px;
+    }
+
+    .side-card {
+      background: #020617;
+      color: white;
+      padding: 35px;
+      border-radius: 18px;
+      box-shadow: 0 14px 35px rgba(15, 23, 42, 0.18);
+    }
+
+    .side-card h3 {
+      font-size: 26px;
+      margin-bottom: 16px;
+    }
+
+    .side-card p {
+      color: #cbd5e1;
+      font-size: 17px;
+    }
+
+    /* =========================
+       Why RoboCupJunior cards
+    ========================== */
+    .section-title {
+      text-align: center;
+      font-size: 40px;
+      margin-bottom: 45px;
+      color: #0f172a;
+    }
+
+    .section-title::after {
+      content: "";
+      display: block;
+      width: 50px;
+      height: 4px;
+      background: #2563eb;
+      border-radius: 999px;
+      margin: 14px auto 0;
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+
+    .value-card {
+      background: white;
+      padding: 30px;
+      border-radius: 18px;
+      box-shadow: 0 14px 35px rgba(15, 23, 42, 0.1);
+      transition: .25s ease;
+      border-top: 4px solid #2563eb;
+    }
+
+    .value-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 20px 45px rgba(15, 23, 42, 0.16);
+    }
+
+    .value-icon {
+      width: 58px;
+      height: 58px;
+      border-radius: 50%;
+      background: #eff6ff;
+      display: grid;
+      place-items: center;
+      font-size: 26px;
+      margin-bottom: 18px;
+    }
+
+    .value-card h3 {
+      font-size: 20px;
+      margin-bottom: 12px;
+      color: #0f172a;
+    }
+
+    .value-card p {
+      color: #475569;
+      font-size: 16px;
+    }
+
+    /* =========================
+       Community section
+    ========================== */
+    .community-box {
+      background:
+        radial-gradient(circle at 90% 20%, rgba(37, 99, 235, 0.35), transparent 25%),
+        linear-gradient(135deg, #020617, #06224a);
+      color: white;
+      padding: 50px;
+      border-radius: 22px;
+      box-shadow: 0 20px 45px rgba(15, 23, 42, 0.18);
+    }
+
+    .community-box h2 {
+      font-size: 36px;
+      margin-bottom: 20px;
+    }
+
+    .community-box p {
+      color: #e5e7eb;
+      font-size: 18px;
+      margin-bottom: 18px;
+    }
+
+    .community-box a {
+      color: #60a5fa;
+      font-weight: 800;
+    }
+
+    .community-box a:hover {
+      color: white;
+    }
+
+    /* =========================
+       Footer
+    ========================== */
+    footer {
+      background: #020617;
+      color: #94a3b8;
+      text-align: center;
+      padding: 26px;
+      font-size: 14px;
+    }
+
+    /* =========================
+       Responsive layout
+    ========================== */
+    @media (max-width: 900px) {
+      .nav-inner {
+        flex-direction: column;
+        padding: 16px 0;
+      }
+
+      .nav-links {
+        gap: 16px;
+      }
+
+      .hero-inner,
+      .content-grid {
+        grid-template-columns: 1fr;
+        text-align: center;
+      }
+
+      .hero p {
+        margin: auto;
+      }
+
+      .section-label::after {
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      .cards {
+        grid-template-columns: 1fr;
+      }
+
+      .community-box {
+        padding: 32px;
+      }
+    }
+  </style>
 </head>
 <body>
-    <nav>
-        <div class="container">
-            <div class="nav-inner">
-                <div class="nav-links">
-                    <a class="nav-link" href="index_fr.html">Accueil</a>
-                    <a class="nav-link active" href="about_fr.html">À propos</a>
-                    <a class="nav-link" href="leagues_fr.html">Ligues & Règles</a>
-                    <a class="nav-link" href="registration_fr.html">Inscription en ligne</a>
-                    <a class="nav-link" href="schedule_fr.html">Calendrier</a>
-                    <a class="nav-link" href="gallery_fr.html">Galerie</a>
-                    <a class="nav-link" href="resources_fr.html">Ressources</a>
-                    <a class="nav-link" href="contact_fr.html">Contact</a>
-                    <a class="nav-link" href="about.html">English</a>
-                </div>
-                <button class="hamburger" onclick="toggleMobile()" aria-label="Menu">
-                    <svg id="icon-menu" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#374151" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <line x1="4" y1="6" x2="20" y2="6"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="18" x2="20" y2="18"/>
-                    </svg>
-                    <svg id="icon-x" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#374151" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none">
-                        <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
-                    </svg>
-                </button>
-            </div>
-            <div class="mobile-menu" id="mobile-menu">
-                <a class="nav-link" href="index_fr.html">Accueil</a>
-                <a class="nav-link active" href="about_fr.html">À propos</a>
-                <a class="nav-link" href="leagues_fr.html">Ligues & Règles</a>
-                <a class="nav-link" href="registration_fr.html">Inscription en ligne</a>
-                <a class="nav-link" href="schedule_fr.html">Calendrier</a>
-                <a class="nav-link" href="gallery_fr.html">Galerie</a>
-                <a class="nav-link" href="resources_fr.html">Ressources</a>
-                <a class="nav-link" href="contact_fr.html">Contact</a>
-                <a class="nav-link" href="about.html">English</a>
-            </div>
+
+  <!-- Main navigation: same theme as homepage -->
+  <nav>
+    <div class="container nav-inner">
+      <a href="index_fr.html" class="logo">
+        <div class="logo-circle">&#129302;</div>
+        <div>
+          RoboCupJunior
+          <span>Canada</span>
         </div>
-    </nav>
+      </a>
 
-    <main>
-        <section class="hero">
-            <div class="container">
-                <h1>À propos de RoboCupJunior</h1>
-                <p>RoboCupJunior est une initiative éducative internationale en robotique pour les jeunes, encourageant l'apprentissage par la robotique, la programmation, le travail d'équipe et l'innovation.</p>
-            </div>
-        </section>
+      <div class="nav-links">
+        <a class="nav-link" href="index_fr.html">Accueil</a>
+        <a class="nav-link active" href="about_fr.html">À propos</a>
+        <a class="nav-link" href="leagues_fr.html">Ligues & Règles</a>
+        <a class="nav-link" href="registration_fr.html">Inscription en ligne</a>
+        <a class="nav-link" href="schedule_fr.html">Calendrier</a>
+        <a class="nav-link" href="gallery_fr.html">Galerie</a>
+        <a class="nav-link" href="resources_fr.html">Ressources</a>
+        <a class="nav-link" href="contact_fr.html">Contact</a>
+        <a class="nav-link" href="admin/index.html">Admin</a>
+        <a class="nav-link" href="about.html">English</a>
+      </div>
+    </div>
+  </nav>
 
-        <section>
-            <div class="container prose">
-                <h2>À propos de RoboCup</h2>
-                <p>RoboCup est animé par une équipe de bénévoles, chercheurs et professionnels qui offrent des opportunités d'apprentissage en robotique pour les élèves.</p>
-            </div>
-        </section>
-    </main>
+  <!-- Hero section: gives this page the same visual identity as the homepage -->
+  <header class="hero">
+    <div class="container hero-inner">
+      <div>
+        <h1>
+          À propos
+          <span>RoboCupJunior</span>
+        </h1>
+
+        <p>
+          RoboCupJunior est une initiative éducative internationale en robotique pour les jeunes, encourageant l'apprentissage par la robotique, la programmation, le travail d'équipe et l'innovation.
+        </p>
+      </div>
+
+      <div class="hero-img">
+        <img src="images/robocup_white_world-horizontal.png" alt="RoboCup logo">
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- About information section -->
+    <section class="light-section">
+      <div class="container content-grid">
+        <div class="side-card">
+          <h3>Apprendre par la robotique</h3>
+          <p>
+            RoboCupJunior aide les étudiants à développer de véritables compétences techniques tout en développant la créativité, la communication et les capacités de résolution de problèmes.
+          </p>
+        </div>
+
+        <div class="content-card">
+          <div class="section-label">À propos de nous</div>
+
+          <h2>Qu'est-ce que RoboCup?</h2>
+
+          <p>
+            L'organisation RoboCup est dirigée par une équipe dévouée de bénévoles, de chercheurs, de professionnels et bien d'autres à travers le monde. RoboCup offre des opportunités aux étudiants de 10 à 19 ans dans les ligues juniors et aux étudiants de 19 ans et plus dans la division majeure.
+          </p>
+
+          <h2>Qu'est-ce que RoboCupJunior?</h2>
+
+          <p>
+            RoboCupJunior est une initiative éducative orientée vers les projets qui parraine des événements robotiques locaux, régionaux et internationaux pour les jeunes étudiants. Il est conçu pour introduire l'apprentissage de la robotique par une approche interdisciplinaire pour les étudiants du primaire et du secondaire.
+          </p>
+
+          <p>
+            RoboCupJunior se distingue par sa collaboration internationale et sa forte communauté de pratique en robotique dans le monde entier depuis 2000.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Value cards section -->
+    <section>
+      <div class="container">
+        <h2 class="section-title">Pourquoi RoboCupJunior?</h2>
+
+        <div class="cards">
+          <div class="value-card">
+            <div class="value-icon">🎓</div>
+            <h3>Apprentissage pratique</h3>
+            <p>Acquérir des compétences pratiques en robotique, programmation et ingénierie par l'expérience directe.</p>
+          </div>
+
+          <div class="value-card">
+            <div class="value-icon">🤝</div>
+            <h3>Travail d'équipe</h3>
+            <p>Collaborer avec des camarades pour concevoir, construire et programmer des robots dans un environnement compétitif.</p>
+          </div>
+
+          <div class="value-card">
+            <div class="value-icon">🌍</div>
+            <h3>Communauté mondiale</h3>
+            <p>Se connecter avec des étudiants du monde entier et participer à des compétitions internationales.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Community section -->
+    <section class="light-section">
+      <div class="container">
+        <div class="community-box">
+          <h2>Rejoignez la communauté RoboCupJunior</h2>
+          <p>
+            Êtes-vous prêt à explorer le monde de la robotique? Que vous soyez un étudiant enthousiaste ou un parent curieux, RoboCupJunior offre des opportunités passionnantes pour apprendre, créer et collaborer.
+          </p>
+          <p>
+            <a href="registration_fr.html">Inscrivez-vous dès maintenant</a> pour participer à nos événements et commencer votre voyage robotique.
+          </p>
+        </div>
+      </div>
+    </section>
+  </main>
 
     <footer>
         <div class="container footer-inner">
             <p class="footer-copy">© 2026 RoboCupJunior Canada. Tous droits réservés.</p>
         </div>
     </footer>
-<script>
-    function toggleMobile() { const menu = document.getElementById('mobile-menu'); const open = menu.classList.toggle('open'); document.getElementById('icon-menu').style.display = open ? 'none' : ''; document.getElementById('icon-x').style.display = open ? '' : 'none'; }
-    window.addEventListener('pageshow', () => document.body.classList.add('page-loaded'));
-    window.addEventListener('load', () => document.body.classList.add('page-loaded'));
-</script>
+
 </body>
 </html>
