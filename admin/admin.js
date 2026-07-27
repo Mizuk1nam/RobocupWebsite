@@ -1,11 +1,24 @@
 (function () {
+  const COMPETITIONS = [
+    "Maze",
+    "Formula 1",
+    "Performance",
+    "SumoBots",
+    "Rescue Line",
+    "Rescue Maze",
+    "Soccer",
+    "OnStage"
+  ];
+  const BRACKET_COMPETITIONS = COMPETITIONS.slice();
   const DEMO_ADMIN_EMAIL = "admin@robocup.test";
   const DEMO_ADMIN_PASSWORD = "robocup123";
   const DEMO_ADMIN_SESSION_KEY = "robocupDemoAdminSession";
+  const BRACKET_STORAGE_KEY = "robocupBracketState";
   const message = document.getElementById("auth-message") || document.getElementById("dashboard-message");
   const isFrench = document.documentElement.lang === "fr";
   const loginPage = isFrench ? "index_fr.html" : "index.html";
   const dashboardPage = isFrench ? "dashboard_fr.html" : "dashboard.html";
+  let cachedTeams = [];
   const labels = {
     supabaseMissing: isFrench
       ? "Supabase n'est pas encore configuré. Ajoutez l'URL du projet et la clé publique anon."
@@ -27,7 +40,31 @@
     noScores: isFrench ? "Aucun score enregistré." : "No scores saved yet.",
     teamSaved: isFrench ? "Équipe enregistrée." : "Team saved.",
     scoreSaved: isFrench ? "Score enregistré." : "Score saved.",
-    refreshed: isFrench ? "Tableau de bord actualisé." : "Dashboard refreshed."
+    refreshed: isFrench ? "Tableau de bord actualisé." : "Dashboard refreshed.",
+    bracketTeams: isFrench ? "équipes" : "teams",
+    bracketNeedsTeams: isFrench
+      ? "Ajoutez au moins deux équipes pour générer un tableau."
+      : "Add at least two teams to generate a bracket.",
+    bracketMissing: isFrench
+      ? "Aucun tableau n'a encore été généré pour cette compétition."
+      : "No bracket has been generated for this competition yet.",
+    bracketStale: isFrench
+      ? "La liste des équipes a changé. Régénérez le tableau pour synchroniser les matchs."
+      : "The team list changed. Regenerate the bracket to sync the matches.",
+    generateBracket: isFrench ? "Générer le tableau" : "Generate bracket",
+    regenerateBracket: isFrench ? "Régénérer le tableau" : "Regenerate bracket",
+    resetBracket: isFrench ? "Réinitialiser le tableau" : "Reset bracket",
+    bracketGenerated: isFrench ? "Tableau généré." : "Bracket generated.",
+    bracketReset: isFrench ? "Tableau réinitialisé." : "Bracket reset.",
+    bracketSaved: isFrench ? "Résultat du match enregistré." : "Match result saved.",
+    bracketNeedScores: isFrench
+      ? "Entrez deux scores différents pour choisir un gagnant."
+      : "Enter two different scores to choose a winner.",
+    bracketWaiting: isFrench ? "En attente d'équipes" : "Waiting for teams",
+    bracketBye: isFrench ? "Passe automatique" : "Bye advances automatically",
+    bracketWinner: isFrench ? "Gagnant" : "Winner",
+    bracketChampion: isFrench ? "Champion" : "Champion",
+    noTeamName: isFrench ? "Équipe inconnue" : "Unknown team"
   };
 
   function setMessage(text, type) {
@@ -35,6 +72,26 @@
     message.textContent = text;
     message.classList.remove("error", "success");
     if (type) message.classList.add(type);
+  }
+
+  function setupTabs() {
+    const tabButtons = Array.from(document.querySelectorAll(".dashboard-tab"));
+    const tabPanels = Array.from(document.querySelectorAll(".dashboard-tab-panel"));
+    if (!tabButtons.length || !tabPanels.length) return;
+
+    function activateTab(targetId) {
+      tabButtons.forEach((button) => {
+        button.classList.toggle("active", button.dataset.tabTarget === targetId);
+      });
+
+      tabPanels.forEach((panel) => {
+        panel.classList.toggle("active", panel.id === targetId);
+      });
+    }
+
+    tabButtons.forEach((button) => {
+      button.addEventListener("click", () => activateTab(button.dataset.tabTarget));
+    });
   }
 
   function isDemoAdminLogin(email, password) {
@@ -103,6 +160,372 @@
 
   function useDemoStorage() {
     return isDemoAdminAuthenticated() || !window.isSupabaseConfigured || !window.supabaseClient;
+  }
+
+  function getBracketState() {
+    try {
+      return JSON.parse(localStorage.getItem(BRACKET_STORAGE_KEY) || "{}") || {};
+    } catch (error) {
+      return {};
+    }
+  }
+
+  function saveBracketState(state) {
+    localStorage.setItem(BRACKET_STORAGE_KEY, JSON.stringify(state));
+  }
+
+  function setCompetitionBracket(competition, bracket) {
+    const state = getBracketState();
+    state[competition] = bracket;
+    saveBracketState(state);
+  }
+
+  function clearCompetitionBracket(competition) {
+    const state = getBracketState();
+    delete state[competition];
+    saveBracketState(state);
+  }
+
+  function normalizeId(value) {
+    return value == null ? null : String(value);
+  }
+
+  function getTeamMap(teams) {
+    return Object.fromEntries(teams.map((team) => [normalizeId(team.id), team]));
+  }
+
+  function getTeamsForCompetition(teams, competition) {
+    return teams.filter((team) => team.competition === competition);
+  }
+
+  function arraysEqual(left, right) {
+    if (left.length !== right.length) return false;
+    return left.every((value, index) => value === right[index]);
+  }
+
+  function isBracketStale(bracket, teams) {
+    if (!bracket) return false;
+    const currentIds = teams.map((team) => normalizeId(team.id)).sort();
+    const bracketIds = (bracket.teamIds || []).map((teamId) => normalizeId(teamId)).sort();
+    return !arraysEqual(currentIds, bracketIds);
+  }
+
+  function nextPowerOfTwo(value) {
+    let size = 1;
+    while (size < value) size *= 2;
+    return size;
+  }
+
+  function getRoundLabel(roundNumber, totalRounds) {
+    if (roundNumber === totalRounds) {
+      return isFrench ? "Finale" : "Final";
+    }
+
+    if (roundNumber === totalRounds - 1) {
+      return isFrench ? "Demi-finales" : "Semifinals";
+    }
+
+    if (roundNumber === totalRounds - 2) {
+      return isFrench ? "Quarts de finale" : "Quarterfinals";
+    }
+
+    return isFrench ? `Ronde ${roundNumber}` : `Round ${roundNumber}`;
+  }
+
+  function parseScore(value) {
+    if (value === "" || value == null) return null;
+    const parsed = Number(value);
+    return Number.isFinite(parsed) ? parsed : null;
+  }
+
+  function getMatchWinner(match) {
+    if (match.teamAId && !match.teamBId) return match.teamAId;
+    if (!match.teamAId && match.teamBId) return match.teamBId;
+    if (!match.teamAId && !match.teamBId) return null;
+
+    const scoreA = parseScore(match.teamAScore);
+    const scoreB = parseScore(match.teamBScore);
+    if (scoreA == null || scoreB == null || scoreA === scoreB) return null;
+    return scoreA > scoreB ? match.teamAId : match.teamBId;
+  }
+
+  function recalculateBracket(bracket) {
+    bracket.rounds.forEach((round, roundIndex) => {
+      round.forEach((match) => {
+        match.winnerId = getMatchWinner(match);
+      });
+
+      const nextRound = bracket.rounds[roundIndex + 1];
+      if (!nextRound) return;
+
+      const desiredAssignments = nextRound.map(() => ({ teamAId: null, teamBId: null }));
+      round.forEach((match, matchIndex) => {
+        const nextIndex = Math.floor(matchIndex / 2);
+        const slotKey = matchIndex % 2 === 0 ? "teamAId" : "teamBId";
+        desiredAssignments[nextIndex][slotKey] = match.winnerId;
+      });
+
+      nextRound.forEach((match, matchIndex) => {
+        const desired = desiredAssignments[matchIndex];
+        const teamAId = desired.teamAId;
+        const teamBId = desired.teamBId;
+        if (match.teamAId !== teamAId || match.teamBId !== teamBId) {
+          match.teamAId = teamAId;
+          match.teamBId = teamBId;
+          match.teamAScore = "";
+          match.teamBScore = "";
+          match.winnerId = null;
+        }
+      });
+    });
+
+    const finalRound = bracket.rounds[bracket.rounds.length - 1] || [];
+    bracket.championId = finalRound[0]?.winnerId || null;
+    return bracket;
+  }
+
+  function createBracket(competition, teams) {
+    const seededTeams = teams
+      .slice()
+      .sort((left, right) => left.team_name.localeCompare(right.team_name));
+    const size = nextPowerOfTwo(seededTeams.length);
+    const totalRounds = Math.log2(size);
+    const rounds = [];
+    let teamIndex = 0;
+
+    for (let roundNumber = 1; roundNumber <= totalRounds; roundNumber += 1) {
+      const matchCount = size / (2 ** roundNumber);
+      const matches = [];
+      for (let matchNumber = 1; matchNumber <= matchCount; matchNumber += 1) {
+        const match = {
+          id: `${competition}-${roundNumber}-${matchNumber}`,
+          roundNumber,
+          matchNumber,
+          teamAId: null,
+          teamBId: null,
+          teamAScore: "",
+          teamBScore: "",
+          winnerId: null
+        };
+
+        if (roundNumber === 1) {
+          match.teamAId = normalizeId(seededTeams[teamIndex]?.id);
+          teamIndex += 1;
+          match.teamBId = normalizeId(seededTeams[teamIndex]?.id);
+          teamIndex += 1;
+        }
+
+        matches.push(match);
+      }
+      rounds.push(matches);
+    }
+
+    return recalculateBracket({
+      competition,
+      generatedAt: new Date().toISOString(),
+      teamIds: seededTeams.map((team) => normalizeId(team.id)),
+      rounds,
+      championId: null
+    });
+  }
+
+  function getMatchStatus(match, teamLookup) {
+    if (!match.teamAId && !match.teamBId) {
+      return { text: labels.bracketWaiting, pending: true };
+    }
+
+    if ((match.teamAId && !match.teamBId) || (!match.teamAId && match.teamBId)) {
+      return { text: labels.bracketBye, pending: false };
+    }
+
+    if (!match.winnerId) {
+      return { text: labels.bracketWaiting, pending: true };
+    }
+
+    const winner = teamLookup[normalizeId(match.winnerId)];
+    return {
+      text: `${labels.bracketWinner}: ${escapeHtml(winner?.team_name || labels.noTeamName)}`,
+      pending: false
+    };
+  }
+
+  function renderBracketMatch(match, competition, teamLookup) {
+    const teamA = teamLookup[normalizeId(match.teamAId)];
+    const teamB = teamLookup[normalizeId(match.teamBId)];
+    const status = getMatchStatus(match, teamLookup);
+    const canSave = Boolean(match.teamAId && match.teamBId);
+    const teamAName = teamA?.team_name || labels.bracketWaiting;
+    const teamBName = teamB?.team_name || labels.bracketWaiting;
+
+    return `
+      <article class="match-card">
+        <div class="match-card-header">
+          <span>${isFrench ? "Match" : "Match"} ${match.matchNumber}</span>
+          <span class="match-status${status.pending ? " pending" : ""}">${status.text}</span>
+        </div>
+        <div class="match-teams">
+          <div class="match-team${normalizeId(match.winnerId) === normalizeId(match.teamAId) ? " winner" : ""}">
+            <span class="match-team-name${teamA ? "" : " placeholder"}">${escapeHtml(teamAName)}</span>
+            <input
+              class="score-input"
+              type="number"
+              step="0.01"
+              data-score-slot="teamA"
+              value="${escapeHtml(match.teamAScore)}"
+              ${canSave ? "" : "disabled"}
+            />
+          </div>
+          <div class="match-team${normalizeId(match.winnerId) === normalizeId(match.teamBId) ? " winner" : ""}">
+            <span class="match-team-name${teamB ? "" : " placeholder"}">${escapeHtml(teamBName)}</span>
+            <input
+              class="score-input"
+              type="number"
+              step="0.01"
+              data-score-slot="teamB"
+              value="${escapeHtml(match.teamBScore)}"
+              ${canSave ? "" : "disabled"}
+            />
+          </div>
+        </div>
+        <div class="match-card-footer">
+          <span class="match-note">${canSave ? "" : labels.bracketBye}</span>
+          <button
+            class="secondary-action small-action save-match-button"
+            type="button"
+            data-competition="${escapeHtml(competition)}"
+            data-round-number="${match.roundNumber}"
+            data-match-number="${match.matchNumber}"
+            ${canSave ? "" : "disabled"}
+          >
+            ${isFrench ? "Enregistrer le match" : "Save match"}
+          </button>
+        </div>
+      </article>
+    `;
+  }
+
+  function renderCompetitionBracket(competition, teams, bracket, teamLookup) {
+    const stale = isBracketStale(bracket, teams);
+    const hasBracket = Boolean(bracket && bracket.rounds?.length);
+    const headingBadges = [
+      `<span class="bracket-badge">${teams.length} ${labels.bracketTeams}</span>`
+    ];
+    if (stale) {
+      headingBadges.push(`<span class="bracket-badge warning">${labels.bracketStale}</span>`);
+    }
+
+    let content = `<div class="bracket-empty">${labels.bracketMissing}</div>`;
+    if (teams.length < 2) {
+      content = `<div class="bracket-empty">${labels.bracketNeedsTeams}</div>`;
+    } else if (hasBracket) {
+      content = `
+        <div class="bracket-rounds">
+          ${bracket.rounds.map((round) => `
+            <section class="bracket-round">
+              <h4>${getRoundLabel(round[0].roundNumber, bracket.rounds.length)}</h4>
+              <div class="round-match-list">
+                ${round.map((match) => renderBracketMatch(match, competition, teamLookup)).join("")}
+              </div>
+            </section>
+          `).join("")}
+        </div>
+        ${bracket.championId ? `
+          <div class="champion-banner">
+            ${labels.bracketChampion}: ${escapeHtml(teamLookup[normalizeId(bracket.championId)]?.team_name || labels.noTeamName)}
+          </div>
+        ` : ""}
+      `;
+    }
+
+    return `
+      <article class="competition-bracket">
+        <div class="competition-bracket-header">
+          <div>
+            <h3>${escapeHtml(competition)}</h3>
+            <div class="competition-bracket-meta">${headingBadges.join("")}</div>
+          </div>
+          <div class="bracket-actions">
+            <button
+              class="primary-action small-action generate-bracket-button"
+              type="button"
+              data-competition="${escapeHtml(competition)}"
+              ${teams.length < 2 ? "disabled" : ""}
+            >
+              ${hasBracket ? labels.regenerateBracket : labels.generateBracket}
+            </button>
+            <button
+              class="danger-action small-action reset-bracket-button"
+              type="button"
+              data-competition="${escapeHtml(competition)}"
+              ${hasBracket ? "" : "disabled"}
+            >
+              ${labels.resetBracket}
+            </button>
+          </div>
+        </div>
+        ${content}
+      </article>
+    `;
+  }
+
+  function renderBrackets(teams) {
+    const container = document.getElementById("brackets-container");
+    if (!container) return;
+
+    const bracketState = getBracketState();
+    const teamLookup = getTeamMap(teams);
+    container.innerHTML = BRACKET_COMPETITIONS.map((competition) => {
+      const competitionTeams = getTeamsForCompetition(teams, competition);
+      return renderCompetitionBracket(competition, competitionTeams, bracketState[competition], teamLookup);
+    }).join("");
+  }
+
+  function generateCompetitionBracket(competition) {
+    const teams = getTeamsForCompetition(cachedTeams, competition);
+    if (teams.length < 2) {
+      setMessage(labels.bracketNeedsTeams, "error");
+      return;
+    }
+
+    const bracket = createBracket(competition, teams);
+    setCompetitionBracket(competition, bracket);
+    renderBrackets(cachedTeams);
+    setMessage(labels.bracketGenerated, "success");
+  }
+
+  function resetCompetitionBracket(competition) {
+    clearCompetitionBracket(competition);
+    renderBrackets(cachedTeams);
+    setMessage(labels.bracketReset, "success");
+  }
+
+  function saveBracketMatchResult(competition, roundNumber, matchNumber, teamAScore, teamBScore) {
+    const bracketState = getBracketState();
+    const bracket = bracketState[competition];
+    if (!bracket) {
+      setMessage(labels.bracketMissing, "error");
+      return;
+    }
+
+    const match = bracket.rounds[roundNumber - 1]?.find((item) => item.matchNumber === matchNumber);
+    if (!match || !match.teamAId || !match.teamBId) {
+      setMessage(labels.bracketWaiting, "error");
+      return;
+    }
+
+    const parsedA = parseScore(teamAScore);
+    const parsedB = parseScore(teamBScore);
+    if (parsedA == null || parsedB == null || parsedA === parsedB) {
+      setMessage(labels.bracketNeedScores, "error");
+      return;
+    }
+
+    match.teamAScore = String(parsedA);
+    match.teamBScore = String(parsedB);
+    recalculateBracket(bracket);
+    setCompetitionBracket(competition, bracket);
+    renderBrackets(cachedTeams);
+    setMessage(labels.bracketSaved, "success");
   }
 
   async function getProfile(userId) {
@@ -212,6 +635,8 @@
           `).join("");
         }
       }
+      cachedTeams = demoTeams;
+      renderBrackets(cachedTeams);
       return demoTeams;
     }
 
@@ -259,6 +684,8 @@
       }
     }
 
+    cachedTeams = data;
+    renderBrackets(cachedTeams);
     return data;
   }
 
@@ -370,6 +797,7 @@
 
   const teamForm = document.getElementById("team-form");
   if (teamForm) {
+    setupTabs();
     setupDashboard();
 
     teamForm.addEventListener("submit", async (event) => {
@@ -477,12 +905,44 @@
     });
   }
 
+  const bracketsContainer = document.getElementById("brackets-container");
+  if (bracketsContainer) {
+    bracketsContainer.addEventListener("click", (event) => {
+      const generateButton = event.target.closest(".generate-bracket-button");
+      if (generateButton) {
+        generateCompetitionBracket(generateButton.dataset.competition);
+        return;
+      }
+
+      const resetButton = event.target.closest(".reset-bracket-button");
+      if (resetButton) {
+        resetCompetitionBracket(resetButton.dataset.competition);
+        return;
+      }
+
+      const saveMatchButton = event.target.closest(".save-match-button");
+      if (!saveMatchButton) return;
+
+      const matchCard = saveMatchButton.closest(".match-card");
+      const teamAScore = matchCard.querySelector('[data-score-slot="teamA"]').value;
+      const teamBScore = matchCard.querySelector('[data-score-slot="teamB"]').value;
+      saveBracketMatchResult(
+        saveMatchButton.dataset.competition,
+        Number(saveMatchButton.dataset.roundNumber),
+        Number(saveMatchButton.dataset.matchNumber),
+        teamAScore,
+        teamBScore
+      );
+    });
+  }
+
   const refreshButton = document.getElementById("refresh-button");
   if (refreshButton) {
     refreshButton.addEventListener("click", async () => {
       try {
         await loadTeams();
         await loadScores();
+        renderBrackets(cachedTeams);
         setMessage(labels.refreshed, "success");
       } catch (error) {
         setMessage(error.message, "error");

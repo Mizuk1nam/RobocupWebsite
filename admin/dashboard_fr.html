@@ -32,110 +32,129 @@
       Ajoutez l'URL du projet et la clé publique anon dans <code>admin/supabase-config.js</code>.
     </section>
 
-    <section class="dashboard-grid">
-      <article class="tool-panel">
-        <h2>Ajouter une équipe</h2>
-        <form id="team-form" class="stacked-form">
-          <label>
-            Nom de l'équipe
-            <input id="team-name" type="text" required />
-          </label>
-          <label>
-            Compétition
-            <select id="team-competition" required>
-              <option value="">Sélectionner une compétition</option>
-              <option>Maze</option>
-              <option>Formula 1</option>
-              <option>Performance</option>
-              <option>SumoBots</option>
-              <option>Rescue Line</option>
-              <option>Rescue Maze</option>
-              <option>Soccer</option>
-              <option>OnStage</option>
-            </select>
-          </label>
-          <label>
-            École / Organisation
-            <input id="team-school" type="text" />
-          </label>
-          <button class="primary-action" type="submit">Enregistrer l'équipe</button>
-        </form>
-      </article>
-
-      <article class="tool-panel">
-        <h2>Entrer un score</h2>
-        <form id="score-form" class="stacked-form">
-          <label>
-            Équipe
-            <select id="score-team" required>
-              <option value="">Sélectionner une équipe</option>
-            </select>
-          </label>
-          <label>
-            Ronde
-            <input id="score-round" type="number" min="1" value="1" required />
-          </label>
-          <label>
-            Score
-            <input id="score-value" type="number" step="0.01" required />
-          </label>
-          <label>
-            Notes
-            <textarea id="score-notes" rows="4"></textarea>
-          </label>
-          <button class="primary-action" type="submit">Enregistrer le score</button>
-        </form>
-      </article>
+    <section class="dashboard-tabs" aria-label="Sections du tableau de bord">
+      <button class="dashboard-tab active" type="button" data-tab-target="tools-panel">Outils</button>
+      <button class="dashboard-tab" type="button" data-tab-target="brackets-panel">Tableaux</button>
     </section>
 
-    <section class="tool-panel teams-panel">
-      <div class="panel-heading">
-        <h2>Équipes</h2>
-      </div>
-      <div class="table-wrap">
-        <table>
-          <thead>
-            <tr>
-              <th>Équipe</th>
-              <th>Compétition</th>
-              <th>École / Organisation</th>
-              <th>Action</th>
-            </tr>
-          </thead>
-          <tbody id="teams-table">
-            <tr>
-              <td colspan="4">Aucune équipe chargée.</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+    <section id="tools-panel" class="dashboard-tab-panel active">
+      <section class="dashboard-grid">
+        <article class="tool-panel">
+          <h2>Ajouter une équipe</h2>
+          <form id="team-form" class="stacked-form">
+            <label>
+              Nom de l'équipe
+              <input id="team-name" type="text" required />
+            </label>
+            <label>
+              Compétition
+              <select id="team-competition" required>
+                <option value="">Sélectionner une compétition</option>
+                <option>Maze</option>
+                <option>Formula 1</option>
+                <option>Performance</option>
+                <option>SumoBots</option>
+                <option>Rescue Line</option>
+                <option>Rescue Maze</option>
+                <option>Soccer</option>
+                <option>OnStage</option>
+              </select>
+            </label>
+            <label>
+              École / Organisation
+              <input id="team-school" type="text" />
+            </label>
+            <button class="primary-action" type="submit">Enregistrer l'équipe</button>
+          </form>
+        </article>
+
+        <article class="tool-panel">
+          <h2>Entrer un score</h2>
+          <form id="score-form" class="stacked-form">
+            <label>
+              Équipe
+              <select id="score-team" required>
+                <option value="">Sélectionner une équipe</option>
+              </select>
+            </label>
+            <label>
+              Ronde
+              <input id="score-round" type="number" min="1" value="1" required />
+            </label>
+            <label>
+              Score
+              <input id="score-value" type="number" step="0.01" required />
+            </label>
+            <label>
+              Notes
+              <textarea id="score-notes" rows="4"></textarea>
+            </label>
+            <button class="primary-action" type="submit">Enregistrer le score</button>
+          </form>
+        </article>
+      </section>
+
+      <section class="tool-panel teams-panel">
+        <div class="panel-heading">
+          <h2>Équipes</h2>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Équipe</th>
+                <th>Compétition</th>
+                <th>École / Organisation</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="teams-table">
+              <tr>
+                <td colspan="4">Aucune équipe chargée.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="tool-panel results-panel">
+        <div class="panel-heading">
+          <h2>Scores récents</h2>
+          <button id="refresh-button" class="secondary-action" type="button">Actualiser</button>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Équipe</th>
+                <th>Compétition</th>
+                <th>Ronde</th>
+                <th>Score</th>
+                <th>Notes</th>
+              </tr>
+            </thead>
+            <tbody id="scores-table">
+              <tr>
+                <td colspan="5">Aucun score chargé.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
     </section>
 
-    <section class="tool-panel results-panel">
-      <div class="panel-heading">
-        <h2>Scores récents</h2>
-        <button id="refresh-button" class="secondary-action" type="button">Actualiser</button>
-      </div>
-      <div class="table-wrap">
-        <table>
-          <thead>
-            <tr>
-              <th>Équipe</th>
-              <th>Compétition</th>
-              <th>Ronde</th>
-              <th>Score</th>
-              <th>Notes</th>
-            </tr>
-          </thead>
-          <tbody id="scores-table">
-            <tr>
-              <td colspan="5">Aucun score chargé.</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-      <p id="dashboard-message" class="form-message" role="status" aria-live="polite"></p>
+    <section id="brackets-panel" class="dashboard-tab-panel">
+      <section class="tool-panel brackets-panel">
+        <div class="panel-heading panel-heading-stack">
+          <div>
+            <h2>Tableaux de compétition</h2>
+          </div>
+        </div>
+        <div id="brackets-container" class="brackets-competition-list"></div>
+      </section>
     </section>
+
+    <p id="dashboard-message" class="form-message dashboard-message" role="status" aria-live="polite"></p>
   </main>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
