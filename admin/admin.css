@@ -371,6 +371,21 @@ td {
   margin-bottom: 24px;
 }
 
+.site-settings-panel {
+  margin-bottom: 24px;
+}
+
+.site-settings-form {
+  max-width: 700px;
+}
+
+.site-settings-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
 .dashboard-message {
   margin-top: 18px;
 }

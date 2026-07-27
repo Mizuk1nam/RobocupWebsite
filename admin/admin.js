@@ -14,6 +14,8 @@
   const DEMO_ADMIN_PASSWORD = "robocup123";
   const DEMO_ADMIN_SESSION_KEY = "robocupDemoAdminSession";
   const BRACKET_STORAGE_KEY = "robocupBracketState";
+  const SITE_SETTINGS_STORAGE_KEY = "robocupSiteSettings";
+  const DEFAULT_SITE_NAME = "RoboCupJunior Canada";
   const message = document.getElementById("auth-message") || document.getElementById("dashboard-message");
   const isFrench = document.documentElement.lang === "fr";
   const loginPage = isFrench ? "index_fr.html" : "index.html";
@@ -64,7 +66,10 @@
     bracketBye: isFrench ? "Passe automatique" : "Bye advances automatically",
     bracketWinner: isFrench ? "Gagnant" : "Winner",
     bracketChampion: isFrench ? "Champion" : "Champion",
-    noTeamName: isFrench ? "Équipe inconnue" : "Unknown team"
+    noTeamName: isFrench ? "Équipe inconnue" : "Unknown team",
+    siteNameRequired: isFrench ? "Entrez un nom de site pour les deux langues." : "Enter a site name for both languages.",
+    siteSettingsSaved: isFrench ? "Paramètres du site enregistrés." : "Site settings saved.",
+    siteSettingsReset: isFrench ? "Paramètres du site réinitialisés." : "Site settings reset."
   };
 
   function setMessage(text, type) {
@@ -160,6 +165,39 @@
 
   function useDemoStorage() {
     return isDemoAdminAuthenticated() || !window.isSupabaseConfigured || !window.supabaseClient;
+  }
+
+  function normalizeSiteName(value) {
+    return String(value || "").trim();
+  }
+
+  function getSiteSettings() {
+    try {
+      const raw = JSON.parse(localStorage.getItem(SITE_SETTINGS_STORAGE_KEY) || "{}") || {};
+      const siteNameEn = normalizeSiteName(raw.siteNameEn) || DEFAULT_SITE_NAME;
+      const siteNameFr = normalizeSiteName(raw.siteNameFr) || siteNameEn;
+      return { siteNameEn, siteNameFr };
+    } catch (error) {
+      return { siteNameEn: DEFAULT_SITE_NAME, siteNameFr: DEFAULT_SITE_NAME };
+    }
+  }
+
+  function saveSiteSettings(settings) {
+    localStorage.setItem(SITE_SETTINGS_STORAGE_KEY, JSON.stringify(settings));
+    if (typeof window.applyRoboCupSiteSettings === "function") {
+      window.applyRoboCupSiteSettings();
+    }
+  }
+
+  function populateSiteSettingsForm() {
+    const form = document.getElementById("site-settings-form");
+    if (!form) return;
+
+    const settings = getSiteSettings();
+    const nameEnInput = document.getElementById("site-name-en");
+    const nameFrInput = document.getElementById("site-name-fr");
+    if (nameEnInput) nameEnInput.value = settings.siteNameEn;
+    if (nameFrInput) nameFrInput.value = settings.siteNameFr;
   }
 
   function getBracketState() {
@@ -779,6 +817,7 @@
     try {
       await loadTeams();
       await loadScores();
+      populateSiteSettingsForm();
     } catch (error) {
       setMessage(error.message, "error");
     }
@@ -947,6 +986,33 @@
       } catch (error) {
         setMessage(error.message, "error");
       }
+    });
+  }
+
+  const siteSettingsForm = document.getElementById("site-settings-form");
+  if (siteSettingsForm) {
+    siteSettingsForm.addEventListener("submit", (event) => {
+      event.preventDefault();
+
+      const siteNameEn = normalizeSiteName(document.getElementById("site-name-en").value);
+      const siteNameFr = normalizeSiteName(document.getElementById("site-name-fr").value);
+      if (!siteNameEn || !siteNameFr) {
+        setMessage(labels.siteNameRequired, "error");
+        return;
+      }
+
+      saveSiteSettings({ siteNameEn, siteNameFr });
+      setMessage(labels.siteSettingsSaved, "success");
+    });
+  }
+
+  const siteSettingsResetButton = document.getElementById("site-settings-reset");
+  if (siteSettingsResetButton) {
+    siteSettingsResetButton.addEventListener("click", () => {
+      const defaults = { siteNameEn: DEFAULT_SITE_NAME, siteNameFr: DEFAULT_SITE_NAME };
+      saveSiteSettings(defaults);
+      populateSiteSettingsForm();
+      setMessage(labels.siteSettingsReset, "success");
     });
   }
 

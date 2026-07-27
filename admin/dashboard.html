@@ -35,6 +35,7 @@
     <section class="dashboard-tabs" aria-label="Dashboard sections">
       <button class="dashboard-tab active" type="button" data-tab-target="tools-panel">Competition Tools</button>
       <button class="dashboard-tab" type="button" data-tab-target="brackets-panel">Brackets</button>
+      <button class="dashboard-tab" type="button" data-tab-target="site-settings-panel">Site Settings</button>
     </section>
 
     <section id="tools-panel" class="dashboard-tab-panel active">
@@ -154,11 +155,38 @@
       </section>
     </section>
 
+    <section id="site-settings-panel" class="dashboard-tab-panel">
+      <section class="tool-panel site-settings-panel">
+        <div class="panel-heading panel-heading-stack">
+          <div>
+            <h2>Site Settings</h2>
+            <p class="panel-copy">Update the displayed website name without editing each page manually.</p>
+          </div>
+        </div>
+
+        <form id="site-settings-form" class="stacked-form site-settings-form">
+          <label>
+            Site name (English pages)
+            <input id="site-name-en" type="text" required placeholder="RoboCupJunior Canada" />
+          </label>
+          <label>
+            Site name (French pages)
+            <input id="site-name-fr" type="text" required placeholder="RoboCupJunior Canada" />
+          </label>
+          <div class="site-settings-actions">
+            <button class="primary-action" type="submit">Save Site Settings</button>
+            <button id="site-settings-reset" class="secondary-action" type="button">Reset Defaults</button>
+          </div>
+        </form>
+      </section>
+    </section>
+
     <p id="dashboard-message" class="form-message dashboard-message" role="status" aria-live="polite"></p>
   </main>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="supabase-config.js"></script>
+  <script src="../site-settings.js"></script>
   <script src="admin.js"></script>
 </body>
 </html>
