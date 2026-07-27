@@ -23,8 +23,8 @@
   <main class="dashboard">
     <section class="dashboard-hero">
       <p class="eyebrow">Administration du pointage</p>
-      <h1>Outils de compétition</h1>
-      <p>Gérez les équipes, entrez les scores et préparez les résultats de compétition à partir d'un tableau de bord protégé.</p>
+      <h1 id="dashboard-hero-title">Outils de compétition</h1>
+      <p id="dashboard-hero-description">Gérez les équipes, entrez les scores et préparez les résultats de compétition à partir d'un tableau de bord protégé.</p>
     </section>
 
     <section id="setup-warning" class="setup-warning" hidden>
@@ -51,14 +51,6 @@
               Compétition
               <select id="team-competition" required>
                 <option value="">Sélectionner une compétition</option>
-                <option>Maze</option>
-                <option>Formula 1</option>
-                <option>Performance</option>
-                <option>SumoBots</option>
-                <option>Rescue Line</option>
-                <option>Rescue Maze</option>
-                <option>Soccer</option>
-                <option>OnStage</option>
               </select>
             </label>
             <label>
@@ -178,6 +170,59 @@
             <button id="site-settings-reset" class="secondary-action" type="button">Réinitialiser</button>
           </div>
         </form>
+
+        <section class="competition-settings">
+          <h3>Ligues</h3>
+          <p class="panel-copy">Ajoutez ou supprimez les ligues utilisées pour les équipes, les tableaux et la page publique des ligues.</p>
+
+          <form id="competition-settings-form" class="competition-settings-form">
+            <input id="competition-name-input" type="text" placeholder="ex. RoboMission" />
+            <button class="secondary-action" type="submit">Ajouter une ligue</button>
+          </form>
+
+          <ul id="competition-settings-list" class="competition-settings-list"></ul>
+        </section>
+
+        <section class="league-details-settings">
+          <h3>Détails des ligues</h3>
+          <p class="panel-copy">Modifiez les descriptions et détails publics affichés pour chaque ligue.</p>
+
+          <form id="league-details-form" class="stacked-form league-details-form">
+            <label>
+              Ligue
+              <select id="league-details-target" required></select>
+            </label>
+            <label>
+              Identifiant de la page de détails
+              <input id="league-details-slug" type="text" placeholder="ex. robomission" />
+            </label>
+            <label>
+              Icône de carte (emoji)
+              <input id="league-details-icon" type="text" placeholder="ex. 🤖" />
+            </label>
+            <label>
+              Résumé (anglais)
+              <textarea id="league-details-summary-en" rows="3" placeholder="Courte description affichée sur les pages publiques."></textarea>
+            </label>
+            <label>
+              Résumé (français)
+              <textarea id="league-details-summary-fr" rows="3" placeholder="Courte description affichée sur les pages publiques."></textarea>
+            </label>
+            <label>
+              Points clés (anglais, une ligne par point)
+              <textarea id="league-details-bullets-en" rows="4" placeholder="Premier point&#10;Deuxieme point"></textarea>
+            </label>
+            <label>
+              Points clés (français, une ligne par point)
+              <textarea id="league-details-bullets-fr" rows="4" placeholder="Premier point&#10;Deuxieme point"></textarea>
+            </label>
+
+            <div class="site-settings-actions">
+              <button class="primary-action" type="submit">Enregistrer les détails</button>
+              <button id="league-details-reset" class="secondary-action" type="button">Réinitialiser les détails</button>
+            </div>
+          </form>
+        </section>
       </section>
     </section>
 

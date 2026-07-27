@@ -386,6 +386,73 @@ td {
   flex-wrap: wrap;
 }
 
+.competition-settings {
+  border-top: 1px solid #e2e8f0;
+  margin-top: 22px;
+  padding-top: 20px;
+}
+
+.competition-settings h3 {
+  font-size: 19px;
+  margin-bottom: 6px;
+}
+
+.competition-settings-form {
+  display: grid;
+  gap: 10px;
+  grid-template-columns: minmax(0, 1fr) auto;
+  margin-top: 14px;
+}
+
+.competition-settings-form .secondary-action {
+  white-space: nowrap;
+}
+
+.competition-settings-list {
+  display: grid;
+  gap: 10px;
+  list-style: none;
+  margin-top: 14px;
+  padding-left: 0;
+}
+
+.competition-settings-item {
+  align-items: center;
+  background: #f8fafc;
+  border: 1px solid #dbeafe;
+  border-radius: 10px;
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 12px;
+}
+
+.competition-name {
+  font-weight: 800;
+}
+
+.competition-empty {
+  color: #64748b;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.league-details-settings {
+  border-top: 1px solid #e2e8f0;
+  margin-top: 22px;
+  padding-top: 20px;
+}
+
+.league-details-settings h3 {
+  font-size: 19px;
+  margin-bottom: 6px;
+}
+
+.league-details-form {
+  max-width: 760px;
+  margin-top: 14px;
+}
+
 .dashboard-message {
   margin-top: 18px;
 }
@@ -586,6 +653,10 @@ td {
   }
 
   .match-team {
+    grid-template-columns: 1fr;
+  }
+
+  .competition-settings-form {
     grid-template-columns: 1fr;
   }
 }

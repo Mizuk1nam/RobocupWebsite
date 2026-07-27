@@ -23,8 +23,8 @@
   <main class="dashboard">
     <section class="dashboard-hero">
       <p class="eyebrow">Scoring administration</p>
-      <h1>Competition Tools</h1>
-      <p>Manage teams, enter scores, and prepare competition results from one protected dashboard.</p>
+      <h1 id="dashboard-hero-title">Competition Tools</h1>
+      <p id="dashboard-hero-description">Manage teams, enter scores, and prepare competition results from one protected dashboard.</p>
     </section>
 
     <section id="setup-warning" class="setup-warning" hidden>
@@ -51,14 +51,6 @@
               Competition
               <select id="team-competition" required>
                 <option value="">Select competition</option>
-                <option>Maze</option>
-                <option>Formula 1</option>
-                <option>Performance</option>
-                <option>SumoBots</option>
-                <option>Rescue Line</option>
-                <option>Rescue Maze</option>
-                <option>Soccer</option>
-                <option>OnStage</option>
               </select>
             </label>
             <label>
@@ -178,6 +170,59 @@
             <button id="site-settings-reset" class="secondary-action" type="button">Reset Defaults</button>
           </div>
         </form>
+
+        <section class="competition-settings">
+          <h3>Leagues</h3>
+          <p class="panel-copy">Add or remove leagues used for teams, brackets, and the public Leagues page.</p>
+
+          <form id="competition-settings-form" class="competition-settings-form">
+            <input id="competition-name-input" type="text" placeholder="e.g. RoboMission" />
+            <button class="secondary-action" type="submit">Add League</button>
+          </form>
+
+          <ul id="competition-settings-list" class="competition-settings-list"></ul>
+        </section>
+
+        <section class="league-details-settings">
+          <h3>League Details</h3>
+          <p class="panel-copy">Edit public descriptions and details shown for each league.</p>
+
+          <form id="league-details-form" class="stacked-form league-details-form">
+            <label>
+              League
+              <select id="league-details-target" required></select>
+            </label>
+            <label>
+              Detail page slug
+              <input id="league-details-slug" type="text" placeholder="e.g. robomission" />
+            </label>
+            <label>
+              Card icon (emoji)
+              <input id="league-details-icon" type="text" placeholder="e.g. 🤖" />
+            </label>
+            <label>
+              Summary (English)
+              <textarea id="league-details-summary-en" rows="3" placeholder="Short description shown on public pages."></textarea>
+            </label>
+            <label>
+              Summary (French)
+              <textarea id="league-details-summary-fr" rows="3" placeholder="Courte description affichee sur le site public."></textarea>
+            </label>
+            <label>
+              Bullet points (English, one per line)
+              <textarea id="league-details-bullets-en" rows="4" placeholder="First point&#10;Second point"></textarea>
+            </label>
+            <label>
+              Bullet points (French, one per line)
+              <textarea id="league-details-bullets-fr" rows="4" placeholder="Premier point&#10;Deuxieme point"></textarea>
+            </label>
+
+            <div class="site-settings-actions">
+              <button class="primary-action" type="submit">Save League Details</button>
+              <button id="league-details-reset" class="secondary-action" type="button">Reset League Details</button>
+            </div>
+          </form>
+        </section>
       </section>
     </section>
 

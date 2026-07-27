@@ -1,5 +1,5 @@
 (function () {
-  const COMPETITIONS = [
+  const DEFAULT_COMPETITIONS = [
     "Maze",
     "Formula 1",
     "Performance",
@@ -9,7 +9,74 @@
     "Soccer",
     "OnStage"
   ];
-  const BRACKET_COMPETITIONS = COMPETITIONS.slice();
+  const COMPETITIONS_STORAGE_KEY = "robocupCompetitions";
+  const LEAGUE_DETAILS_STORAGE_KEY = "robocupLeagueDetails";
+  const DEFAULT_LEAGUE_DETAILS = {
+    maze: {
+      slug: "maze",
+      icon: "🤖",
+      summaryEn: "A RoboParty challenge where robots navigate a walled corridor from start to finish.",
+      summaryFr: "Un defi RoboParty ou les robots traversent un corridor avec des murs du depart a l'arrivee.",
+      bulletsEn: ["3 attempts per robot.", "120 second maximum per run.", "Wall contact can reduce the score."],
+      bulletsFr: ["3 essais par robot.", "Maximum de 120 secondes par essai.", "Les contacts avec les murs peuvent reduire le score."]
+    },
+    "formula 1": {
+      slug: "formula-1",
+      icon: "🏎️",
+      summaryEn: "A RoboParty challenge where robots follow a black curved line around a race track.",
+      summaryFr: "Un defi RoboParty ou les robots suivent une ligne noire courbee sur une piste de course.",
+      bulletsEn: ["3 attempts per robot.", "Best run is counted.", "Fast and stable line-following is key."],
+      bulletsFr: ["3 essais par robot.", "Le meilleur essai est retenu.", "Le suivi de ligne rapide et stable est essentiel."]
+    },
+    performance: {
+      slug: "performance",
+      icon: "🎵",
+      summaryEn: "A RoboParty challenge where teams present a short robot routine with music and creativity.",
+      summaryFr: "Un defi RoboParty ou les equipes presentent une courte routine de robot avec musique et creativite.",
+      bulletsEn: ["Usually a 1 minute routine.", "Creativity and entertainment are judged.", "Programming complexity matters."],
+      bulletsFr: ["Routine habituellement d'environ 1 minute.", "La creativite et le divertissement sont evalues.", "La complexite de la programmation compte."]
+    },
+    sumobots: {
+      slug: "sumobots",
+      icon: "🤖",
+      summaryEn: "A RoboParty challenge where robots try to push opponents out of an octagonal ring.",
+      summaryFr: "Un defi RoboParty ou les robots tentent de pousser leurs adversaires hors d'un anneau octogonal.",
+      bulletsEn: ["Robots compete inside a ring.", "Points are earned by pushing opponents out.", "Size and weight limits apply."],
+      bulletsFr: ["Les robots s'affrontent dans un anneau.", "Des points sont gagnes en poussant les adversaires dehors.", "Des limites de taille et de poids s'appliquent."]
+    },
+    "rescue line": {
+      slug: "rescue-line",
+      icon: "🚑",
+      summaryEn: "Robots follow a black line through a rescue course with obstacles and evacuation zones.",
+      summaryFr: "Les robots suivent une ligne noire dans un parcours de sauvetage avec obstacles et zones d'evacuation.",
+      bulletsEn: ["Points are awarded for completing course elements.", "Robots may need to recover from gaps or obstacles.", "Evacuation zones use victim objects and point multipliers."],
+      bulletsFr: ["Des points sont accordes pour les elements completes.", "Les robots peuvent devoir recuperer apres des ecarts ou obstacles.", "La zone d'evacuation utilise des victimes et des multiplicateurs."]
+    },
+    "rescue maze": {
+      slug: "rescue-maze",
+      icon: "🧭",
+      summaryEn: "Robots explore a simulated disaster maze to locate victims and deliver rescue kits.",
+      summaryFr: "Les robots explorent un labyrinthe simulant une catastrophe pour localiser des victimes et livrer des trousses de secours.",
+      bulletsEn: ["Designed as preparation for international Rescue divisions.", "Teams may participate in Rescue Maze and Rescue Line at qualifying events."],
+      bulletsFr: ["Preparation aux divisions internationales de Rescue.", "Les equipes peuvent participer a Rescue Maze et Rescue Line aux evenements de qualification."]
+    },
+    soccer: {
+      slug: "soccer",
+      icon: "⚽",
+      summaryEn: "Two autonomous robots compete against another pair by detecting and kicking a ball.",
+      summaryFr: "Deux robots autonomes affrontent une autre paire en detectant et en frappant une balle.",
+      bulletsEn: ["Lightweight uses an infrared ball.", "Open uses a vision-tracked orange ball.", "Each goal is worth 1 point."],
+      bulletsFr: ["Lightweight utilise une balle infrarouge.", "Open utilise une balle orange suivie par vision.", "Chaque but vaut 1 point."]
+    },
+    onstage: {
+      slug: "onstage",
+      icon: "🎭",
+      summaryEn: "Teams create a robotic performance combining engineering, music, and storytelling.",
+      summaryFr: "Les equipes creent une performance robotique combinant ingenierie, musique et recit.",
+      bulletsEn: ["Robots and students perform together on stage.", "Judges evaluate creativity and entertainment.", "Robot autonomy is considered during evaluation."],
+      bulletsFr: ["Les robots et les eleves performent ensemble sur scene.", "Les juges evaluent creativite et divertissement.", "L'autonomie des robots est prise en compte lors de l'evaluation."]
+    }
+  };
   const DEMO_ADMIN_EMAIL = "admin@robocup.test";
   const DEMO_ADMIN_PASSWORD = "robocup123";
   const DEMO_ADMIN_SESSION_KEY = "robocupDemoAdminSession";
@@ -20,6 +87,7 @@
   const isFrench = document.documentElement.lang === "fr";
   const loginPage = isFrench ? "index_fr.html" : "index.html";
   const dashboardPage = isFrench ? "dashboard_fr.html" : "dashboard.html";
+  let competitions = [];
   let cachedTeams = [];
   const labels = {
     supabaseMissing: isFrench
@@ -43,6 +111,7 @@
     teamSaved: isFrench ? "Équipe enregistrée." : "Team saved.",
     scoreSaved: isFrench ? "Score enregistré." : "Score saved.",
     refreshed: isFrench ? "Tableau de bord actualisé." : "Dashboard refreshed.",
+    selectCompetition: isFrench ? "Sélectionner une compétition" : "Select competition",
     bracketTeams: isFrench ? "équipes" : "teams",
     bracketNeedsTeams: isFrench
       ? "Ajoutez au moins deux équipes pour générer un tableau."
@@ -69,8 +138,53 @@
     noTeamName: isFrench ? "Équipe inconnue" : "Unknown team",
     siteNameRequired: isFrench ? "Entrez un nom de site pour les deux langues." : "Enter a site name for both languages.",
     siteSettingsSaved: isFrench ? "Paramètres du site enregistrés." : "Site settings saved.",
-    siteSettingsReset: isFrench ? "Paramètres du site réinitialisés." : "Site settings reset."
+    siteSettingsReset: isFrench ? "Paramètres du site réinitialisés." : "Site settings reset.",
+    heroByTab: {
+      "tools-panel": {
+        title: isFrench ? "Outils de compétition" : "Competition Tools",
+        description: isFrench
+          ? "Gérez les équipes, entrez les scores et préparez les résultats de compétition à partir d'un tableau de bord protégé."
+          : "Manage teams, enter scores, and prepare competition results from one protected dashboard."
+      },
+      "brackets-panel": {
+        title: isFrench ? "Tableaux de compétition" : "Competition Brackets",
+        description: isFrench
+          ? "Créez les tableaux, saisissez les scores de match et suivez automatiquement les gagnants de chaque ronde."
+          : "Generate brackets, save match scores, and automatically track winners through each round."
+      },
+      "site-settings-panel": {
+        title: isFrench ? "Paramètres du site" : "Site Settings",
+        description: isFrench
+          ? "Modifiez le nom du site et gérez les ligues affichées sur le site public depuis un seul endroit."
+          : "Update the site name and manage leagues shown on the public website from one place."
+      }
+    },
+    competitionNameRequired: isFrench ? "Entrez un nom de ligue." : "Enter a league name.",
+    competitionExists: isFrench ? "Cette ligue existe déjà." : "This league already exists.",
+    competitionAdded: isFrench ? "Ligue ajoutée." : "League added.",
+    competitionRemoved: isFrench ? "Ligue supprimée." : "League removed.",
+    competitionNeedOne: isFrench
+      ? "Vous devez conserver au moins une ligue."
+      : "You must keep at least one league.",
+    competitionRemove: isFrench ? "Supprimer" : "Remove league",
+    competitionEmpty: isFrench ? "Aucune ligue configurée." : "No leagues configured.",
+    competitionRemoveConfirm: (competitionName, teamCount) => {
+      if (teamCount > 0) {
+        return isFrench
+          ? `Supprimer ${competitionName}? ${teamCount} équipe(s) utilisent cette ligue. Elles ne seront pas supprimées.`
+          : `Remove ${competitionName}? ${teamCount} team(s) are using this league. Teams will not be deleted.`;
+      }
+
+      return isFrench
+        ? `Supprimer ${competitionName} de la liste des ligues?`
+        : `Remove ${competitionName} from the leagues list?`;
+    },
+    leagueDetailsSaved: isFrench ? "Details de la ligue enregistres." : "League details saved.",
+    leagueDetailsReset: isFrench ? "Details de la ligue reinitialises." : "League details reset.",
+    leagueSelectRequired: isFrench ? "Selectionnez une ligue." : "Select a league.",
+    slugExists: isFrench ? "Cet identifiant est deja utilise par une autre ligue." : "That slug is already used by another league."
   };
+  competitions = getStoredCompetitions();
 
   function setMessage(text, type) {
     if (!message) return;
@@ -82,7 +196,16 @@
   function setupTabs() {
     const tabButtons = Array.from(document.querySelectorAll(".dashboard-tab"));
     const tabPanels = Array.from(document.querySelectorAll(".dashboard-tab-panel"));
+    const heroTitle = document.getElementById("dashboard-hero-title");
+    const heroDescription = document.getElementById("dashboard-hero-description");
     if (!tabButtons.length || !tabPanels.length) return;
+
+    function updateHero(targetId) {
+      if (!heroTitle || !heroDescription) return;
+      const heroContent = labels.heroByTab[targetId] || labels.heroByTab["tools-panel"];
+      heroTitle.textContent = heroContent.title;
+      heroDescription.textContent = heroContent.description;
+    }
 
     function activateTab(targetId) {
       tabButtons.forEach((button) => {
@@ -92,11 +215,16 @@
       tabPanels.forEach((panel) => {
         panel.classList.toggle("active", panel.id === targetId);
       });
+
+      updateHero(targetId);
     }
 
     tabButtons.forEach((button) => {
       button.addEventListener("click", () => activateTab(button.dataset.tabTarget));
     });
+
+    const activeButton = tabButtons.find((button) => button.classList.contains("active"));
+    activateTab(activeButton?.dataset.tabTarget || tabButtons[0].dataset.tabTarget);
   }
 
   function isDemoAdminLogin(email, password) {
@@ -165,6 +293,220 @@
 
   function useDemoStorage() {
     return isDemoAdminAuthenticated() || !window.isSupabaseConfigured || !window.supabaseClient;
+  }
+
+  function normalizeCompetitionName(value) {
+    return String(value || "").trim();
+  }
+
+  function normalizeLeagueKey(value) {
+    return normalizeCompetitionName(value).toLowerCase();
+  }
+
+  function normalizeLeagueSlug(value) {
+    return String(value || "")
+      .trim()
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/^-+|-+$/g, "");
+  }
+
+  function parseMultiline(value) {
+    return String(value || "")
+      .split(/\r?\n/)
+      .map((line) => line.trim())
+      .filter(Boolean);
+  }
+
+  function formatMultiline(items) {
+    return (items || []).join("\n");
+  }
+
+  function getStoredLeagueDetails() {
+    try {
+      return JSON.parse(localStorage.getItem(LEAGUE_DETAILS_STORAGE_KEY) || "{}") || {};
+    } catch (error) {
+      return {};
+    }
+  }
+
+  function saveStoredLeagueDetails(detailsMap) {
+    localStorage.setItem(LEAGUE_DETAILS_STORAGE_KEY, JSON.stringify(detailsMap));
+    if (typeof window.applyRoboCupSiteSettings === "function") {
+      window.applyRoboCupSiteSettings();
+    }
+  }
+
+  function getDefaultLeagueDetails(leagueName) {
+    const fallbackSummaryEn = `This league has been added by the admin team. Full rules for ${leagueName} will be posted soon.`;
+    const fallbackSummaryFr = `Cette ligue a ete ajoutee par l'equipe d'administration. Les regles completes pour ${leagueName} seront publiees bientot.`;
+    const defaults = DEFAULT_LEAGUE_DETAILS[normalizeLeagueKey(leagueName)];
+    if (defaults) {
+      return {
+        slug: defaults.slug || "",
+        icon: defaults.icon || "🤖",
+        summaryEn: defaults.summaryEn || fallbackSummaryEn,
+        summaryFr: defaults.summaryFr || fallbackSummaryFr,
+        bulletsEn: Array.isArray(defaults.bulletsEn) ? defaults.bulletsEn.slice() : ["League details coming soon."],
+        bulletsFr: Array.isArray(defaults.bulletsFr) ? defaults.bulletsFr.slice() : ["Details de la ligue a venir."]
+      };
+    }
+
+    return {
+      slug: "",
+      icon: "🤖",
+      summaryEn: fallbackSummaryEn,
+      summaryFr: fallbackSummaryFr,
+      bulletsEn: ["League details coming soon."],
+      bulletsFr: ["Details de la ligue a venir."]
+    };
+  }
+
+  function getLeagueDetails(leagueName) {
+    const defaults = getDefaultLeagueDetails(leagueName);
+    const allDetails = getStoredLeagueDetails();
+    const custom = allDetails[normalizeLeagueKey(leagueName)] || {};
+    return {
+      slug: normalizeLeagueSlug(custom.slug || defaults.slug || ""),
+      icon: normalizeCompetitionName(custom.icon || defaults.icon || "🤖") || "🤖",
+      summaryEn: normalizeCompetitionName(custom.summaryEn || defaults.summaryEn || ""),
+      summaryFr: normalizeCompetitionName(custom.summaryFr || defaults.summaryFr || ""),
+      bulletsEn: Array.isArray(custom.bulletsEn) && custom.bulletsEn.length ? custom.bulletsEn : defaults.bulletsEn,
+      bulletsFr: Array.isArray(custom.bulletsFr) && custom.bulletsFr.length ? custom.bulletsFr : defaults.bulletsFr
+    };
+  }
+
+  function upsertLeagueDetails(leagueName, details) {
+    const allDetails = getStoredLeagueDetails();
+    allDetails[normalizeLeagueKey(leagueName)] = {
+      slug: normalizeLeagueSlug(details.slug),
+      icon: normalizeCompetitionName(details.icon) || "🤖",
+      summaryEn: normalizeCompetitionName(details.summaryEn),
+      summaryFr: normalizeCompetitionName(details.summaryFr),
+      bulletsEn: parseMultiline(formatMultiline(details.bulletsEn)),
+      bulletsFr: parseMultiline(formatMultiline(details.bulletsFr))
+    };
+    saveStoredLeagueDetails(allDetails);
+  }
+
+  function removeLeagueDetails(leagueName) {
+    const allDetails = getStoredLeagueDetails();
+    delete allDetails[normalizeLeagueKey(leagueName)];
+    saveStoredLeagueDetails(allDetails);
+  }
+
+  function populateLeagueDetailsTargetOptions() {
+    const select = document.getElementById("league-details-target");
+    if (!select) return;
+
+    const previousValue = select.value;
+    select.innerHTML = competitions.map((competition) => (
+      `<option value="${escapeHtml(competition)}">${escapeHtml(competition)}</option>`
+    )).join("");
+
+    if (!competitions.length) return;
+
+    const nextValue = competitions.includes(previousValue) ? previousValue : competitions[0];
+    select.value = nextValue;
+    populateLeagueDetailsForm(nextValue);
+  }
+
+  function populateLeagueDetailsForm(leagueName) {
+    const normalizedName = normalizeCompetitionName(leagueName);
+    if (!normalizedName) return;
+
+    const details = getLeagueDetails(normalizedName);
+    const slugInput = document.getElementById("league-details-slug");
+    const iconInput = document.getElementById("league-details-icon");
+    const summaryEnInput = document.getElementById("league-details-summary-en");
+    const summaryFrInput = document.getElementById("league-details-summary-fr");
+    const bulletsEnInput = document.getElementById("league-details-bullets-en");
+    const bulletsFrInput = document.getElementById("league-details-bullets-fr");
+
+    if (slugInput) slugInput.value = details.slug;
+    if (iconInput) iconInput.value = details.icon;
+    if (summaryEnInput) summaryEnInput.value = details.summaryEn;
+    if (summaryFrInput) summaryFrInput.value = details.summaryFr;
+    if (bulletsEnInput) bulletsEnInput.value = formatMultiline(details.bulletsEn);
+    if (bulletsFrInput) bulletsFrInput.value = formatMultiline(details.bulletsFr);
+  }
+
+  function resetLeagueDetailsFormToDefaults(leagueName) {
+    removeLeagueDetails(leagueName);
+    populateLeagueDetailsForm(leagueName);
+  }
+
+  function getStoredCompetitions() {
+    try {
+      const raw = JSON.parse(localStorage.getItem(COMPETITIONS_STORAGE_KEY) || "[]");
+      const source = Array.isArray(raw) && raw.length ? raw : DEFAULT_COMPETITIONS;
+      const cleaned = [];
+      const seen = new Set();
+      source.forEach((name) => {
+        const normalized = normalizeCompetitionName(name);
+        const key = normalized.toLowerCase();
+        if (!normalized || seen.has(key)) return;
+        seen.add(key);
+        cleaned.push(normalized);
+      });
+
+      return cleaned.length ? cleaned : DEFAULT_COMPETITIONS.slice();
+    } catch (error) {
+      return DEFAULT_COMPETITIONS.slice();
+    }
+  }
+
+  function saveCompetitions(nextCompetitions) {
+    competitions = nextCompetitions.slice();
+    localStorage.setItem(COMPETITIONS_STORAGE_KEY, JSON.stringify(competitions));
+  }
+
+  function populateTeamCompetitionOptions() {
+    const teamCompetitionSelect = document.getElementById("team-competition");
+    if (!teamCompetitionSelect) return;
+
+    const previousValue = teamCompetitionSelect.value;
+    teamCompetitionSelect.innerHTML = `<option value="">${labels.selectCompetition}</option>`;
+    competitions.forEach((competition) => {
+      const option = document.createElement("option");
+      option.value = competition;
+      option.textContent = competition;
+      teamCompetitionSelect.appendChild(option);
+    });
+
+    if (previousValue && competitions.includes(previousValue)) {
+      teamCompetitionSelect.value = previousValue;
+    }
+  }
+
+  function renderCompetitionSettingsList() {
+    const list = document.getElementById("competition-settings-list");
+    if (!list) return;
+
+    if (!competitions.length) {
+      list.innerHTML = `<li class="competition-empty">${labels.competitionEmpty}</li>`;
+      return;
+    }
+
+    list.innerHTML = competitions.map((competition) => `
+      <li class="competition-settings-item">
+        <span class="competition-name">${escapeHtml(competition)}</span>
+        <button
+          class="danger-action small-action remove-competition-button"
+          type="button"
+          data-competition="${escapeHtml(competition)}"
+        >
+          ${labels.competitionRemove}
+        </button>
+      </li>
+    `).join("");
+  }
+
+  function refreshCompetitionViews() {
+    populateTeamCompetitionOptions();
+    renderCompetitionSettingsList();
+    populateLeagueDetailsTargetOptions();
+    renderBrackets(cachedTeams);
   }
 
   function normalizeSiteName(value) {
@@ -512,7 +854,7 @@
 
     const bracketState = getBracketState();
     const teamLookup = getTeamMap(teams);
-    container.innerHTML = BRACKET_COMPETITIONS.map((competition) => {
+    container.innerHTML = competitions.map((competition) => {
       const competitionTeams = getTeamsForCompetition(teams, competition);
       return renderCompetitionBracket(competition, competitionTeams, bracketState[competition], teamLookup);
     }).join("");
@@ -815,6 +1157,7 @@
     if (emailLabel) emailLabel.textContent = user.email;
 
     try {
+      refreshCompetitionViews();
       await loadTeams();
       await loadScores();
       populateSiteSettingsForm();
@@ -1011,8 +1354,121 @@
     siteSettingsResetButton.addEventListener("click", () => {
       const defaults = { siteNameEn: DEFAULT_SITE_NAME, siteNameFr: DEFAULT_SITE_NAME };
       saveSiteSettings(defaults);
+      saveCompetitions(DEFAULT_COMPETITIONS.slice());
+      localStorage.removeItem(LEAGUE_DETAILS_STORAGE_KEY);
       populateSiteSettingsForm();
+      refreshCompetitionViews();
       setMessage(labels.siteSettingsReset, "success");
+    });
+  }
+
+  const competitionSettingsForm = document.getElementById("competition-settings-form");
+  if (competitionSettingsForm) {
+    competitionSettingsForm.addEventListener("submit", (event) => {
+      event.preventDefault();
+
+      const input = document.getElementById("competition-name-input");
+      const competitionName = normalizeCompetitionName(input?.value);
+      if (!competitionName) {
+        setMessage(labels.competitionNameRequired, "error");
+        return;
+      }
+
+      const exists = competitions.some((item) => item.toLowerCase() === competitionName.toLowerCase());
+      if (exists) {
+        setMessage(labels.competitionExists, "error");
+        return;
+      }
+
+      const nextCompetitions = competitions.concat(competitionName);
+      saveCompetitions(nextCompetitions);
+      const defaults = getDefaultLeagueDetails(competitionName);
+      upsertLeagueDetails(competitionName, defaults);
+      refreshCompetitionViews();
+      if (input) input.value = "";
+      setMessage(labels.competitionAdded, "success");
+    });
+  }
+
+  const competitionSettingsList = document.getElementById("competition-settings-list");
+  if (competitionSettingsList) {
+    competitionSettingsList.addEventListener("click", (event) => {
+      const removeButton = event.target.closest(".remove-competition-button");
+      if (!removeButton) return;
+
+      if (competitions.length <= 1) {
+        setMessage(labels.competitionNeedOne, "error");
+        return;
+      }
+
+      const competitionToRemove = removeButton.dataset.competition;
+      const teamsUsingCompetition = cachedTeams.filter((team) => team.competition === competitionToRemove).length;
+      const confirmed = window.confirm(labels.competitionRemoveConfirm(competitionToRemove, teamsUsingCompetition));
+      if (!confirmed) return;
+
+      const nextCompetitions = competitions.filter((item) => item !== competitionToRemove);
+      saveCompetitions(nextCompetitions);
+      removeLeagueDetails(competitionToRemove);
+      clearCompetitionBracket(competitionToRemove);
+      refreshCompetitionViews();
+      setMessage(labels.competitionRemoved, "success");
+    });
+  }
+
+  const leagueDetailsTarget = document.getElementById("league-details-target");
+  if (leagueDetailsTarget) {
+    leagueDetailsTarget.addEventListener("change", () => {
+      populateLeagueDetailsForm(leagueDetailsTarget.value);
+    });
+  }
+
+  const leagueDetailsForm = document.getElementById("league-details-form");
+  if (leagueDetailsForm) {
+    leagueDetailsForm.addEventListener("submit", (event) => {
+      event.preventDefault();
+
+      const leagueName = normalizeCompetitionName(document.getElementById("league-details-target")?.value);
+      if (!leagueName) {
+        setMessage(labels.leagueSelectRequired, "error");
+        return;
+      }
+
+      const slug = normalizeLeagueSlug(document.getElementById("league-details-slug")?.value);
+      if (slug) {
+        const slugInUse = competitions
+          .filter((item) => item !== leagueName)
+          .some((item) => getLeagueDetails(item).slug === slug);
+        if (slugInUse) {
+          setMessage(labels.slugExists, "error");
+          return;
+        }
+      }
+
+      upsertLeagueDetails(leagueName, {
+        slug,
+        icon: document.getElementById("league-details-icon")?.value,
+        summaryEn: document.getElementById("league-details-summary-en")?.value,
+        summaryFr: document.getElementById("league-details-summary-fr")?.value,
+        bulletsEn: parseMultiline(document.getElementById("league-details-bullets-en")?.value),
+        bulletsFr: parseMultiline(document.getElementById("league-details-bullets-fr")?.value)
+      });
+
+      populateLeagueDetailsForm(leagueName);
+      setMessage(labels.leagueDetailsSaved, "success");
+    });
+  }
+
+  const leagueDetailsResetButton = document.getElementById("league-details-reset");
+  if (leagueDetailsResetButton) {
+    leagueDetailsResetButton.addEventListener("click", () => {
+      const leagueName = normalizeCompetitionName(document.getElementById("league-details-target")?.value);
+      if (!leagueName) {
+        setMessage(labels.leagueSelectRequired, "error");
+        return;
+      }
+
+      resetLeagueDetailsFormToDefaults(leagueName);
+      setMessage(labels.leagueDetailsReset, "success");
     });
   }
 
