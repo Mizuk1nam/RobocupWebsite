@@ -1,6 +1,8 @@
 (function () {
   const SETTINGS_KEY = "robocupSiteSettings";
   const LEAGUES_KEY = "robocupCompetitions";
+  const SCHEDULE_COMPETITIONS_KEY = "robocupScheduleCompetitions";
+  const SCHEDULE_EVENTS_KEY = "robocupScheduleEvents";
   const LEAGUE_DETAILS_KEY = "robocupLeagueDetails";
   const DEFAULT_SITE_NAME = "RoboCupJunior Canada";
   const DEFAULT_LEAGUES = [
@@ -12,6 +14,87 @@
     "Rescue Maze",
     "Soccer",
     "OnStage"
+  ];
+  const DEFAULT_SCHEDULE_EVENTS = [
+    {
+      id: "americas-2026",
+      featured: true,
+      title: "RoboCup Americas 2026",
+      dateEn: "October 22-25, 2026",
+      dateFr: "22-25 octobre 2026",
+      locationEn: "Sheridan College - Davis Campus, Brampton, ON, Canada",
+      locationFr: "Sheridan College - Davis Campus, Brampton, ON, Canada",
+      websiteLabel: "ASR 2026",
+      websiteUrl: "https://robocupcanada.ca/asr/",
+      contactEn: "",
+      contactFr: "",
+      competitions: [
+        "Soccer Infrared Lightweight",
+        "Soccer Vision Open",
+        "Rescue Maze",
+        "Rescue Line",
+        "Rescue Simulation",
+        "OnStage"
+      ]
+    },
+    {
+      id: "west-vancouver-2026",
+      featured: false,
+      title: "West Vancouver RoboCupJunior",
+      dateEn: "March 7, 2026",
+      dateFr: "7 mars 2026",
+      locationEn: "UBC Campus",
+      locationFr: "Campus UBC",
+      websiteLabel: "Vancouver West 2026",
+      websiteUrl: "https://vancouver.robocup.ca",
+      contactEn: "",
+      contactFr: "",
+      competitions: [
+        "Rescue Maze",
+        "Rescue Line",
+        "Soccer Infrared Lightweight",
+        "Soccer Vision Open",
+        "OnStage"
+      ]
+    },
+    {
+      id: "toronto-2026",
+      featured: false,
+      title: "Toronto Canada RoboCupJunior",
+      dateEn: "April 1, 2026",
+      dateFr: "1er avril 2026",
+      locationEn: "St. Andrews College",
+      locationFr: "St. Andrews College",
+      websiteLabel: "St. Andrews",
+      websiteUrl: "https://www.sac.on.ca/robocup",
+      contactEn: "Benjamin Lawrence",
+      contactFr: "Benjamin Lawrence",
+      competitions: [
+        "Soccer Infrared Lightweight",
+        "Rescue Maze",
+        "Rescue Line"
+      ]
+    },
+    {
+      id: "western-canada-2026",
+      featured: false,
+      title: "Western Canada RoboCupJunior",
+      dateEn: "April 10, 2026",
+      dateFr: "10 avril 2026",
+      locationEn: "Okanagan College, Kelowna Campus",
+      locationFr: "Okanagan College, Campus Kelowna",
+      websiteLabel: "Okanagan College RoboCup",
+      websiteUrl: "https://www.okanagan.bc.ca/robocup",
+      contactEn: "",
+      contactFr: "",
+      competitions: [
+        "Rescue Maze",
+        "Rescue Line",
+        "Soccer Infrared Lightweight",
+        "Soccer Vision Open",
+        "OnStage"
+      ]
+    }
   ];
   const KNOWN_LEAGUE_CONTENT = {
     maze: {
@@ -111,6 +194,70 @@
       return leagues.length ? leagues : DEFAULT_LEAGUES.slice();
     } catch (error) {
       return DEFAULT_LEAGUES.slice();
+    }
+  }
+
+  function readScheduleCompetitions() {
+    try {
+      const raw = JSON.parse(localStorage.getItem(SCHEDULE_COMPETITIONS_KEY) || "[]");
+      const source = Array.isArray(raw) && raw.length ? raw : readLeagues();
+      const seen = new Set();
+      const competitions = [];
+
+      source.forEach((entry) => {
+        const name = String(entry || "").trim();
+        const key = name.toLowerCase();
+        if (!name || seen.has(key)) return;
+        seen.add(key);
+        competitions.push(name);
+      });
+
+      return competitions.length ? competitions : readLeagues();
+    } catch (error) {
+      return readLeagues();
+    }
+  }
+
+  function normalizeScheduleEvent(event, fallbackEvent) {
+    const fallback = fallbackEvent || {};
+    const competitionsList = Array.isArray(event?.competitions)
+      ? event.competitions
+      : Array.isArray(fallback.competitions)
+        ? fallback.competitions
+        : readScheduleCompetitions();
+
+    return {
+      id: String(event?.id || fallback.id || "").trim(),
+      featured: Boolean(event?.featured ?? fallback.featured),
+      title: String(event?.title || fallback.title || "").trim(),
+      dateEn: String(event?.dateEn || fallback.dateEn || "").trim(),
+      dateFr: String(event?.dateFr || fallback.dateFr || "").trim(),
+      locationEn: String(event?.locationEn || fallback.locationEn || "").trim(),
+      locationFr: String(event?.locationFr || fallback.locationFr || "").trim(),
+      websiteLabel: String(event?.websiteLabel || fallback.websiteLabel || "").trim(),
+      websiteUrl: String(event?.websiteUrl || fallback.websiteUrl || "").trim(),
+      contactEn: String(event?.contactEn || fallback.contactEn || "").trim(),
+      contactFr: String(event?.contactFr || fallback.contactFr || "").trim(),
+      competitions: competitionsList.map((item) => String(item || "").trim()).filter(Boolean)
+    };
+  }
+
+  function readScheduleEvents() {
+    const defaults = DEFAULT_SCHEDULE_EVENTS.map((event) => normalizeScheduleEvent(event, event));
+    try {
+      const raw = JSON.parse(localStorage.getItem(SCHEDULE_EVENTS_KEY) || "[]");
+      if (!Array.isArray(raw) || !raw.length) return defaults;
+
+      return defaults.map((defaultEvent) => {
+        const custom = raw.find((item) => String(item?.id || "").trim() === defaultEvent.id) || {};
+        const merged = normalizeScheduleEvent(custom, defaultEvent);
+        if (!merged.competitions.length) {
+          merged.competitions = defaultEvent.competitions.slice();
+        }
+        return merged;
+      });
+    } catch (error) {
+      return defaults;
     }
   }
 
@@ -296,6 +443,66 @@
     });
   }
 
+  function sanitizeHttpUrl(url) {
+    const trimmed = String(url || "").trim();
+    if (!trimmed) return "#";
+    try {
+      const parsed = new URL(trimmed, window.location.origin);
+      if (parsed.protocol === "http:" || parsed.protocol === "https:") {
+        return parsed.href;
+      }
+      return "#";
+    } catch (error) {
+      return "#";
+    }
+  }
+
+  function renderScheduleEventsFromSettings() {
+    const path = window.location.pathname.toLowerCase();
+    const isSchedulePage = path.endsWith("/schedule.html") || path.endsWith("/schedule_fr.html") || path.endsWith("schedule.html") || path.endsWith("schedule_fr.html");
+    if (!isSchedulePage) return;
+
+    const grid = document.querySelector(".grid-2");
+    if (!grid) return;
+
+    const isFrench = document.documentElement.lang === "fr" || path.endsWith("schedule_fr.html");
+    const scheduleEvents = readScheduleEvents();
+    if (!scheduleEvents.length) return;
+
+    const locationLabel = isFrench ? "Lieu" : "Location";
+    const websiteLabelText = isFrench ? "Site Web" : "Website";
+    const leaguesLabel = isFrench ? "Ligues" : "Leagues";
+    const contactLabel = isFrench ? "Contact" : "Contact";
+
+    grid.innerHTML = scheduleEvents.map((event) => {
+      const dateLabel = isFrench ? event.dateFr : event.dateEn;
+      const location = isFrench ? event.locationFr : event.locationEn;
+      const contact = isFrench ? event.contactFr : event.contactEn;
+      const competitionsMarkup = (event.competitions || []).map((item) => `<li>${escapeHtml(item)}</li>`).join("");
+      const websiteHref = sanitizeHttpUrl(event.websiteUrl);
+      const websiteMarkup = event.websiteLabel
+        ? `
+          <p>
+            <strong>${websiteLabelText}:</strong>
+            <a href="${escapeHtml(websiteHref)}" target="_blank" rel="noopener noreferrer">${escapeHtml(event.websiteLabel)}</a>
+          </p>
+        `
+        : "";
+
+      return `
+        <div class="info-card${event.featured ? " featured-card" : ""}">
+          <span class="event-date">${escapeHtml(dateLabel)}</span>
+          <h3>${escapeHtml(event.title)}</h3>
+          <p><strong>${locationLabel}:</strong> ${escapeHtml(location)}</p>
+          ${websiteMarkup}
+          <p><strong>${leaguesLabel}:</strong></p>
+          <ul>${competitionsMarkup}</ul>
+          ${contact ? `<p><strong>${contactLabel}:</strong> ${escapeHtml(contact)}</p>` : ""}
+        </div>
+      `;
+    }).join("");
+  }
+
   function getActiveSiteName() {
     const settings = readSettings();
     const isFrench = document.documentElement.lang === "fr";
@@ -366,6 +573,7 @@
 
     applyCustomCompetitionDetails();
     renderLeagueCardsFromSettings();
+    renderScheduleEventsFromSettings();
 
     applyToTitle(siteName);
     applyToTextNodes(siteName);

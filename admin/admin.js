@@ -10,7 +10,90 @@
     "OnStage"
   ];
   const COMPETITIONS_STORAGE_KEY = "robocupCompetitions";
+  const SCHEDULE_COMPETITIONS_STORAGE_KEY = "robocupScheduleCompetitions";
+  const SCHEDULE_EVENTS_STORAGE_KEY = "robocupScheduleEvents";
   const LEAGUE_DETAILS_STORAGE_KEY = "robocupLeagueDetails";
+  const DEFAULT_SCHEDULE_EVENTS = [
+    {
+      id: "americas-2026",
+      featured: true,
+      title: "RoboCup Americas 2026",
+      dateEn: "October 22-25, 2026",
+      dateFr: "22-25 octobre 2026",
+      locationEn: "Sheridan College - Davis Campus, Brampton, ON, Canada",
+      locationFr: "Sheridan College - Davis Campus, Brampton, ON, Canada",
+      websiteLabel: "ASR 2026",
+      websiteUrl: "https://robocupcanada.ca/asr/",
+      contactEn: "",
+      contactFr: "",
+      competitions: [
+        "Soccer Infrared Lightweight",
+        "Soccer Vision Open",
+        "Rescue Maze",
+        "Rescue Line",
+        "Rescue Simulation",
+        "OnStage"
+      ]
+    },
+    {
+      id: "west-vancouver-2026",
+      featured: false,
+      title: "West Vancouver RoboCupJunior",
+      dateEn: "March 7, 2026",
+      dateFr: "7 mars 2026",
+      locationEn: "UBC Campus",
+      locationFr: "Campus UBC",
+      websiteLabel: "Vancouver West 2026",
+      websiteUrl: "https://vancouver.robocup.ca",
+      contactEn: "",
+      contactFr: "",
+      competitions: [
+        "Rescue Maze",
+        "Rescue Line",
+        "Soccer Infrared Lightweight",
+        "Soccer Vision Open",
+        "OnStage"
+      ]
+    },
+    {
+      id: "toronto-2026",
+      featured: false,
+      title: "Toronto Canada RoboCupJunior",
+      dateEn: "April 1, 2026",
+      dateFr: "1er avril 2026",
+      locationEn: "St. Andrews College",
+      locationFr: "St. Andrews College",
+      websiteLabel: "St. Andrews",
+      websiteUrl: "https://www.sac.on.ca/robocup",
+      contactEn: "Benjamin Lawrence",
+      contactFr: "Benjamin Lawrence",
+      competitions: [
+        "Soccer Infrared Lightweight",
+        "Rescue Maze",
+        "Rescue Line"
+      ]
+    },
+    {
+      id: "western-canada-2026",
+      featured: false,
+      title: "Western Canada RoboCupJunior",
+      dateEn: "April 10, 2026",
+      dateFr: "10 avril 2026",
+      locationEn: "Okanagan College, Kelowna Campus",
+      locationFr: "Okanagan College, Campus Kelowna",
+      websiteLabel: "Okanagan College RoboCup",
+      websiteUrl: "https://www.okanagan.bc.ca/robocup",
+      contactEn: "",
+      contactFr: "",
+      competitions: [
+        "Rescue Maze",
+        "Rescue Line",
+        "Soccer Infrared Lightweight",
+        "Soccer Vision Open",
+        "OnStage"
+      ]
+    }
+  ];
   const DEFAULT_LEAGUE_DETAILS = {
     maze: {
       slug: "maze",
@@ -88,6 +171,8 @@
   const loginPage = isFrench ? "index_fr.html" : "index.html";
   const dashboardPage = isFrench ? "dashboard_fr.html" : "dashboard.html";
   let competitions = [];
+  let scheduleCompetitions = [];
+  let scheduleEvents = [];
   let cachedTeams = [];
   const labels = {
     supabaseMissing: isFrench
@@ -179,12 +264,31 @@
         ? `Supprimer ${competitionName} de la liste des ligues?`
         : `Remove ${competitionName} from the leagues list?`;
     },
+    scheduleCompetitionNameRequired: isFrench ? "Entrez un nom de competition." : "Enter a competition name.",
+    scheduleCompetitionExists: isFrench ? "Cette competition existe deja dans le calendrier." : "That competition already exists in the schedule.",
+    scheduleCompetitionAdded: isFrench ? "Competition du calendrier ajoutee." : "Schedule competition added.",
+    scheduleCompetitionRemoved: isFrench ? "Competition du calendrier supprimee." : "Schedule competition removed.",
+    scheduleCompetitionReset: isFrench ? "Competitions du calendrier reinitialisees." : "Schedule competitions reset.",
+    scheduleCompetitionNeedOne: isFrench ? "Conservez au moins une competition du calendrier." : "Keep at least one schedule competition.",
+    scheduleCompetitionEmpty: isFrench ? "Aucune competition de calendrier configuree." : "No schedule competitions configured.",
+    scheduleCompetitionRemove: isFrench ? "Supprimer" : "Remove",
+    scheduleCompetitionRemoveConfirm: (competitionName) => isFrench
+      ? `Supprimer ${competitionName} du calendrier?`
+      : `Remove ${competitionName} from the schedule?`,
+    scheduleEventSaved: isFrench ? "Details de l'evenement enregistres." : "Event details saved.",
+    scheduleEventReset: isFrench ? "Evenement reinitialise." : "Event reset.",
+    scheduleEventRequired: isFrench ? "Selectionnez un evenement." : "Select an event.",
+    scheduleEventCompetitionsRequired: isFrench
+      ? "Ajoutez au moins une competition pour cet evenement."
+      : "Add at least one competition for this event.",
     leagueDetailsSaved: isFrench ? "Details de la ligue enregistres." : "League details saved.",
     leagueDetailsReset: isFrench ? "Details de la ligue reinitialises." : "League details reset.",
     leagueSelectRequired: isFrench ? "Selectionnez une ligue." : "Select a league.",
     slugExists: isFrench ? "Cet identifiant est deja utilise par une autre ligue." : "That slug is already used by another league."
   };
   competitions = getStoredCompetitions();
+  scheduleCompetitions = getStoredScheduleCompetitions();
+  scheduleEvents = getStoredScheduleEvents();
 
   function setMessage(text, type) {
     if (!message) return;
@@ -479,9 +583,97 @@
     }
   }
 
+  function getStoredScheduleCompetitions() {
+    try {
+      const raw = JSON.parse(localStorage.getItem(SCHEDULE_COMPETITIONS_STORAGE_KEY) || "[]");
+      const source = Array.isArray(raw) && raw.length ? raw : competitions;
+      const cleaned = [];
+      const seen = new Set();
+
+      source.forEach((name) => {
+        const normalized = normalizeCompetitionName(name);
+        const key = normalized.toLowerCase();
+        if (!normalized || seen.has(key)) return;
+        seen.add(key);
+        cleaned.push(normalized);
+      });
+
+      return cleaned.length ? cleaned : competitions.slice();
+    } catch (error) {
+      return competitions.slice();
+    }
+  }
+
+  function normalizeScheduleEvent(event, fallbackEvent) {
+    const fallback = fallbackEvent || {};
+    const competitionsList = Array.isArray(event?.competitions)
+      ? event.competitions
+      : Array.isArray(fallback.competitions)
+        ? fallback.competitions
+        : scheduleCompetitions;
+
+    return {
+      id: normalizeCompetitionName(event?.id || fallback.id),
+      featured: Boolean(event?.featured ?? fallback.featured),
+      title: normalizeCompetitionName(event?.title || fallback.title),
+      dateEn: normalizeCompetitionName(event?.dateEn || fallback.dateEn),
+      dateFr: normalizeCompetitionName(event?.dateFr || fallback.dateFr),
+      locationEn: normalizeCompetitionName(event?.locationEn || fallback.locationEn),
+      locationFr: normalizeCompetitionName(event?.locationFr || fallback.locationFr),
+      websiteLabel: normalizeCompetitionName(event?.websiteLabel || fallback.websiteLabel),
+      websiteUrl: normalizeCompetitionName(event?.websiteUrl || fallback.websiteUrl),
+      contactEn: normalizeCompetitionName(event?.contactEn || fallback.contactEn),
+      contactFr: normalizeCompetitionName(event?.contactFr || fallback.contactFr),
+      competitions: competitionsList
+        .map((item) => normalizeCompetitionName(item))
+        .filter(Boolean)
+    };
+  }
+
+  function getDefaultScheduleEvents() {
+    return DEFAULT_SCHEDULE_EVENTS.map((event) => normalizeScheduleEvent(event, event));
+  }
+
+  function getStoredScheduleEvents() {
+    const defaults = getDefaultScheduleEvents();
+    try {
+      const raw = JSON.parse(localStorage.getItem(SCHEDULE_EVENTS_STORAGE_KEY) || "[]");
+      if (!Array.isArray(raw) || !raw.length) {
+        return defaults;
+      }
+
+      return defaults.map((defaultEvent) => {
+        const custom = raw.find((item) => normalizeCompetitionName(item?.id) === defaultEvent.id) || {};
+        const merged = normalizeScheduleEvent(custom, defaultEvent);
+        if (!merged.competitions.length) {
+          merged.competitions = defaultEvent.competitions.slice();
+        }
+        return merged;
+      });
+    } catch (error) {
+      return defaults;
+    }
+  }
+
   function saveCompetitions(nextCompetitions) {
     competitions = nextCompetitions.slice();
     localStorage.setItem(COMPETITIONS_STORAGE_KEY, JSON.stringify(competitions));
+  }
+
+  function saveScheduleCompetitions(nextCompetitions) {
+    scheduleCompetitions = nextCompetitions.slice();
+    localStorage.setItem(SCHEDULE_COMPETITIONS_STORAGE_KEY, JSON.stringify(scheduleCompetitions));
+    if (typeof window.applyRoboCupSiteSettings === "function") {
+      window.applyRoboCupSiteSettings();
+    }
+  }
+
+  function saveScheduleEvents(nextEvents) {
+    scheduleEvents = nextEvents.map((event) => normalizeScheduleEvent(event, event));
+    localStorage.setItem(SCHEDULE_EVENTS_STORAGE_KEY, JSON.stringify(scheduleEvents));
+    if (typeof window.applyRoboCupSiteSettings === "function") {
+      window.applyRoboCupSiteSettings();
+    }
   }
 
   function populateTeamCompetitionOptions() {
@@ -525,9 +717,110 @@
     `).join("");
   }
 
+  function renderScheduleCompetitionSettingsList() {
+    const list = document.getElementById("schedule-competition-list");
+    if (!list) return;
+
+    if (!scheduleCompetitions.length) {
+      list.innerHTML = `<li class="competition-empty">${labels.scheduleCompetitionEmpty}</li>`;
+      return;
+    }
+
+    list.innerHTML = scheduleCompetitions.map((competition) => `
+      <li class="competition-settings-item">
+        <span class="competition-name">${escapeHtml(competition)}</span>
+        <button
+          class="danger-action small-action remove-schedule-competition-button"
+          type="button"
+          data-competition="${escapeHtml(competition)}"
+        >
+          ${labels.scheduleCompetitionRemove}
+        </button>
+      </li>
+    `).join("");
+  }
+
+  function populateScheduleEventTargetOptions() {
+    const select = document.getElementById("schedule-event-target");
+    if (!select) return;
+
+    const previousValue = select.value;
+    select.innerHTML = scheduleEvents.map((event) => (
+      `<option value="${escapeHtml(event.id)}">${escapeHtml(event.title || event.id)}</option>`
+    )).join("");
+
+    if (!scheduleEvents.length) return;
+    const nextValue = scheduleEvents.some((event) => event.id === previousValue)
+      ? previousValue
+      : scheduleEvents[0].id;
+    select.value = nextValue;
+    populateScheduleEventForm(nextValue);
+  }
+
+  function populateScheduleEventForm(eventId) {
+    const target = normalizeCompetitionName(eventId);
+    if (!target) return;
+
+    const selectedEvent = scheduleEvents.find((event) => event.id === target);
+    if (!selectedEvent) return;
+
+    const dateEnInput = document.getElementById("schedule-event-date-en");
+    const dateFrInput = document.getElementById("schedule-event-date-fr");
+    const titleInput = document.getElementById("schedule-event-title");
+    const locationEnInput = document.getElementById("schedule-event-location-en");
+    const locationFrInput = document.getElementById("schedule-event-location-fr");
+    const websiteLabelInput = document.getElementById("schedule-event-website-label");
+    const websiteUrlInput = document.getElementById("schedule-event-website-url");
+    const contactEnInput = document.getElementById("schedule-event-contact-en");
+    const contactFrInput = document.getElementById("schedule-event-contact-fr");
+    const competitionsInput = document.getElementById("schedule-event-competitions");
+
+    if (dateEnInput) dateEnInput.value = selectedEvent.dateEn || "";
+    if (dateFrInput) dateFrInput.value = selectedEvent.dateFr || "";
+    if (titleInput) titleInput.value = selectedEvent.title || "";
+    if (locationEnInput) locationEnInput.value = selectedEvent.locationEn || "";
+    if (locationFrInput) locationFrInput.value = selectedEvent.locationFr || "";
+    if (websiteLabelInput) websiteLabelInput.value = selectedEvent.websiteLabel || "";
+    if (websiteUrlInput) websiteUrlInput.value = selectedEvent.websiteUrl || "";
+    if (contactEnInput) contactEnInput.value = selectedEvent.contactEn || "";
+    if (contactFrInput) contactFrInput.value = selectedEvent.contactFr || "";
+    if (competitionsInput) competitionsInput.value = formatMultiline(selectedEvent.competitions || []);
+  }
+
+  function saveScheduleEventDetails(eventId, eventDetails) {
+    const target = normalizeCompetitionName(eventId);
+    const nextEvents = scheduleEvents.map((event) => {
+      if (event.id !== target) return event;
+      return normalizeScheduleEvent({
+        ...event,
+        ...eventDetails,
+        id: event.id,
+        featured: event.featured
+      }, event);
+    });
+
+    saveScheduleEvents(nextEvents);
+  }
+
+  function resetScheduleEventDetails(eventId) {
+    const target = normalizeCompetitionName(eventId);
+    const defaults = getDefaultScheduleEvents();
+    const defaultEvent = defaults.find((event) => event.id === target);
+    if (!defaultEvent) return;
+
+    const nextEvents = scheduleEvents.map((event) => {
+      if (event.id !== target) return event;
+      return normalizeScheduleEvent(defaultEvent, defaultEvent);
+    });
+
+    saveScheduleEvents(nextEvents);
+  }
+
   function refreshCompetitionViews() {
     populateTeamCompetitionOptions();
     renderCompetitionSettingsList();
+    renderScheduleCompetitionSettingsList();
+    populateScheduleEventTargetOptions();
     populateLeagueDetailsTargetOptions();
     renderBrackets(cachedTeams);
   }
@@ -1379,6 +1672,8 @@
       const defaults = { siteNameEn: DEFAULT_SITE_NAME, siteNameFr: DEFAULT_SITE_NAME };
       saveSiteSettings(defaults);
       saveCompetitions(DEFAULT_COMPETITIONS.slice());
+      saveScheduleCompetitions(DEFAULT_COMPETITIONS.slice());
+      saveScheduleEvents(getDefaultScheduleEvents());
       localStorage.removeItem(LEAGUE_DETAILS_STORAGE_KEY);
       populateSiteSettingsForm();
       refreshCompetitionViews();
@@ -1436,6 +1731,139 @@
       clearCompetitionBracket(competitionToRemove);
       refreshCompetitionViews();
       setMessage(labels.competitionRemoved, "success");
+    });
+  }
+
+  const scheduleCompetitionForm = document.getElementById("schedule-competition-form");
+  if (scheduleCompetitionForm) {
+    scheduleCompetitionForm.addEventListener("submit", (event) => {
+      event.preventDefault();
+
+      const input = document.getElementById("schedule-competition-input");
+      const competitionName = normalizeCompetitionName(input?.value);
+      if (!competitionName) {
+        setMessage(labels.scheduleCompetitionNameRequired, "error");
+        return;
+      }
+
+      const exists = scheduleCompetitions.some((item) => item.toLowerCase() === competitionName.toLowerCase());
+      if (exists) {
+        setMessage(labels.scheduleCompetitionExists, "error");
+        return;
+      }
+
+      saveScheduleCompetitions(scheduleCompetitions.concat(competitionName));
+      saveScheduleEvents(scheduleEvents.map((eventItem) => {
+        if (eventItem.competitions.some((item) => item.toLowerCase() === competitionName.toLowerCase())) {
+          return eventItem;
+        }
+
+        return {
+          ...eventItem,
+          competitions: eventItem.competitions.concat(competitionName)
+        };
+      }));
+      refreshCompetitionViews();
+      if (input) input.value = "";
+      setMessage(labels.scheduleCompetitionAdded, "success");
+    });
+  }
+
+  const scheduleCompetitionList = document.getElementById("schedule-competition-list");
+  if (scheduleCompetitionList) {
+    scheduleCompetitionList.addEventListener("click", (event) => {
+      const removeButton = event.target.closest(".remove-schedule-competition-button");
+      if (!removeButton) return;
+
+      if (scheduleCompetitions.length <= 1) {
+        setMessage(labels.scheduleCompetitionNeedOne, "error");
+        return;
+      }
+
+      const competitionToRemove = removeButton.dataset.competition;
+      const confirmed = window.confirm(labels.scheduleCompetitionRemoveConfirm(competitionToRemove));
+      if (!confirmed) return;
+
+      saveScheduleCompetitions(scheduleCompetitions.filter((item) => item !== competitionToRemove));
+      saveScheduleEvents(scheduleEvents.map((eventItem) => {
+        const filtered = eventItem.competitions.filter((item) => item !== competitionToRemove);
+        return {
+          ...eventItem,
+          competitions: filtered.length ? filtered : [scheduleCompetitions.find((item) => item !== competitionToRemove) || DEFAULT_COMPETITIONS[0]]
+        };
+      }));
+      refreshCompetitionViews();
+      setMessage(labels.scheduleCompetitionRemoved, "success");
+    });
+  }
+
+  const scheduleCompetitionResetButton = document.getElementById("schedule-competition-reset");
+  if (scheduleCompetitionResetButton) {
+    scheduleCompetitionResetButton.addEventListener("click", () => {
+      saveScheduleCompetitions(DEFAULT_COMPETITIONS.slice());
+      saveScheduleEvents(scheduleEvents.map((eventItem) => ({
+        ...eventItem,
+        competitions: DEFAULT_COMPETITIONS.slice()
+      })));
+      refreshCompetitionViews();
+      setMessage(labels.scheduleCompetitionReset, "success");
+    });
+  }
+
+  const scheduleEventTarget = document.getElementById("schedule-event-target");
+  if (scheduleEventTarget) {
+    scheduleEventTarget.addEventListener("change", () => {
+      populateScheduleEventForm(scheduleEventTarget.value);
+    });
+  }
+
+  const scheduleEventForm = document.getElementById("schedule-event-form");
+  if (scheduleEventForm) {
+    scheduleEventForm.addEventListener("submit", (event) => {
+      event.preventDefault();
+
+      const eventId = normalizeCompetitionName(document.getElementById("schedule-event-target")?.value);
+      if (!eventId) {
+        setMessage(labels.scheduleEventRequired, "error");
+        return;
+      }
+
+      const competitionsList = parseMultiline(document.getElementById("schedule-event-competitions")?.value);
+      if (!competitionsList.length) {
+        setMessage(labels.scheduleEventCompetitionsRequired, "error");
+        return;
+      }
+
+      saveScheduleEventDetails(eventId, {
+        dateEn: document.getElementById("schedule-event-date-en")?.value,
+        dateFr: document.getElementById("schedule-event-date-fr")?.value,
+        title: document.getElementById("schedule-event-title")?.value,
+        locationEn: document.getElementById("schedule-event-location-en")?.value,
+        locationFr: document.getElementById("schedule-event-location-fr")?.value,
+        websiteLabel: document.getElementById("schedule-event-website-label")?.value,
+        websiteUrl: document.getElementById("schedule-event-website-url")?.value,
+        contactEn: document.getElementById("schedule-event-contact-en")?.value,
+        contactFr: document.getElementById("schedule-event-contact-fr")?.value,
+        competitions: competitionsList
+      });
+
+      populateScheduleEventForm(eventId);
+      setMessage(labels.scheduleEventSaved, "success");
+    });
+  }
+
+  const scheduleEventResetButton = document.getElementById("schedule-event-reset");
+  if (scheduleEventResetButton) {
+    scheduleEventResetButton.addEventListener("click", () => {
+      const eventId = normalizeCompetitionName(document.getElementById("schedule-event-target")?.value);
+      if (!eventId) {
+        setMessage(labels.scheduleEventRequired, "error");
+        return;
+      }
+
+      resetScheduleEventDetails(eventId);
+      populateScheduleEventForm(eventId);
+      setMessage(labels.scheduleEventReset, "success");
     });
   }
 

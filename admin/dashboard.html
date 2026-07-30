@@ -160,6 +160,7 @@
           <button class="site-settings-tab active" type="button" data-settings-tab-target="site-name-settings-panel">Site Name</button>
           <button class="site-settings-tab" type="button" data-settings-tab-target="league-list-settings-panel">Leagues</button>
           <button class="site-settings-tab" type="button" data-settings-tab-target="league-details-settings-panel">League Details</button>
+          <button class="site-settings-tab" type="button" data-settings-tab-target="competition-schedule-settings-panel">Competition Schedule</button>
         </section>
 
         <section id="site-name-settings-panel" class="site-settings-tab-panel active">
@@ -233,6 +234,81 @@
                 <button id="league-details-reset" class="secondary-action" type="button">Reset League Details</button>
               </div>
             </form>
+          </section>
+        </section>
+
+        <section id="competition-schedule-settings-panel" class="site-settings-tab-panel">
+          <section class="league-details-settings">
+            <h3>Competition Schedule</h3>
+            <p class="panel-copy">Update which competitions are listed in schedule events across both English and French pages.</p>
+
+            <form id="schedule-competition-form" class="competition-settings-form">
+              <input id="schedule-competition-input" type="text" placeholder="e.g. RoboMission" />
+              <button class="secondary-action" type="submit">Add Competition</button>
+            </form>
+
+            <ul id="schedule-competition-list" class="competition-settings-list"></ul>
+
+            <div class="site-settings-actions">
+              <button id="schedule-competition-reset" class="secondary-action" type="button">Reset Schedule Competitions</button>
+            </div>
+
+            <section class="league-details-settings">
+              <h3>Event Details</h3>
+              <p class="panel-copy">Edit schedule event content shown on public pages.</p>
+
+              <form id="schedule-event-form" class="stacked-form league-details-form">
+                <label>
+                  Event
+                  <select id="schedule-event-target" required></select>
+                </label>
+                <label>
+                  Date (English)
+                  <input id="schedule-event-date-en" type="text" placeholder="e.g. April 10, 2026" />
+                </label>
+                <label>
+                  Date (French)
+                  <input id="schedule-event-date-fr" type="text" placeholder="e.g. 10 avril 2026" />
+                </label>
+                <label>
+                  Title
+                  <input id="schedule-event-title" type="text" placeholder="e.g. Western Canada RoboCupJunior" />
+                </label>
+                <label>
+                  Location (English)
+                  <input id="schedule-event-location-en" type="text" placeholder="e.g. Okanagan College, Kelowna Campus" />
+                </label>
+                <label>
+                  Location (French)
+                  <input id="schedule-event-location-fr" type="text" placeholder="e.g. Okanagan College, Campus Kelowna" />
+                </label>
+                <label>
+                  Website label
+                  <input id="schedule-event-website-label" type="text" placeholder="e.g. Okanagan College RoboCup" />
+                </label>
+                <label>
+                  Website URL
+                  <input id="schedule-event-website-url" type="url" placeholder="https://example.com" />
+                </label>
+                <label>
+                  Contact (English)
+                  <input id="schedule-event-contact-en" type="text" placeholder="Optional" />
+                </label>
+                <label>
+                  Contact (French)
+                  <input id="schedule-event-contact-fr" type="text" placeholder="Optionnel" />
+                </label>
+                <label>
+                  Competitions (one per line)
+                  <textarea id="schedule-event-competitions" rows="5" placeholder="Rescue Maze&#10;Rescue Line&#10;Soccer Infrared Lightweight"></textarea>
+                </label>
+
+                <div class="site-settings-actions">
+                  <button class="primary-action" type="submit">Save Event Details</button>
+                  <button id="schedule-event-reset" class="secondary-action" type="button">Reset Event</button>
+                </div>
+              </form>
+            </section>
           </section>
         </section>
       </section>
