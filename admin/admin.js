@@ -227,6 +227,29 @@
     activateTab(activeButton?.dataset.tabTarget || tabButtons[0].dataset.tabTarget);
   }
 
+  function setupSiteSettingsTabs() {
+    const tabButtons = Array.from(document.querySelectorAll(".site-settings-tab"));
+    const tabPanels = Array.from(document.querySelectorAll(".site-settings-tab-panel"));
+    if (!tabButtons.length || !tabPanels.length) return;
+
+    function activateTab(targetId) {
+      tabButtons.forEach((button) => {
+        button.classList.toggle("active", button.dataset.settingsTabTarget === targetId);
+      });
+
+      tabPanels.forEach((panel) => {
+        panel.classList.toggle("active", panel.id === targetId);
+      });
+    }
+
+    tabButtons.forEach((button) => {
+      button.addEventListener("click", () => activateTab(button.dataset.settingsTabTarget));
+    });
+
+    const activeButton = tabButtons.find((button) => button.classList.contains("active"));
+    activateTab(activeButton?.dataset.settingsTabTarget || tabButtons[0].dataset.settingsTabTarget);
+  }
+
   function isDemoAdminLogin(email, password) {
     return email.toLowerCase() === DEMO_ADMIN_EMAIL && password === DEMO_ADMIN_PASSWORD;
   }
@@ -1180,6 +1203,7 @@
   const teamForm = document.getElementById("team-form");
   if (teamForm) {
     setupTabs();
+    setupSiteSettingsTabs();
     setupDashboard();
 
     teamForm.addEventListener("submit", async (event) => {

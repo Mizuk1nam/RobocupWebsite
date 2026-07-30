@@ -156,72 +156,84 @@
           </div>
         </div>
 
-        <form id="site-settings-form" class="stacked-form site-settings-form">
-          <label>
-            Nom du site (pages anglaises)
-            <input id="site-name-en" type="text" required placeholder="RoboCupJunior Canada" />
-          </label>
-          <label>
-            Nom du site (pages françaises)
-            <input id="site-name-fr" type="text" required placeholder="RoboCupJunior Canada" />
-          </label>
-          <div class="site-settings-actions">
-            <button class="primary-action" type="submit">Enregistrer</button>
-            <button id="site-settings-reset" class="secondary-action" type="button">Réinitialiser</button>
-          </div>
-        </form>
-
-        <section class="competition-settings">
-          <h3>Ligues</h3>
-          <p class="panel-copy">Ajoutez ou supprimez les ligues utilisées pour les équipes, les tableaux et la page publique des ligues.</p>
-
-          <form id="competition-settings-form" class="competition-settings-form">
-            <input id="competition-name-input" type="text" placeholder="ex. RoboMission" />
-            <button class="secondary-action" type="submit">Ajouter une ligue</button>
-          </form>
-
-          <ul id="competition-settings-list" class="competition-settings-list"></ul>
+        <section class="site-settings-tabs" aria-label="Sections des paramètres du site">
+          <button class="site-settings-tab active" type="button" data-settings-tab-target="site-name-settings-panel">Nom du site</button>
+          <button class="site-settings-tab" type="button" data-settings-tab-target="league-list-settings-panel">Ligues</button>
+          <button class="site-settings-tab" type="button" data-settings-tab-target="league-details-settings-panel">Détails des ligues</button>
         </section>
 
-        <section class="league-details-settings">
-          <h3>Détails des ligues</h3>
-          <p class="panel-copy">Modifiez les descriptions et détails publics affichés pour chaque ligue.</p>
-
-          <form id="league-details-form" class="stacked-form league-details-form">
+        <section id="site-name-settings-panel" class="site-settings-tab-panel active">
+          <form id="site-settings-form" class="stacked-form site-settings-form">
             <label>
-              Ligue
-              <select id="league-details-target" required></select>
+              Nom du site (pages anglaises)
+              <input id="site-name-en" type="text" required placeholder="RoboCupJunior Canada" />
             </label>
             <label>
-              Identifiant de la page de détails
-              <input id="league-details-slug" type="text" placeholder="ex. robomission" />
+              Nom du site (pages françaises)
+              <input id="site-name-fr" type="text" required placeholder="RoboCupJunior Canada" />
             </label>
-            <label>
-              Icône de carte (emoji)
-              <input id="league-details-icon" type="text" placeholder="ex. 🤖" />
-            </label>
-            <label>
-              Résumé (anglais)
-              <textarea id="league-details-summary-en" rows="3" placeholder="Courte description affichée sur les pages publiques."></textarea>
-            </label>
-            <label>
-              Résumé (français)
-              <textarea id="league-details-summary-fr" rows="3" placeholder="Courte description affichée sur les pages publiques."></textarea>
-            </label>
-            <label>
-              Points clés (anglais, une ligne par point)
-              <textarea id="league-details-bullets-en" rows="4" placeholder="Premier point&#10;Deuxieme point"></textarea>
-            </label>
-            <label>
-              Points clés (français, une ligne par point)
-              <textarea id="league-details-bullets-fr" rows="4" placeholder="Premier point&#10;Deuxieme point"></textarea>
-            </label>
-
             <div class="site-settings-actions">
-              <button class="primary-action" type="submit">Enregistrer les détails</button>
-              <button id="league-details-reset" class="secondary-action" type="button">Réinitialiser les détails</button>
+              <button class="primary-action" type="submit">Enregistrer</button>
+              <button id="site-settings-reset" class="secondary-action" type="button">Réinitialiser</button>
             </div>
           </form>
+        </section>
+
+        <section id="league-list-settings-panel" class="site-settings-tab-panel">
+          <section class="competition-settings">
+            <h3>Ligues</h3>
+            <p class="panel-copy">Ajoutez ou supprimez les ligues utilisées pour les équipes, les tableaux et la page publique des ligues.</p>
+
+            <form id="competition-settings-form" class="competition-settings-form">
+              <input id="competition-name-input" type="text" placeholder="ex. RoboMission" />
+              <button class="secondary-action" type="submit">Ajouter une ligue</button>
+            </form>
+
+            <ul id="competition-settings-list" class="competition-settings-list"></ul>
+          </section>
+        </section>
+
+        <section id="league-details-settings-panel" class="site-settings-tab-panel">
+          <section class="league-details-settings">
+            <h3>Détails des ligues</h3>
+            <p class="panel-copy">Modifiez les descriptions et détails publics affichés pour chaque ligue.</p>
+
+            <form id="league-details-form" class="stacked-form league-details-form">
+              <label>
+                Ligue
+                <select id="league-details-target" required></select>
+              </label>
+              <label>
+                Identifiant de la page de détails
+                <input id="league-details-slug" type="text" placeholder="ex. robomission" />
+              </label>
+              <label>
+                Icône de carte (emoji)
+                <input id="league-details-icon" type="text" placeholder="ex. 🤖" />
+              </label>
+              <label>
+                Résumé (anglais)
+                <textarea id="league-details-summary-en" rows="3" placeholder="Courte description affichée sur les pages publiques."></textarea>
+              </label>
+              <label>
+                Résumé (français)
+                <textarea id="league-details-summary-fr" rows="3" placeholder="Courte description affichée sur les pages publiques."></textarea>
+              </label>
+              <label>
+                Points clés (anglais, une ligne par point)
+                <textarea id="league-details-bullets-en" rows="4" placeholder="Premier point&#10;Deuxieme point"></textarea>
+              </label>
+              <label>
+                Points clés (français, une ligne par point)
+                <textarea id="league-details-bullets-fr" rows="4" placeholder="Premier point&#10;Deuxieme point"></textarea>
+              </label>
+
+              <div class="site-settings-actions">
+                <button class="primary-action" type="submit">Enregistrer les détails</button>
+                <button id="league-details-reset" class="secondary-action" type="button">Réinitialiser les détails</button>
+              </div>
+            </form>
+          </section>
         </section>
       </section>
     </section>
