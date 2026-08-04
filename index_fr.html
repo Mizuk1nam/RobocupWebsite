@@ -58,21 +58,11 @@
     .logo span { display: block; color: red; }
 
     .nav-links {
-      display: none;
+      display: flex;
       align-items: center;
       gap: 26px;
       justify-content: center;
       flex-wrap: wrap;
-    }
-
-    .hamburger { display: flex; align-items: center; justify-content: center; background: none; border: none; cursor: pointer; padding: .25rem; }
-    .mobile-menu { display: none; flex-direction: column; gap: 1rem; padding: 1rem 0; border-top: 1px solid #e5e7eb; }
-    .mobile-menu.open { display: flex; }
-
-    @media (min-width: 768px) {
-      .nav-links { display: flex; }
-      .hamburger { display: none; }
-      .mobile-menu { display: none; }
     }
 
     .nav-link {
@@ -161,29 +151,16 @@
     <style>body{opacity:1;transform:none!important}</style>
   </noscript>
   <nav>
-    <div class="container">
-      <div class="nav-inner">
-        <div class="nav-links">
-          <a class="nav-link active" href="index_fr.html">Accueil</a>
-          <a class="nav-link" href="about_fr.html">À propos</a>
-          <a class="nav-link" href="leagues_fr.html">Ligues & Règles</a>
-          <a class="nav-link" href="registration_fr.html">Inscription en ligne</a>
-          <a class="nav-link" href="schedule_fr.html">Calendrier</a>
-          <a class="nav-link" href="gallery_fr.html">Galerie</a>
-          <a class="nav-link" href="resources_fr.html">Ressources</a>
-          <a class="nav-link" href="contact_fr.html">Contact</a>
-          <a class="nav-link" href="index.html">English</a>
+    <div class="container nav-inner">
+      <a href="index_fr.html" class="logo">
+        <div class="logo-circle">&#129302;</div>
+        <div>
+          RoboCupJunior
+          <span>Canada</span>
         </div>
-        <button class="hamburger" onclick="toggleMobile()" aria-label="Menu">
-          <svg id="icon-menu" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#374151" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <line x1="4" y1="6" x2="20" y2="6"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="18" x2="20" y2="18"/>
-          </svg>
-          <svg id="icon-x" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#374151" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none">
-            <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
-          </svg>
-        </button>
-      </div>
-      <div class="mobile-menu" id="mobile-menu">
+      </a>
+
+      <div class="nav-links">
         <a class="nav-link active" href="index_fr.html">Accueil</a>
         <a class="nav-link" href="about_fr.html">À propos</a>
         <a class="nav-link" href="leagues_fr.html">Ligues & Règles</a>
@@ -192,6 +169,7 @@
         <a class="nav-link" href="gallery_fr.html">Galerie</a>
         <a class="nav-link" href="resources_fr.html">Ressources</a>
         <a class="nav-link" href="contact_fr.html">Contact</a>
+        <a class="nav-link" href="admin/index.html">Admin</a>
         <a class="nav-link" href="index.html">English</a>
       </div>
     </div>
@@ -264,12 +242,6 @@
   </footer>
 
   <script>
-    function toggleMobile() {
-      const menu = document.getElementById('mobile-menu');
-      const open = menu.classList.toggle('open');
-      document.getElementById('icon-menu').style.display = open ? 'none' : '';
-      document.getElementById('icon-x').style.display = open ? '' : 'none';
-    }
     window.addEventListener('pageshow', () => document.body.classList.add('page-loaded'));
     window.addEventListener('load', () => document.body.classList.add('page-loaded'));
     window.addEventListener('DOMContentLoaded', () => document.body.classList.add('page-loaded'));

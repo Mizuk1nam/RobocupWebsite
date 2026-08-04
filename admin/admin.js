@@ -166,6 +166,71 @@
   const BRACKET_STORAGE_KEY = "robocupBracketState";
   const SITE_SETTINGS_STORAGE_KEY = "robocupSiteSettings";
   const DEFAULT_SITE_NAME = "RoboCupJunior Canada";
+  const MAX_INTERNATIONAL_GALLERY_IMAGES = Number(window.ROBOCUP_MAX_INTERNATIONAL_GALLERY_IMAGES) || 25;
+  const INTERNATIONAL_GALLERY_IMAGE_CATALOG = typeof window.getRoboCupInternationalGalleryCatalog === "function"
+    ? window.getRoboCupInternationalGalleryCatalog()
+    : [
+      "Award Ceremony.jpg",
+      "Awards and Trophy_Vancouver.jpg",
+      "Code and Build.jpg",
+      "Engineering.jpg",
+      "FI.jpg",
+      "Home and School Bake Sale_parents.jpg",
+      "Home and School Bake Sale_students.jpg",
+      "OnStage League.jpg",
+      "Rescue Line League Challenge 1.jpg",
+      "Rescue Line League Challenge 2.jpg",
+      "Rescue Line League evac.2.jpg",
+      "Rescue Line League.jpg",
+      "Rescue Line League_evac..jpg",
+      "Rescue Maze League.png",
+      "RoboParty League - Rescue Line1.jpg",
+      "RoboParty League - Rescue Line2.jpg",
+      "RoboParty League - Rescue Maze1.jpg",
+      "RoboParty League - Sumo Challenge.jpg",
+      "RoboParty League - Sumo Challenge_1.jpg",
+      "RoboParty League- Performance Challenge.jpg",
+      "Soccer League1.jpg",
+      "Soccer League2.jpg"
+    ];
+  const DEFAULT_INTERNATIONAL_GALLERY_IMAGES = INTERNATIONAL_GALLERY_IMAGE_CATALOG.slice(0, MAX_INTERNATIONAL_GALLERY_IMAGES);
+  const DEFAULT_REGISTRATION_EVENT_SETTINGS = typeof window.getRoboCupRegistrationEventDefaults === "function"
+    ? window.getRoboCupRegistrationEventDefaults()
+    : {
+      heroEventEn: "RoboCup Americas 2026",
+      heroEventFr: "RoboCup Americas 2026",
+      eventDateEn: "October 22-25, 2026",
+      eventDateFr: "22-25 octobre 2026",
+      locationNameEn: "Sheridan College - Davis Campus",
+      locationNameFr: "Sheridan College - Davis Campus",
+      locationAddressEn: "Brampton, ON, Canada",
+      locationAddressFr: "Brampton, ON, Canada"
+    };
+  const DEFAULT_CONTACT_SETTINGS = typeof window.getRoboCupContactSettingsDefaults === "function"
+    ? window.getRoboCupContactSettingsDefaults()
+    : {
+      generalEmail: "info@robocupcanada.ca",
+      quebecName: "Sarah Morgan",
+      quebecEmail: "director@robocupcanada.ca",
+      nationalName: "Shaun Callendar",
+      nationalEmail: "director@robocupcanada.ca"
+    };
+  const DEFAULT_RESOURCES_LINKS = typeof window.getRoboCupResourcesLinksDefaults === "function"
+    ? window.getRoboCupResourcesLinksDefaults()
+    : {
+      international: "https://junior.robocup.org/",
+      forums: "https://junior.forum.robocup.org/",
+      slack: "https://robocupjunior.slack.com/",
+      soccer: "https://github.com/robocup-junior/awesome-rcj-soccer/",
+      rescueDocs: "https://rescue.rcj.cloud/documents",
+      rescueSpecs: "https://docs.google.com/document/d/1d97f-1gQnpQa3BZidJXpBIZX4N7Hgf3Q-El1FVgRXS8/edit?tab=t.0",
+      juniorDiscord: "https://discord.com/invite/45pxMQY4nJ",
+      internationalDiscord: "https://discord.com/invite/dcFgqFTeCy",
+      communitySupport: "https://junior.forum.robocup.org/",
+      usa: "https://www.robocupjunior.us/",
+      australia: "https://www.robocupjunior.org.au/",
+      learning: "https://junior.robocup.org/"
+    };
   const message = document.getElementById("auth-message") || document.getElementById("dashboard-message");
   const isFrench = document.documentElement.lang === "fr";
   const loginPage = isFrench ? "index_fr.html" : "index.html";
@@ -222,6 +287,33 @@
     bracketChampion: isFrench ? "Champion" : "Champion",
     noTeamName: isFrench ? "Équipe inconnue" : "Unknown team",
     siteNameRequired: isFrench ? "Entrez un nom de site pour les deux langues." : "Enter a site name for both languages.",
+    registrationEventRequired: isFrench
+      ? "Remplissez tous les champs de l'evenement d'inscription."
+      : "Fill in all online registration event fields.",
+    registrationEventSaved: isFrench
+      ? "Evenement d'inscription enregistre."
+      : "Online registration event saved.",
+    registrationEventReset: isFrench
+      ? "Evenement d'inscription reinitialise."
+      : "Online registration event reset.",
+    contactSettingsRequired: isFrench
+      ? "Remplissez tous les champs des details contact."
+      : "Fill in all contact detail fields.",
+    contactSettingsSaved: isFrench
+      ? "Details contact enregistres."
+      : "Contact details saved.",
+    contactSettingsReset: isFrench
+      ? "Details contact reinitialises."
+      : "Contact details reset.",
+    resourcesLinksRequired: isFrench
+      ? "Remplissez tous les liens des ressources."
+      : "Fill in all resources links.",
+    resourcesLinksSaved: isFrench
+      ? "Liens des ressources enregistres."
+      : "Resources links saved.",
+    resourcesLinksReset: isFrench
+      ? "Liens des ressources reinitialises."
+      : "Resources links reset.",
     siteSettingsSaved: isFrench ? "Paramètres du site enregistrés." : "Site settings saved.",
     siteSettingsReset: isFrench ? "Paramètres du site réinitialisés." : "Site settings reset.",
     heroByTab: {
@@ -284,7 +376,35 @@
     leagueDetailsSaved: isFrench ? "Details de la ligue enregistres." : "League details saved.",
     leagueDetailsReset: isFrench ? "Details de la ligue reinitialises." : "League details reset.",
     leagueSelectRequired: isFrench ? "Selectionnez une ligue." : "Select a league.",
-    slugExists: isFrench ? "Cet identifiant est deja utilise par une autre ligue." : "That slug is already used by another league."
+    slugExists: isFrench ? "Cet identifiant est deja utilise par une autre ligue." : "That slug is already used by another league.",
+    gallerySelectionRequired: isFrench
+      ? "Selectionnez au moins une image pour la galerie internationale."
+      : "Select at least one image for the international gallery.",
+    gallerySelectionSaved: isFrench ? "Images de la galerie enregistrees." : "Gallery images saved.",
+    gallerySelectionReset: isFrench ? "Images de la galerie reinitialisees." : "Gallery images reset.",
+    gallerySelectionLimit: (maxItems) => isFrench
+      ? `Vous pouvez selectionner jusqu'a ${maxItems} images maximum.`
+      : `You can select up to ${maxItems} images.`,
+    gallerySelectionCount: (selectedCount, maxItems) => isFrench
+      ? `${selectedCount}/${maxItems} images selectionnees`
+      : `${selectedCount}/${maxItems} images selected`,
+    galleryFilesAdded: (addedCount, ignoredCount) => {
+      if (isFrench) {
+        return ignoredCount > 0
+          ? `${addedCount} fichier(s) ajoute(s). ${ignoredCount} ignore(s) (deja presents ou non-image).`
+          : `${addedCount} fichier(s) ajoute(s).`;
+      }
+
+      return ignoredCount > 0
+        ? `${addedCount} file(s) added. ${ignoredCount} ignored (already present or not an image).`
+        : `${addedCount} file(s) added.`;
+    },
+    galleryFilesNoneAdded: isFrench
+      ? "Aucun nouveau fichier image valide n'a ete ajoute."
+      : "No new valid image files were added.",
+    galleryFilesPickFirst: isFrench
+      ? "Selectionnez un ou plusieurs fichiers image d'abord."
+      : "Select one or more image files first."
   };
   competitions = getStoredCompetitions();
   scheduleCompetitions = getStoredScheduleCompetitions();
@@ -829,33 +949,255 @@
     return String(value || "").trim();
   }
 
-  function getSiteSettings() {
+  function normalizeRegistrationEventSettings(value) {
+    const raw = value && typeof value === "object" ? value : {};
+
+    return {
+      heroEventEn: String(raw.heroEventEn || DEFAULT_REGISTRATION_EVENT_SETTINGS.heroEventEn).trim() || DEFAULT_REGISTRATION_EVENT_SETTINGS.heroEventEn,
+      heroEventFr: String(raw.heroEventFr || DEFAULT_REGISTRATION_EVENT_SETTINGS.heroEventFr).trim() || DEFAULT_REGISTRATION_EVENT_SETTINGS.heroEventFr,
+      eventDateEn: String(raw.eventDateEn || DEFAULT_REGISTRATION_EVENT_SETTINGS.eventDateEn).trim() || DEFAULT_REGISTRATION_EVENT_SETTINGS.eventDateEn,
+      eventDateFr: String(raw.eventDateFr || DEFAULT_REGISTRATION_EVENT_SETTINGS.eventDateFr).trim() || DEFAULT_REGISTRATION_EVENT_SETTINGS.eventDateFr,
+      locationNameEn: String(raw.locationNameEn || DEFAULT_REGISTRATION_EVENT_SETTINGS.locationNameEn).trim() || DEFAULT_REGISTRATION_EVENT_SETTINGS.locationNameEn,
+      locationNameFr: String(raw.locationNameFr || DEFAULT_REGISTRATION_EVENT_SETTINGS.locationNameFr).trim() || DEFAULT_REGISTRATION_EVENT_SETTINGS.locationNameFr,
+      locationAddressEn: String(raw.locationAddressEn || DEFAULT_REGISTRATION_EVENT_SETTINGS.locationAddressEn).trim() || DEFAULT_REGISTRATION_EVENT_SETTINGS.locationAddressEn,
+      locationAddressFr: String(raw.locationAddressFr || DEFAULT_REGISTRATION_EVENT_SETTINGS.locationAddressFr).trim() || DEFAULT_REGISTRATION_EVENT_SETTINGS.locationAddressFr
+    };
+  }
+
+  function normalizeContactSettings(value) {
+    const raw = value && typeof value === "object" ? value : {};
+
+    return {
+      generalEmail: String(raw.generalEmail || DEFAULT_CONTACT_SETTINGS.generalEmail).trim() || DEFAULT_CONTACT_SETTINGS.generalEmail,
+      quebecName: String(raw.quebecName || DEFAULT_CONTACT_SETTINGS.quebecName).trim() || DEFAULT_CONTACT_SETTINGS.quebecName,
+      quebecEmail: String(raw.quebecEmail || DEFAULT_CONTACT_SETTINGS.quebecEmail).trim() || DEFAULT_CONTACT_SETTINGS.quebecEmail,
+      nationalName: String(raw.nationalName || DEFAULT_CONTACT_SETTINGS.nationalName).trim() || DEFAULT_CONTACT_SETTINGS.nationalName,
+      nationalEmail: String(raw.nationalEmail || DEFAULT_CONTACT_SETTINGS.nationalEmail).trim() || DEFAULT_CONTACT_SETTINGS.nationalEmail
+    };
+  }
+
+  function normalizeResourcesLinks(value) {
+    const raw = value && typeof value === "object" ? value : {};
+
+    return {
+      international: String(raw.international || DEFAULT_RESOURCES_LINKS.international).trim() || DEFAULT_RESOURCES_LINKS.international,
+      forums: String(raw.forums || DEFAULT_RESOURCES_LINKS.forums).trim() || DEFAULT_RESOURCES_LINKS.forums,
+      slack: String(raw.slack || DEFAULT_RESOURCES_LINKS.slack).trim() || DEFAULT_RESOURCES_LINKS.slack,
+      soccer: String(raw.soccer || DEFAULT_RESOURCES_LINKS.soccer).trim() || DEFAULT_RESOURCES_LINKS.soccer,
+      rescueDocs: String(raw.rescueDocs || DEFAULT_RESOURCES_LINKS.rescueDocs).trim() || DEFAULT_RESOURCES_LINKS.rescueDocs,
+      rescueSpecs: String(raw.rescueSpecs || DEFAULT_RESOURCES_LINKS.rescueSpecs).trim() || DEFAULT_RESOURCES_LINKS.rescueSpecs,
+      juniorDiscord: String(raw.juniorDiscord || DEFAULT_RESOURCES_LINKS.juniorDiscord).trim() || DEFAULT_RESOURCES_LINKS.juniorDiscord,
+      internationalDiscord: String(raw.internationalDiscord || DEFAULT_RESOURCES_LINKS.internationalDiscord).trim() || DEFAULT_RESOURCES_LINKS.internationalDiscord,
+      communitySupport: String(raw.communitySupport || DEFAULT_RESOURCES_LINKS.communitySupport).trim() || DEFAULT_RESOURCES_LINKS.communitySupport,
+      usa: String(raw.usa || DEFAULT_RESOURCES_LINKS.usa).trim() || DEFAULT_RESOURCES_LINKS.usa,
+      australia: String(raw.australia || DEFAULT_RESOURCES_LINKS.australia).trim() || DEFAULT_RESOURCES_LINKS.australia,
+      learning: String(raw.learning || DEFAULT_RESOURCES_LINKS.learning).trim() || DEFAULT_RESOURCES_LINKS.learning
+    };
+  }
+
+  function getRawSiteSettings() {
     try {
-      const raw = JSON.parse(localStorage.getItem(SITE_SETTINGS_STORAGE_KEY) || "{}") || {};
-      const siteNameEn = normalizeSiteName(raw.siteNameEn) || DEFAULT_SITE_NAME;
-      const siteNameFr = normalizeSiteName(raw.siteNameFr) || siteNameEn;
-      return { siteNameEn, siteNameFr };
+      const parsed = JSON.parse(localStorage.getItem(SITE_SETTINGS_STORAGE_KEY) || "{}") || {};
+      return typeof parsed === "object" && parsed ? parsed : {};
     } catch (error) {
-      return { siteNameEn: DEFAULT_SITE_NAME, siteNameFr: DEFAULT_SITE_NAME };
+      return {};
     }
   }
 
+  function normalizeGalleryImageSelection(value, catalogInput) {
+    const catalog = Array.isArray(catalogInput) && catalogInput.length
+      ? catalogInput
+      : getInternationalGalleryCatalog();
+    const source = Array.isArray(value) ? value : [];
+    const allowed = new Set(catalog);
+    const seen = new Set();
+    const normalized = [];
+
+    source.forEach((entry) => {
+      const fileName = String(entry || "").trim();
+      if (!fileName || !allowed.has(fileName) || seen.has(fileName)) return;
+      seen.add(fileName);
+      normalized.push(fileName);
+    });
+
+    return normalized.slice(0, MAX_INTERNATIONAL_GALLERY_IMAGES);
+  }
+
+  function normalizeInternationalGalleryCatalog(value) {
+    const source = Array.isArray(value) ? value : [];
+    const seen = new Set();
+    const normalized = [];
+
+    source.forEach((entry) => {
+      const fileName = String(entry || "").trim();
+      if (!fileName || seen.has(fileName)) return;
+      seen.add(fileName);
+      normalized.push(fileName);
+    });
+
+    return normalized;
+  }
+
+  function getInternationalGalleryCatalog() {
+    const raw = getRawSiteSettings();
+    const customCatalog = normalizeInternationalGalleryCatalog(raw.internationalGalleryCatalog);
+    return customCatalog.length ? customCatalog : INTERNATIONAL_GALLERY_IMAGE_CATALOG.slice();
+  }
+
+  function normalizeSiteSettings(rawSettings) {
+    const raw = rawSettings && typeof rawSettings === "object" ? rawSettings : {};
+    const siteNameEn = normalizeSiteName(raw.siteNameEn) || DEFAULT_SITE_NAME;
+    const siteNameFr = normalizeSiteName(raw.siteNameFr) || siteNameEn;
+    const internationalGalleryCatalog = normalizeInternationalGalleryCatalog(raw.internationalGalleryCatalog);
+    const resolvedCatalog = internationalGalleryCatalog.length
+      ? internationalGalleryCatalog
+      : INTERNATIONAL_GALLERY_IMAGE_CATALOG.slice();
+    const selectedImages = normalizeGalleryImageSelection(raw.internationalGalleryImages, resolvedCatalog);
+    const internationalGalleryImages = selectedImages.length
+      ? selectedImages
+      : resolvedCatalog.slice(0, MAX_INTERNATIONAL_GALLERY_IMAGES);
+
+    return {
+      siteNameEn,
+      siteNameFr,
+      internationalGalleryCatalog: resolvedCatalog,
+      internationalGalleryImages,
+      registrationEvent: normalizeRegistrationEventSettings(raw.registrationEvent),
+      contact: normalizeContactSettings(raw.contact),
+      resourcesLinks: normalizeResourcesLinks(raw.resourcesLinks)
+    };
+  }
+
+  function getSiteSettings() {
+    return normalizeSiteSettings(getRawSiteSettings());
+  }
+
   function saveSiteSettings(settings) {
-    localStorage.setItem(SITE_SETTINGS_STORAGE_KEY, JSON.stringify(settings));
+    const current = getRawSiteSettings();
+    const next = normalizeSiteSettings({ ...current, ...settings });
+    localStorage.setItem(SITE_SETTINGS_STORAGE_KEY, JSON.stringify(next));
     if (typeof window.applyRoboCupSiteSettings === "function") {
       window.applyRoboCupSiteSettings();
     }
   }
 
-  function populateSiteSettingsForm() {
-    const form = document.getElementById("site-settings-form");
-    if (!form) return;
+  function updateInternationalGalleryCount(selectedCount) {
+    const countLabel = document.getElementById("international-gallery-count");
+    if (!countLabel) return;
+    countLabel.textContent = labels.gallerySelectionCount(selectedCount, MAX_INTERNATIONAL_GALLERY_IMAGES);
+  }
+
+  function getSelectedInternationalGalleryImages() {
+    const list = document.getElementById("international-gallery-images-list");
+    if (!list) return [];
+
+    return Array.from(list.querySelectorAll("input[data-gallery-file]:checked"))
+      .map((input) => String(input.dataset.galleryFile || "").trim())
+      .filter(Boolean);
+  }
+
+  function populateInternationalGallerySettingsForm() {
+    const list = document.getElementById("international-gallery-images-list");
+    if (!list) return;
 
     const settings = getSiteSettings();
-    const nameEnInput = document.getElementById("site-name-en");
-    const nameFrInput = document.getElementById("site-name-fr");
-    if (nameEnInput) nameEnInput.value = settings.siteNameEn;
-    if (nameFrInput) nameFrInput.value = settings.siteNameFr;
+    const catalog = settings.internationalGalleryCatalog;
+    const selectedSet = new Set(settings.internationalGalleryImages);
+
+    list.innerHTML = catalog.map((fileName) => `
+      <li class="international-gallery-item">
+        <label class="international-gallery-checkbox">
+          <input
+            type="checkbox"
+            data-gallery-file="${escapeHtml(fileName)}"
+            ${selectedSet.has(fileName) ? "checked" : ""}
+          />
+          <span class="international-gallery-filename">${escapeHtml(fileName)}</span>
+        </label>
+      </li>
+    `).join("");
+
+    updateInternationalGalleryCount(settings.internationalGalleryImages.length);
+  }
+
+  function populateSiteSettingsForm() {
+    const form = document.getElementById("site-settings-form");
+    const settings = getSiteSettings();
+    if (form) {
+      const nameEnInput = document.getElementById("site-name-en");
+      const nameFrInput = document.getElementById("site-name-fr");
+      if (nameEnInput) nameEnInput.value = settings.siteNameEn;
+      if (nameFrInput) nameFrInput.value = settings.siteNameFr;
+    }
+
+    populateInternationalGallerySettingsForm();
+    populateRegistrationEventSettingsForm();
+    populateContactSettingsForm();
+    populateResourcesLinksSettingsForm();
+  }
+
+  function populateRegistrationEventSettingsForm() {
+    const settings = getSiteSettings();
+    const event = settings.registrationEvent;
+
+    const heroEnInput = document.getElementById("registration-hero-en");
+    const heroFrInput = document.getElementById("registration-hero-fr");
+    const dateEnInput = document.getElementById("registration-date-en");
+    const dateFrInput = document.getElementById("registration-date-fr");
+    const locationNameEnInput = document.getElementById("registration-location-name-en");
+    const locationNameFrInput = document.getElementById("registration-location-name-fr");
+    const locationAddressEnInput = document.getElementById("registration-location-address-en");
+    const locationAddressFrInput = document.getElementById("registration-location-address-fr");
+
+    if (heroEnInput) heroEnInput.value = event.heroEventEn;
+    if (heroFrInput) heroFrInput.value = event.heroEventFr;
+    if (dateEnInput) dateEnInput.value = event.eventDateEn;
+    if (dateFrInput) dateFrInput.value = event.eventDateFr;
+    if (locationNameEnInput) locationNameEnInput.value = event.locationNameEn;
+    if (locationNameFrInput) locationNameFrInput.value = event.locationNameFr;
+    if (locationAddressEnInput) locationAddressEnInput.value = event.locationAddressEn;
+    if (locationAddressFrInput) locationAddressFrInput.value = event.locationAddressFr;
+  }
+
+  function populateContactSettingsForm() {
+    const settings = getSiteSettings();
+    const contact = settings.contact;
+
+    const generalEmailInput = document.getElementById("contact-general-email");
+    const quebecNameInput = document.getElementById("contact-quebec-name");
+    const quebecEmailInput = document.getElementById("contact-quebec-email");
+    const nationalNameInput = document.getElementById("contact-national-name");
+    const nationalEmailInput = document.getElementById("contact-national-email");
+
+    if (generalEmailInput) generalEmailInput.value = contact.generalEmail;
+    if (quebecNameInput) quebecNameInput.value = contact.quebecName;
+    if (quebecEmailInput) quebecEmailInput.value = contact.quebecEmail;
+    if (nationalNameInput) nationalNameInput.value = contact.nationalName;
+    if (nationalEmailInput) nationalEmailInput.value = contact.nationalEmail;
+  }
+
+  function populateResourcesLinksSettingsForm() {
+    const settings = getSiteSettings();
+    const links = settings.resourcesLinks;
+
+    const fields = {
+      international: document.getElementById("resource-link-international"),
+      forums: document.getElementById("resource-link-forums"),
+      slack: document.getElementById("resource-link-slack"),
+      soccer: document.getElementById("resource-link-soccer"),
+      rescueDocs: document.getElementById("resource-link-rescue-docs"),
+      rescueSpecs: document.getElementById("resource-link-rescue-specs"),
+      juniorDiscord: document.getElementById("resource-link-junior-discord"),
+      internationalDiscord: document.getElementById("resource-link-international-discord"),
+      communitySupport: document.getElementById("resource-link-community-support"),
+      usa: document.getElementById("resource-link-usa"),
+      australia: document.getElementById("resource-link-australia"),
+      learning: document.getElementById("resource-link-learning")
+    };
+
+    Object.entries(fields).forEach(([key, input]) => {
+      if (input) input.value = links[key] || "";
+    });
   }
 
   function getBracketState() {
@@ -1669,7 +2011,15 @@
   const siteSettingsResetButton = document.getElementById("site-settings-reset");
   if (siteSettingsResetButton) {
     siteSettingsResetButton.addEventListener("click", () => {
-      const defaults = { siteNameEn: DEFAULT_SITE_NAME, siteNameFr: DEFAULT_SITE_NAME };
+      const defaults = {
+        siteNameEn: DEFAULT_SITE_NAME,
+        siteNameFr: DEFAULT_SITE_NAME,
+        internationalGalleryCatalog: INTERNATIONAL_GALLERY_IMAGE_CATALOG.slice(),
+        internationalGalleryImages: DEFAULT_INTERNATIONAL_GALLERY_IMAGES.slice(),
+        registrationEvent: { ...DEFAULT_REGISTRATION_EVENT_SETTINGS },
+        contact: { ...DEFAULT_CONTACT_SETTINGS },
+        resourcesLinks: { ...DEFAULT_RESOURCES_LINKS }
+      };
       saveSiteSettings(defaults);
       saveCompetitions(DEFAULT_COMPETITIONS.slice());
       saveScheduleCompetitions(DEFAULT_COMPETITIONS.slice());
@@ -1678,6 +2028,226 @@
       populateSiteSettingsForm();
       refreshCompetitionViews();
       setMessage(labels.siteSettingsReset, "success");
+    });
+  }
+
+  const registrationEventSettingsForm = document.getElementById("registration-event-settings-form");
+  if (registrationEventSettingsForm) {
+    registrationEventSettingsForm.addEventListener("submit", (event) => {
+      event.preventDefault();
+
+      const registrationEvent = {
+        heroEventEn: normalizeSiteName(document.getElementById("registration-hero-en")?.value),
+        heroEventFr: normalizeSiteName(document.getElementById("registration-hero-fr")?.value),
+        eventDateEn: normalizeSiteName(document.getElementById("registration-date-en")?.value),
+        eventDateFr: normalizeSiteName(document.getElementById("registration-date-fr")?.value),
+        locationNameEn: normalizeSiteName(document.getElementById("registration-location-name-en")?.value),
+        locationNameFr: normalizeSiteName(document.getElementById("registration-location-name-fr")?.value),
+        locationAddressEn: normalizeSiteName(document.getElementById("registration-location-address-en")?.value),
+        locationAddressFr: normalizeSiteName(document.getElementById("registration-location-address-fr")?.value)
+      };
+
+      const hasMissingField = Object.values(registrationEvent).some((value) => !value);
+      if (hasMissingField) {
+        setMessage(labels.registrationEventRequired, "error");
+        return;
+      }
+
+      saveSiteSettings({ registrationEvent });
+      populateRegistrationEventSettingsForm();
+      setMessage(labels.registrationEventSaved, "success");
+    });
+  }
+
+  const registrationEventResetButton = document.getElementById("registration-event-reset");
+  if (registrationEventResetButton) {
+    registrationEventResetButton.addEventListener("click", () => {
+      saveSiteSettings({ registrationEvent: { ...DEFAULT_REGISTRATION_EVENT_SETTINGS } });
+      populateRegistrationEventSettingsForm();
+      setMessage(labels.registrationEventReset, "success");
+    });
+  }
+
+  const contactSettingsForm = document.getElementById("contact-settings-form");
+  if (contactSettingsForm) {
+    contactSettingsForm.addEventListener("submit", (event) => {
+      event.preventDefault();
+
+      const contact = {
+        generalEmail: normalizeSiteName(document.getElementById("contact-general-email")?.value),
+        quebecName: normalizeSiteName(document.getElementById("contact-quebec-name")?.value),
+        quebecEmail: normalizeSiteName(document.getElementById("contact-quebec-email")?.value),
+        nationalName: normalizeSiteName(document.getElementById("contact-national-name")?.value),
+        nationalEmail: normalizeSiteName(document.getElementById("contact-national-email")?.value)
+      };
+
+      const hasMissingField = Object.values(contact).some((value) => !value);
+      if (hasMissingField) {
+        setMessage(labels.contactSettingsRequired, "error");
+        return;
+      }
+
+      saveSiteSettings({ contact });
+      populateContactSettingsForm();
+      setMessage(labels.contactSettingsSaved, "success");
+    });
+  }
+
+  const contactSettingsResetButton = document.getElementById("contact-settings-reset");
+  if (contactSettingsResetButton) {
+    contactSettingsResetButton.addEventListener("click", () => {
+      saveSiteSettings({ contact: { ...DEFAULT_CONTACT_SETTINGS } });
+      populateContactSettingsForm();
+      setMessage(labels.contactSettingsReset, "success");
+    });
+  }
+
+  const resourcesLinksSettingsForm = document.getElementById("resources-links-settings-form");
+  if (resourcesLinksSettingsForm) {
+    resourcesLinksSettingsForm.addEventListener("submit", (event) => {
+      event.preventDefault();
+
+      const resourcesLinks = {
+        international: normalizeSiteName(document.getElementById("resource-link-international")?.value),
+        forums: normalizeSiteName(document.getElementById("resource-link-forums")?.value),
+        slack: normalizeSiteName(document.getElementById("resource-link-slack")?.value),
+        soccer: normalizeSiteName(document.getElementById("resource-link-soccer")?.value),
+        rescueDocs: normalizeSiteName(document.getElementById("resource-link-rescue-docs")?.value),
+        rescueSpecs: normalizeSiteName(document.getElementById("resource-link-rescue-specs")?.value),
+        juniorDiscord: normalizeSiteName(document.getElementById("resource-link-junior-discord")?.value),
+        internationalDiscord: normalizeSiteName(document.getElementById("resource-link-international-discord")?.value),
+        communitySupport: normalizeSiteName(document.getElementById("resource-link-community-support")?.value),
+        usa: normalizeSiteName(document.getElementById("resource-link-usa")?.value),
+        australia: normalizeSiteName(document.getElementById("resource-link-australia")?.value),
+        learning: normalizeSiteName(document.getElementById("resource-link-learning")?.value)
+      };
+
+      const hasMissingField = Object.values(resourcesLinks).some((value) => !value);
+      if (hasMissingField) {
+        setMessage(labels.resourcesLinksRequired, "error");
+        return;
+      }
+
+      saveSiteSettings({ resourcesLinks });
+      populateResourcesLinksSettingsForm();
+      setMessage(labels.resourcesLinksSaved, "success");
+    });
+  }
+
+  const resourcesLinksResetButton = document.getElementById("resources-links-reset");
+  if (resourcesLinksResetButton) {
+    resourcesLinksResetButton.addEventListener("click", () => {
+      saveSiteSettings({ resourcesLinks: { ...DEFAULT_RESOURCES_LINKS } });
+      populateResourcesLinksSettingsForm();
+      setMessage(labels.resourcesLinksReset, "success");
+    });
+  }
+
+  const internationalGalleryList = document.getElementById("international-gallery-images-list");
+  if (internationalGalleryList) {
+    internationalGalleryList.addEventListener("change", (event) => {
+      const checkbox = event.target.closest('input[data-gallery-file]');
+      if (!checkbox) return;
+
+      const selectedCount = getSelectedInternationalGalleryImages().length;
+      if (selectedCount > MAX_INTERNATIONAL_GALLERY_IMAGES) {
+        checkbox.checked = false;
+        setMessage(labels.gallerySelectionLimit(MAX_INTERNATIONAL_GALLERY_IMAGES), "error");
+        updateInternationalGalleryCount(getSelectedInternationalGalleryImages().length);
+        return;
+      }
+
+      updateInternationalGalleryCount(selectedCount);
+    });
+  }
+
+  function isLikelyImageFile(file) {
+    if (!file) return false;
+    if (typeof file.type === "string" && file.type.toLowerCase().startsWith("image/")) return true;
+    const name = String(file.name || "").trim();
+    return /\.(png|jpe?g|gif|webp|bmp|svg)$/i.test(name);
+  }
+
+  const internationalGalleryFileInput = document.getElementById("international-gallery-file-input");
+  const internationalGalleryAddFilesButton = document.getElementById("international-gallery-add-files");
+  if (internationalGalleryAddFilesButton) {
+    internationalGalleryAddFilesButton.addEventListener("click", () => {
+      const files = Array.from(internationalGalleryFileInput?.files || []);
+      if (!files.length) {
+        setMessage(labels.galleryFilesPickFirst, "error");
+        return;
+      }
+
+      const settings = getSiteSettings();
+      const nextCatalog = settings.internationalGalleryCatalog.slice();
+      const nextSelection = settings.internationalGalleryImages.slice();
+      const catalogSet = new Set(nextCatalog);
+      const selectedSet = new Set(nextSelection);
+      let addedCount = 0;
+      let ignoredCount = 0;
+
+      files.forEach((file) => {
+        const fileName = String(file?.name || "").trim();
+        if (!fileName || !isLikelyImageFile(file)) {
+          ignoredCount += 1;
+          return;
+        }
+
+        if (catalogSet.has(fileName)) {
+          ignoredCount += 1;
+          return;
+        }
+
+        catalogSet.add(fileName);
+        nextCatalog.push(fileName);
+        addedCount += 1;
+
+        if (!selectedSet.has(fileName) && selectedSet.size < MAX_INTERNATIONAL_GALLERY_IMAGES) {
+          selectedSet.add(fileName);
+          nextSelection.push(fileName);
+        }
+      });
+
+      if (!addedCount) {
+        setMessage(labels.galleryFilesNoneAdded, "error");
+        return;
+      }
+
+      saveSiteSettings({
+        internationalGalleryCatalog: nextCatalog,
+        internationalGalleryImages: nextSelection
+      });
+      populateInternationalGallerySettingsForm();
+      if (internationalGalleryFileInput) internationalGalleryFileInput.value = "";
+      setMessage(labels.galleryFilesAdded(addedCount, ignoredCount), "success");
+    });
+  }
+
+  const internationalGallerySaveButton = document.getElementById("international-gallery-save");
+  if (internationalGallerySaveButton) {
+    internationalGallerySaveButton.addEventListener("click", () => {
+      const selectedImages = getSelectedInternationalGalleryImages();
+      if (!selectedImages.length) {
+        setMessage(labels.gallerySelectionRequired, "error");
+        return;
+      }
+
+      saveSiteSettings({ internationalGalleryImages: selectedImages });
+      populateInternationalGallerySettingsForm();
+      setMessage(labels.gallerySelectionSaved, "success");
+    });
+  }
+
+  const internationalGalleryResetButton = document.getElementById("international-gallery-reset");
+  if (internationalGalleryResetButton) {
+    internationalGalleryResetButton.addEventListener("click", () => {
+      saveSiteSettings({
+        internationalGalleryCatalog: INTERNATIONAL_GALLERY_IMAGE_CATALOG.slice(),
+        internationalGalleryImages: DEFAULT_INTERNATIONAL_GALLERY_IMAGES.slice()
+      });
+      populateInternationalGallerySettingsForm();
+      if (internationalGalleryFileInput) internationalGalleryFileInput.value = "";
+      setMessage(labels.gallerySelectionReset, "success");
     });
   }
 

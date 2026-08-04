@@ -5,6 +5,63 @@
   const SCHEDULE_EVENTS_KEY = "robocupScheduleEvents";
   const LEAGUE_DETAILS_KEY = "robocupLeagueDetails";
   const DEFAULT_SITE_NAME = "RoboCupJunior Canada";
+  const MAX_INTERNATIONAL_GALLERY_IMAGES = 25;
+  const INTERNATIONAL_GALLERY_IMAGE_CATALOG = [
+    "Award Ceremony.jpg",
+    "Awards and Trophy_Vancouver.jpg",
+    "Code and Build.jpg",
+    "Engineering.jpg",
+    "FI.jpg",
+    "Home and School Bake Sale_parents.jpg",
+    "Home and School Bake Sale_students.jpg",
+    "OnStage League.jpg",
+    "Rescue Line League Challenge 1.jpg",
+    "Rescue Line League Challenge 2.jpg",
+    "Rescue Line League evac.2.jpg",
+    "Rescue Line League.jpg",
+    "Rescue Line League_evac..jpg",
+    "Rescue Maze League.png",
+    "RoboParty League - Rescue Line1.jpg",
+    "RoboParty League - Rescue Line2.jpg",
+    "RoboParty League - Rescue Maze1.jpg",
+    "RoboParty League - Sumo Challenge.jpg",
+    "RoboParty League - Sumo Challenge_1.jpg",
+    "RoboParty League- Performance Challenge.jpg",
+    "Soccer League1.jpg",
+    "Soccer League2.jpg"
+  ];
+  const DEFAULT_INTERNATIONAL_GALLERY_IMAGES = INTERNATIONAL_GALLERY_IMAGE_CATALOG.slice(0, MAX_INTERNATIONAL_GALLERY_IMAGES);
+  const DEFAULT_REGISTRATION_EVENT_SETTINGS = {
+    heroEventEn: "RoboCup Americas 2026",
+    heroEventFr: "RoboCup Americas 2026",
+    eventDateEn: "October 22-25, 2026",
+    eventDateFr: "22-25 octobre 2026",
+    locationNameEn: "Sheridan College - Davis Campus",
+    locationNameFr: "Sheridan College - Davis Campus",
+    locationAddressEn: "Brampton, ON, Canada",
+    locationAddressFr: "Brampton, ON, Canada"
+  };
+  const DEFAULT_CONTACT_SETTINGS = {
+    generalEmail: "info@robocupcanada.ca",
+    quebecName: "Sarah Morgan",
+    quebecEmail: "director@robocupcanada.ca",
+    nationalName: "Shaun Callendar",
+    nationalEmail: "director@robocupcanada.ca"
+  };
+  const DEFAULT_RESOURCES_LINKS = {
+    international: "https://junior.robocup.org/",
+    forums: "https://junior.forum.robocup.org/",
+    slack: "https://robocupjunior.slack.com/",
+    soccer: "https://github.com/robocup-junior/awesome-rcj-soccer/",
+    rescueDocs: "https://rescue.rcj.cloud/documents",
+    rescueSpecs: "https://docs.google.com/document/d/1d97f-1gQnpQa3BZidJXpBIZX4N7Hgf3Q-El1FVgRXS8/edit?tab=t.0",
+    juniorDiscord: "https://discord.com/invite/45pxMQY4nJ",
+    internationalDiscord: "https://discord.com/invite/dcFgqFTeCy",
+    communitySupport: "https://junior.forum.robocup.org/",
+    usa: "https://www.robocupjunior.us/",
+    australia: "https://www.robocupjunior.org.au/",
+    learning: "https://junior.robocup.org/"
+  };
   const DEFAULT_LEAGUES = [
     "Maze",
     "Formula 1",
@@ -165,8 +222,7 @@
   const REPLACEMENT_PATTERNS = [
     /RoboCupJunior Canada/g,
     /RoboCup Junior Canada/g,
-    /RoboCup Canada/g,
-    /RoboCupJunior/g
+    /RoboCup Canada/g
   ];
 
   function readSettings() {
@@ -175,6 +231,123 @@
     } catch (error) {
       return {};
     }
+  }
+
+  function normalizeGalleryImageSelection(value, catalog, maxItems) {
+    const source = Array.isArray(value) ? value : [];
+    const allowed = new Set(catalog);
+    const seen = new Set();
+    const normalized = [];
+
+    source.forEach((entry) => {
+      const fileName = String(entry || "").trim();
+      if (!fileName || !allowed.has(fileName) || seen.has(fileName)) return;
+      seen.add(fileName);
+      normalized.push(fileName);
+    });
+
+    return normalized.slice(0, maxItems);
+  }
+
+  function normalizeGalleryCatalog(value) {
+    const source = Array.isArray(value) ? value : [];
+    const seen = new Set();
+    const normalized = [];
+
+    source.forEach((entry) => {
+      const fileName = String(entry || "").trim();
+      if (!fileName || seen.has(fileName)) return;
+      seen.add(fileName);
+      normalized.push(fileName);
+    });
+
+    return normalized;
+  }
+
+  function getInternationalGalleryCatalog() {
+    const settings = readSettings();
+    const customCatalog = normalizeGalleryCatalog(settings.internationalGalleryCatalog);
+    return customCatalog.length ? customCatalog : INTERNATIONAL_GALLERY_IMAGE_CATALOG.slice();
+  }
+
+  function getDefaultInternationalGalleryImages(catalog) {
+    const source = Array.isArray(catalog) && catalog.length
+      ? catalog
+      : INTERNATIONAL_GALLERY_IMAGE_CATALOG;
+    return source.slice(0, MAX_INTERNATIONAL_GALLERY_IMAGES);
+  }
+
+  function getInternationalGalleryImagesFromSettings() {
+    const settings = readSettings();
+    const catalog = getInternationalGalleryCatalog();
+    const normalized = normalizeGalleryImageSelection(
+      settings.internationalGalleryImages,
+      catalog,
+      MAX_INTERNATIONAL_GALLERY_IMAGES
+    );
+
+    return normalized.length ? normalized : getDefaultInternationalGalleryImages(catalog);
+  }
+
+  function normalizeRegistrationEventSettings(value) {
+    const raw = value && typeof value === "object" ? value : {};
+
+    return {
+      heroEventEn: String(raw.heroEventEn || DEFAULT_REGISTRATION_EVENT_SETTINGS.heroEventEn).trim() || DEFAULT_REGISTRATION_EVENT_SETTINGS.heroEventEn,
+      heroEventFr: String(raw.heroEventFr || DEFAULT_REGISTRATION_EVENT_SETTINGS.heroEventFr).trim() || DEFAULT_REGISTRATION_EVENT_SETTINGS.heroEventFr,
+      eventDateEn: String(raw.eventDateEn || DEFAULT_REGISTRATION_EVENT_SETTINGS.eventDateEn).trim() || DEFAULT_REGISTRATION_EVENT_SETTINGS.eventDateEn,
+      eventDateFr: String(raw.eventDateFr || DEFAULT_REGISTRATION_EVENT_SETTINGS.eventDateFr).trim() || DEFAULT_REGISTRATION_EVENT_SETTINGS.eventDateFr,
+      locationNameEn: String(raw.locationNameEn || DEFAULT_REGISTRATION_EVENT_SETTINGS.locationNameEn).trim() || DEFAULT_REGISTRATION_EVENT_SETTINGS.locationNameEn,
+      locationNameFr: String(raw.locationNameFr || DEFAULT_REGISTRATION_EVENT_SETTINGS.locationNameFr).trim() || DEFAULT_REGISTRATION_EVENT_SETTINGS.locationNameFr,
+      locationAddressEn: String(raw.locationAddressEn || DEFAULT_REGISTRATION_EVENT_SETTINGS.locationAddressEn).trim() || DEFAULT_REGISTRATION_EVENT_SETTINGS.locationAddressEn,
+      locationAddressFr: String(raw.locationAddressFr || DEFAULT_REGISTRATION_EVENT_SETTINGS.locationAddressFr).trim() || DEFAULT_REGISTRATION_EVENT_SETTINGS.locationAddressFr
+    };
+  }
+
+  function getRegistrationEventSettings() {
+    const settings = readSettings();
+    return normalizeRegistrationEventSettings(settings.registrationEvent);
+  }
+
+  function normalizeContactSettings(value) {
+    const raw = value && typeof value === "object" ? value : {};
+
+    return {
+      generalEmail: String(raw.generalEmail || DEFAULT_CONTACT_SETTINGS.generalEmail).trim() || DEFAULT_CONTACT_SETTINGS.generalEmail,
+      quebecName: String(raw.quebecName || DEFAULT_CONTACT_SETTINGS.quebecName).trim() || DEFAULT_CONTACT_SETTINGS.quebecName,
+      quebecEmail: String(raw.quebecEmail || DEFAULT_CONTACT_SETTINGS.quebecEmail).trim() || DEFAULT_CONTACT_SETTINGS.quebecEmail,
+      nationalName: String(raw.nationalName || DEFAULT_CONTACT_SETTINGS.nationalName).trim() || DEFAULT_CONTACT_SETTINGS.nationalName,
+      nationalEmail: String(raw.nationalEmail || DEFAULT_CONTACT_SETTINGS.nationalEmail).trim() || DEFAULT_CONTACT_SETTINGS.nationalEmail
+    };
+  }
+
+  function getContactSettings() {
+    const settings = readSettings();
+    return normalizeContactSettings(settings.contact);
+  }
+
+  function normalizeResourcesLinks(value) {
+    const raw = value && typeof value === "object" ? value : {};
+
+    return {
+      international: String(raw.international || DEFAULT_RESOURCES_LINKS.international).trim() || DEFAULT_RESOURCES_LINKS.international,
+      forums: String(raw.forums || DEFAULT_RESOURCES_LINKS.forums).trim() || DEFAULT_RESOURCES_LINKS.forums,
+      slack: String(raw.slack || DEFAULT_RESOURCES_LINKS.slack).trim() || DEFAULT_RESOURCES_LINKS.slack,
+      soccer: String(raw.soccer || DEFAULT_RESOURCES_LINKS.soccer).trim() || DEFAULT_RESOURCES_LINKS.soccer,
+      rescueDocs: String(raw.rescueDocs || DEFAULT_RESOURCES_LINKS.rescueDocs).trim() || DEFAULT_RESOURCES_LINKS.rescueDocs,
+      rescueSpecs: String(raw.rescueSpecs || DEFAULT_RESOURCES_LINKS.rescueSpecs).trim() || DEFAULT_RESOURCES_LINKS.rescueSpecs,
+      juniorDiscord: String(raw.juniorDiscord || DEFAULT_RESOURCES_LINKS.juniorDiscord).trim() || DEFAULT_RESOURCES_LINKS.juniorDiscord,
+      internationalDiscord: String(raw.internationalDiscord || DEFAULT_RESOURCES_LINKS.internationalDiscord).trim() || DEFAULT_RESOURCES_LINKS.internationalDiscord,
+      communitySupport: String(raw.communitySupport || DEFAULT_RESOURCES_LINKS.communitySupport).trim() || DEFAULT_RESOURCES_LINKS.communitySupport,
+      usa: String(raw.usa || DEFAULT_RESOURCES_LINKS.usa).trim() || DEFAULT_RESOURCES_LINKS.usa,
+      australia: String(raw.australia || DEFAULT_RESOURCES_LINKS.australia).trim() || DEFAULT_RESOURCES_LINKS.australia,
+      learning: String(raw.learning || DEFAULT_RESOURCES_LINKS.learning).trim() || DEFAULT_RESOURCES_LINKS.learning
+    };
+  }
+
+  function getResourcesLinks() {
+    const settings = readSettings();
+    return normalizeResourcesLinks(settings.resourcesLinks);
   }
 
   function readLeagues() {
@@ -503,6 +676,102 @@
     }).join("");
   }
 
+  function applyRegistrationEventSettings() {
+    const path = window.location.pathname.toLowerCase();
+    const isRegistrationPage = path.endsWith("/registration.html")
+      || path.endsWith("registration.html")
+      || path.endsWith("/registration_fr.html")
+      || path.endsWith("registration_fr.html");
+    if (!isRegistrationPage) return;
+
+    const isFrench = document.documentElement.lang === "fr" || path.endsWith("registration_fr.html");
+    const settings = getRegistrationEventSettings();
+    const hero = isFrench ? settings.heroEventFr : settings.heroEventEn;
+    const date = isFrench ? settings.eventDateFr : settings.eventDateEn;
+    const locationName = isFrench ? settings.locationNameFr : settings.locationNameEn;
+    const locationAddress = isFrench ? settings.locationAddressFr : settings.locationAddressEn;
+
+    const heroTarget = document.getElementById("registration-hero-event");
+    const dateTarget = document.getElementById("registration-event-date");
+    const locationNameTarget = document.getElementById("registration-event-location-name");
+    const locationAddressTarget = document.getElementById("registration-event-location-address");
+
+    if (heroTarget) heroTarget.textContent = hero;
+    if (dateTarget) dateTarget.textContent = date;
+    if (locationNameTarget) locationNameTarget.textContent = locationName;
+    if (locationAddressTarget) locationAddressTarget.textContent = locationAddress;
+  }
+
+  function applyContactSettings() {
+    const path = window.location.pathname.toLowerCase();
+    const isContactPage = path.endsWith("/contact.html")
+      || path.endsWith("contact.html")
+      || path.endsWith("/contact_fr.html")
+      || path.endsWith("contact_fr.html");
+    if (!isContactPage) return;
+
+    const settings = getContactSettings();
+    const isFrench = document.documentElement.lang === "fr" || path.endsWith("contact_fr.html");
+    const quebecLabel = isFrench ? "Représentante Québec" : "Quebec Representative";
+    const nationalLabel = isFrench ? "Représentant national" : "National Representative";
+
+    const generalEmailAnchor = document.getElementById("contact-general-email-link");
+    const quebecNameTarget = document.getElementById("contact-quebec-name");
+    const quebecEmailAnchor = document.getElementById("contact-quebec-email-link");
+    const nationalNameTarget = document.getElementById("contact-national-name");
+    const nationalEmailAnchor = document.getElementById("contact-national-email-link");
+    const quebecHeadingTarget = document.getElementById("contact-quebec-heading");
+    const nationalHeadingTarget = document.getElementById("contact-national-heading");
+
+    if (generalEmailAnchor) {
+      generalEmailAnchor.href = `mailto:${settings.generalEmail}`;
+      generalEmailAnchor.textContent = settings.generalEmail;
+    }
+    if (quebecHeadingTarget) quebecHeadingTarget.textContent = quebecLabel;
+    if (quebecNameTarget) quebecNameTarget.textContent = settings.quebecName;
+    if (quebecEmailAnchor) {
+      quebecEmailAnchor.href = `mailto:${settings.quebecEmail}`;
+      quebecEmailAnchor.textContent = settings.quebecEmail;
+    }
+    if (nationalHeadingTarget) nationalHeadingTarget.textContent = nationalLabel;
+    if (nationalNameTarget) nationalNameTarget.textContent = settings.nationalName;
+    if (nationalEmailAnchor) {
+      nationalEmailAnchor.href = `mailto:${settings.nationalEmail}`;
+      nationalEmailAnchor.textContent = settings.nationalEmail;
+    }
+  }
+
+  function applyResourcesLinks() {
+    const path = window.location.pathname.toLowerCase();
+    const isResourcesPage = path.endsWith("/resources.html")
+      || path.endsWith("resources.html")
+      || path.endsWith("/resources_fr.html")
+      || path.endsWith("resources_fr.html");
+    if (!isResourcesPage) return;
+
+    const links = getResourcesLinks();
+    const mapping = {
+      "resources-link-international": links.international,
+      "resources-link-forums": links.forums,
+      "resources-link-slack": links.slack,
+      "resources-link-soccer": links.soccer,
+      "resources-link-rescue-docs": links.rescueDocs,
+      "resources-link-rescue-specs": links.rescueSpecs,
+      "resources-link-junior-discord": links.juniorDiscord,
+      "resources-link-international-discord": links.internationalDiscord,
+      "resources-link-community-support": links.communitySupport,
+      "resources-link-usa": links.usa,
+      "resources-link-australia": links.australia,
+      "resources-link-learning": links.learning
+    };
+
+    Object.entries(mapping).forEach(([id, url]) => {
+      const anchor = document.getElementById(id);
+      if (!anchor) return;
+      anchor.href = sanitizeHttpUrl(url);
+    });
+  }
+
   function getActiveSiteName() {
     const settings = readSettings();
     const isFrench = document.documentElement.lang === "fr";
@@ -574,11 +843,23 @@
     applyCustomCompetitionDetails();
     renderLeagueCardsFromSettings();
     renderScheduleEventsFromSettings();
+    applyRegistrationEventSettings();
+    applyContactSettings();
+    applyResourcesLinks();
 
     applyToTitle(siteName);
     applyToTextNodes(siteName);
   }
 
+  window.getRoboCupInternationalGalleryCatalog = getInternationalGalleryCatalog;
+  window.getRoboCupInternationalGalleryImages = getInternationalGalleryImagesFromSettings;
+  window.getRoboCupRegistrationEventSettings = getRegistrationEventSettings;
+  window.getRoboCupRegistrationEventDefaults = () => ({ ...DEFAULT_REGISTRATION_EVENT_SETTINGS });
+  window.getRoboCupContactSettings = getContactSettings;
+  window.getRoboCupContactSettingsDefaults = () => ({ ...DEFAULT_CONTACT_SETTINGS });
+  window.getRoboCupResourcesLinks = getResourcesLinks;
+  window.getRoboCupResourcesLinksDefaults = () => ({ ...DEFAULT_RESOURCES_LINKS });
+  window.ROBOCUP_MAX_INTERNATIONAL_GALLERY_IMAGES = MAX_INTERNATIONAL_GALLERY_IMAGES;
   window.applyRoboCupSiteSettings = applyRoboCupSiteSettings;
 
   if (document.readyState === "loading") {

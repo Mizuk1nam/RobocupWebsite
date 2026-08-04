@@ -305,6 +305,119 @@
       font-size: 15px;
     }
 
+    .gallery-slideshow {
+      position: relative;
+      border-radius: 18px;
+      overflow: hidden;
+      background: #0b1324;
+      box-shadow: 0 18px 40px rgba(15, 23, 42, 0.2);
+      margin-bottom: 44px;
+      min-height: 420px;
+    }
+
+    .slide-track {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      min-height: 420px;
+    }
+
+    .gallery-slide {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      transition: opacity .5s ease;
+      pointer-events: none;
+    }
+
+    .gallery-slide.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .gallery-slide img {
+      width: 100%;
+      height: 420px;
+      object-fit: contain;
+      object-position: center;
+      background: #0b1324;
+      display: block;
+    }
+
+    .slide-caption {
+      position: absolute;
+      left: 18px;
+      right: 18px;
+      bottom: 18px;
+      background: rgba(2, 6, 23, 0.68);
+      color: white;
+      border: 1px solid rgba(148, 163, 184, 0.35);
+      border-radius: 12px;
+      padding: 12px 14px;
+      font-size: 14px;
+      font-weight: 700;
+      backdrop-filter: blur(6px);
+    }
+
+    .slide-nav {
+      align-items: center;
+      background: rgba(2, 6, 23, 0.58);
+      border: 1px solid rgba(148, 163, 184, 0.35);
+      border-radius: 999px;
+      color: white;
+      cursor: pointer;
+      display: inline-flex;
+      font-size: 22px;
+      font-weight: 900;
+      height: 44px;
+      justify-content: center;
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 44px;
+      z-index: 3;
+      transition: .2s ease;
+    }
+
+    .slide-nav:hover {
+      background: rgba(37, 99, 235, 0.75);
+      border-color: rgba(147, 197, 253, 0.9);
+    }
+
+    .slide-nav.prev {
+      left: 14px;
+    }
+
+    .slide-nav.next {
+      right: 14px;
+    }
+
+    .slide-dots {
+      position: absolute;
+      left: 50%;
+      bottom: 16px;
+      transform: translateX(-50%);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      z-index: 3;
+    }
+
+    .slide-dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      border: 0;
+      background: rgba(226, 232, 240, 0.6);
+      cursor: pointer;
+      transition: .2s ease;
+    }
+
+    .slide-dot.active {
+      background: #60a5fa;
+      transform: scale(1.2);
+    }
+
     /* Video link cards */
     .links-grid {
       display: grid;
@@ -381,6 +494,12 @@
       .gallery-grid { grid-template-columns: 1fr; }
       .links-grid { grid-template-columns: 1fr; }
       .gallery-content { text-align: left; }
+      .gallery-slideshow,
+      .slide-track,
+      .gallery-slide img {
+        min-height: 300px;
+        height: 300px;
+      }
     }
   </style>
 </head>
@@ -442,28 +561,19 @@
           Cette section offre un accès rapide aux vidéos RoboCup Junior et aux souvenirs d'événements de la communauté internationale de robotique.
         </p>
 
-        <div class="gallery-grid">
+        <div class="gallery-slideshow" id="gallery-slideshow">
+          <button class="slide-nav prev" type="button" id="slide-prev" aria-label="Image precedente">&#10094;</button>
+          <div class="slide-track" id="slide-track"></div>
+          <button class="slide-nav next" type="button" id="slide-next" aria-label="Image suivante">&#10095;</button>
+          <div class="slide-dots" id="slide-dots" aria-label="Indicateurs de diapositive"></div>
+        </div>
+
+        <div class="gallery-grid" aria-hidden="true" style="display:none">
           <div class="gallery-card">
             <div class="gallery-content">
               <div class="gallery-icon">&#128248;</div>
               <h3>Moments en équipe</h3>
               <p>Les étudiants collaborent, préparent les robots et présentent leur travail.</p>
-            </div>
-          </div>
-
-          <div class="gallery-card">
-            <div class="gallery-content">
-              <div class="gallery-icon">&#129302;</div>
-              <h3>Défis robotiques</h3>
-              <p>Les robots autonomes en compétition dans les événements de sauvetage, de soccer et de performance.</p>
-            </div>
-          </div>
-
-          <div class="gallery-card">
-            <div class="gallery-content">
-              <div class="gallery-icon">&#127757;</div>
-              <h3>Événements mondiaux</h3>
-              <p>Participation internationale des étudiants, des mentors et des éducateurs.</p>
             </div>
           </div>
         </div>
@@ -503,5 +613,115 @@
     &copy; 2026 RoboCupJunior Canada. Tous droits réservés.
   </footer>
   <script src="site-settings.js"></script>
+  <script>
+    (function () {
+      const FALLBACK_IMAGE_FILES = [
+        "Award Ceremony.jpg",
+        "Awards and Trophy_Vancouver.jpg",
+        "Code and Build.jpg",
+        "Engineering.jpg",
+        "FI.jpg",
+        "Home and School Bake Sale_parents.jpg",
+        "Home and School Bake Sale_students.jpg",
+        "OnStage League.jpg",
+        "Rescue Line League Challenge 1.jpg",
+        "Rescue Line League Challenge 2.jpg",
+        "Rescue Line League evac.2.jpg",
+        "Rescue Line League.jpg",
+        "Rescue Line League_evac..jpg",
+        "Rescue Maze League.png",
+        "RoboParty League - Rescue Line1.jpg",
+        "RoboParty League - Rescue Line2.jpg",
+        "RoboParty League - Rescue Maze1.jpg",
+        "RoboParty League - Sumo Challenge.jpg",
+        "RoboParty League - Sumo Challenge_1.jpg",
+        "RoboParty League- Performance Challenge.jpg",
+        "Soccer League1.jpg",
+        "Soccer League2.jpg"
+      ];
+      const IMAGE_FILES = (typeof window.getRoboCupInternationalGalleryImages === "function"
+        ? window.getRoboCupInternationalGalleryImages()
+        : FALLBACK_IMAGE_FILES
+      ).slice(0, Number(window.ROBOCUP_MAX_INTERNATIONAL_GALLERY_IMAGES) || 25);
+
+      const slideTrack = document.getElementById("slide-track");
+      const dotsWrap = document.getElementById("slide-dots");
+      const prevButton = document.getElementById("slide-prev");
+      const nextButton = document.getElementById("slide-next");
+      if (!slideTrack || !dotsWrap || !prevButton || !nextButton || !IMAGE_FILES.length) return;
+
+      const slides = [];
+      const dots = [];
+      let currentIndex = 0;
+      let autoplayId = null;
+
+      function formatCaption(fileName) {
+        return fileName
+          .replace(/\.[^.]+$/, "")
+          .replace(/[_-]+/g, " ")
+          .replace(/\s+/g, " ")
+          .trim();
+      }
+
+      function showSlide(index) {
+        currentIndex = (index + slides.length) % slides.length;
+        slides.forEach((slide, i) => {
+          slide.classList.toggle("active", i === currentIndex);
+        });
+        dots.forEach((dot, i) => {
+          dot.classList.toggle("active", i === currentIndex);
+        });
+      }
+
+      function restartAutoplay() {
+        if (autoplayId) clearInterval(autoplayId);
+        autoplayId = setInterval(() => {
+          showSlide(currentIndex + 1);
+        }, 4500);
+      }
+
+      IMAGE_FILES.forEach((fileName, index) => {
+        const slide = document.createElement("article");
+        slide.className = "gallery-slide";
+
+        const image = document.createElement("img");
+        image.src = `images/${encodeURIComponent(fileName)}`;
+        image.alt = formatCaption(fileName);
+
+        const caption = document.createElement("div");
+        caption.className = "slide-caption";
+        caption.textContent = formatCaption(fileName);
+
+        slide.appendChild(image);
+        slide.appendChild(caption);
+        slideTrack.appendChild(slide);
+        slides.push(slide);
+
+        const dot = document.createElement("button");
+        dot.type = "button";
+        dot.className = "slide-dot";
+        dot.setAttribute("aria-label", `Aller a l'image ${index + 1}`);
+        dot.addEventListener("click", () => {
+          showSlide(index);
+          restartAutoplay();
+        });
+        dotsWrap.appendChild(dot);
+        dots.push(dot);
+      });
+
+      prevButton.addEventListener("click", () => {
+        showSlide(currentIndex - 1);
+        restartAutoplay();
+      });
+
+      nextButton.addEventListener("click", () => {
+        showSlide(currentIndex + 1);
+        restartAutoplay();
+      });
+
+      showSlide(0);
+      restartAutoplay();
+    })();
+  </script>
 </body>
 </html>

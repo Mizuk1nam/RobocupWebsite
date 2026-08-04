@@ -628,7 +628,7 @@
   </footer>  <script src="site-settings.js"></script>
   <script>
     (function () {
-      const IMAGE_FILES = [
+      const FALLBACK_IMAGE_FILES = [
         "Award Ceremony.jpg",
         "Awards and Trophy_Vancouver.jpg",
         "Code and Build.jpg",
@@ -652,6 +652,10 @@
         "Soccer League1.jpg",
         "Soccer League2.jpg"
       ];
+      const IMAGE_FILES = (typeof window.getRoboCupInternationalGalleryImages === "function"
+        ? window.getRoboCupInternationalGalleryImages()
+        : FALLBACK_IMAGE_FILES
+      ).slice(0, Number(window.ROBOCUP_MAX_INTERNATIONAL_GALLERY_IMAGES) || 25);
 
       const slideTrack = document.getElementById("slide-track");
       const dotsWrap = document.getElementById("slide-dots");

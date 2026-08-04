@@ -489,6 +489,61 @@ td {
   margin-top: 14px;
 }
 
+.international-gallery-meta {
+  color: #334155;
+  font-size: 14px;
+  font-weight: 800;
+  margin-top: 12px;
+}
+
+.international-gallery-upload-row {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.international-gallery-upload-row input[type="file"] {
+  flex: 1 1 320px;
+  min-width: 220px;
+}
+
+.international-gallery-list {
+  display: grid;
+  gap: 10px;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  list-style: none;
+  margin-top: 14px;
+  padding-left: 0;
+}
+
+.international-gallery-item {
+  background: #f8fafc;
+  border: 1px solid #dbeafe;
+  border-radius: 10px;
+  padding: 10px 12px;
+}
+
+.international-gallery-checkbox {
+  align-items: center;
+  color: #0f172a;
+  cursor: pointer;
+  display: flex;
+  font-size: 14px;
+  font-weight: 700;
+  gap: 10px;
+}
+
+.international-gallery-checkbox input {
+  width: auto;
+  margin: 0;
+}
+
+.international-gallery-filename {
+  word-break: break-word;
+}
+
 .dashboard-message {
   margin-top: 18px;
 }

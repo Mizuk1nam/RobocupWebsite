@@ -160,7 +160,11 @@
           <button class="site-settings-tab active" type="button" data-settings-tab-target="site-name-settings-panel">Nom du site</button>
           <button class="site-settings-tab" type="button" data-settings-tab-target="league-list-settings-panel">Ligues</button>
           <button class="site-settings-tab" type="button" data-settings-tab-target="league-details-settings-panel">Détails des ligues</button>
+          <button class="site-settings-tab" type="button" data-settings-tab-target="online-registration-settings-panel">Inscription en ligne</button>
           <button class="site-settings-tab" type="button" data-settings-tab-target="competition-schedule-settings-panel">Calendrier</button>
+          <button class="site-settings-tab" type="button" data-settings-tab-target="international-gallery-settings-panel">Galerie internationale</button>
+          <button class="site-settings-tab" type="button" data-settings-tab-target="resources-settings-panel">Ressources</button>
+          <button class="site-settings-tab" type="button" data-settings-tab-target="contact-settings-panel">Contact</button>
         </section>
 
         <section id="site-name-settings-panel" class="site-settings-tab-panel active">
@@ -178,6 +182,133 @@
               <button id="site-settings-reset" class="secondary-action" type="button">Réinitialiser</button>
             </div>
           </form>
+        </section>
+
+        <section id="online-registration-settings-panel" class="site-settings-tab-panel">
+          <section class="league-details-settings">
+            <h3>Evenement d'inscription en ligne</h3>
+            <p class="panel-copy">Modifiez les details de l'evenement affiches sur les pages publiques d'inscription en ligne.</p>
+
+            <form id="registration-event-settings-form" class="stacked-form league-details-form">
+              <label>
+                Texte hero (anglais)
+                <input id="registration-hero-en" type="text" placeholder="ex. RoboCup Americas 2026" />
+              </label>
+              <label>
+                Texte hero (francais)
+                <input id="registration-hero-fr" type="text" placeholder="ex. RoboCup Americas 2026" />
+              </label>
+              <label>
+                Date de l'evenement (anglais)
+                <input id="registration-date-en" type="text" placeholder="ex. October 22-25, 2026" />
+              </label>
+              <label>
+                Date de l'evenement (francais)
+                <input id="registration-date-fr" type="text" placeholder="ex. 22-25 octobre 2026" />
+              </label>
+              <label>
+                Nom du lieu (anglais)
+                <input id="registration-location-name-en" type="text" placeholder="ex. Sheridan College - Davis Campus" />
+              </label>
+              <label>
+                Nom du lieu (francais)
+                <input id="registration-location-name-fr" type="text" placeholder="ex. Sheridan College - Davis Campus" />
+              </label>
+              <label>
+                Adresse du lieu (anglais)
+                <input id="registration-location-address-en" type="text" placeholder="ex. Brampton, ON, Canada" />
+              </label>
+              <label>
+                Adresse du lieu (francais)
+                <input id="registration-location-address-fr" type="text" placeholder="ex. Brampton, ON, Canada" />
+              </label>
+
+              <div class="site-settings-actions">
+                <button class="primary-action" type="submit">Enregistrer l'evenement</button>
+                <button id="registration-event-reset" class="secondary-action" type="button">Reinitialiser l'evenement</button>
+              </div>
+            </form>
+          </section>
+        </section>
+
+        <section id="contact-settings-panel" class="site-settings-tab-panel">
+          <section class="league-details-settings">
+            <h3>Details de la page Contact</h3>
+            <p class="panel-copy">Modifiez les details affiches sur les pages publiques Contact.</p>
+
+            <form id="contact-settings-form" class="stacked-form league-details-form">
+              <label>
+                Courriel de contact general
+                <input id="contact-general-email" type="email" placeholder="ex. info@robocupcanada.ca" />
+              </label>
+              <label>
+                Nom de la representant(e) Quebec
+                <input id="contact-quebec-name" type="text" placeholder="ex. Sarah Morgan" />
+              </label>
+              <label>
+                Courriel de la representant(e) Quebec
+                <input id="contact-quebec-email" type="email" placeholder="ex. director@robocupcanada.ca" />
+              </label>
+              <label>
+                Nom du representant national
+                <input id="contact-national-name" type="text" placeholder="ex. Shaun Callendar" />
+              </label>
+              <label>
+                Courriel du representant national
+                <input id="contact-national-email" type="email" placeholder="ex. director@robocupcanada.ca" />
+              </label>
+
+              <div class="site-settings-actions">
+                <button class="primary-action" type="submit">Enregistrer les details contact</button>
+                <button id="contact-settings-reset" class="secondary-action" type="button">Reinitialiser les details contact</button>
+              </div>
+            </form>
+          </section>
+        </section>
+
+        <section id="international-gallery-settings-panel" class="site-settings-tab-panel">
+          <section class="league-details-settings">
+            <h3>Images de la galerie internationale</h3>
+            <p class="panel-copy">Choisissez les photos affichees dans la galerie internationale. Maximum de 25 images.</p>
+            <div class="international-gallery-upload-row">
+              <input id="international-gallery-file-input" type="file" accept="image/*" multiple />
+              <button id="international-gallery-add-files" class="secondary-action" type="button">Ajouter des fichiers</button>
+            </div>
+            <p id="international-gallery-count" class="international-gallery-meta" aria-live="polite"></p>
+            <ul id="international-gallery-images-list" class="international-gallery-list"></ul>
+
+            <div class="site-settings-actions">
+              <button id="international-gallery-save" class="primary-action" type="button">Enregistrer les images</button>
+              <button id="international-gallery-reset" class="secondary-action" type="button">Reinitialiser les images</button>
+            </div>
+          </section>
+        </section>
+
+        <section id="resources-settings-panel" class="site-settings-tab-panel">
+          <section class="league-details-settings">
+            <h3>Liens des ressources</h3>
+            <p class="panel-copy">Modifiez les URL utilisees sur les pages Ressources de la communaute RoboCup.</p>
+
+            <form id="resources-links-settings-form" class="stacked-form league-details-form">
+              <label>URL RoboCupJr International<input id="resource-link-international" type="url" placeholder="https://junior.robocup.org/" /></label>
+              <label>URL Forums RoboCupJr<input id="resource-link-forums" type="url" placeholder="https://junior.forum.robocup.org/" /></label>
+              <label>URL Slack RoboCupJr<input id="resource-link-slack" type="url" placeholder="https://robocupjunior.slack.com/" /></label>
+              <label>URL Compilation Soccer<input id="resource-link-soccer" type="url" placeholder="https://github.com/robocup-junior/awesome-rcj-soccer/" /></label>
+              <label>URL Documentation Rescue<input id="resource-link-rescue-docs" type="url" placeholder="https://rescue.rcj.cloud/documents" /></label>
+              <label>URL Specifications Rescue<input id="resource-link-rescue-specs" type="url" placeholder="https://docs.google.com/document/..." /></label>
+              <label>URL Discord RoboCup Junior<input id="resource-link-junior-discord" type="url" placeholder="https://discord.com/invite/45pxMQY4nJ" /></label>
+              <label>URL Discord RoboCup International<input id="resource-link-international-discord" type="url" placeholder="https://discord.com/invite/dcFgqFTeCy" /></label>
+              <label>URL Support communautaire<input id="resource-link-community-support" type="url" placeholder="https://junior.forum.robocup.org/" /></label>
+              <label>URL RoboCup USA<input id="resource-link-usa" type="url" placeholder="https://www.robocupjunior.us/" /></label>
+              <label>URL RoboCup Australia<input id="resource-link-australia" type="url" placeholder="https://www.robocupjunior.org.au/" /></label>
+              <label>URL Ressources d'apprentissage<input id="resource-link-learning" type="url" placeholder="https://junior.robocup.org/" /></label>
+
+              <div class="site-settings-actions">
+                <button class="primary-action" type="submit">Enregistrer les liens</button>
+                <button id="resources-links-reset" class="secondary-action" type="button">Reinitialiser les liens</button>
+              </div>
+            </form>
+          </section>
         </section>
 
         <section id="league-list-settings-panel" class="site-settings-tab-panel">
