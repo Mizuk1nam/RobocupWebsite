@@ -165,6 +165,15 @@
   const DEMO_ADMIN_SESSION_KEY = "robocupDemoAdminSession";
   const BRACKET_STORAGE_KEY = "robocupBracketState";
   const SITE_SETTINGS_STORAGE_KEY = "robocupSiteSettings";
+  const APP_CONFIG_TABLE = "app_config";
+  const APP_CONFIG_KEYS = [
+    "site_settings",
+    "competitions",
+    "schedule_competitions",
+    "schedule_events",
+    "league_details",
+    "bracket_state"
+  ];
   const DEFAULT_SITE_NAME = "RoboCupJunior Canada";
   const MAX_INTERNATIONAL_GALLERY_IMAGES = Number(window.ROBOCUP_MAX_INTERNATIONAL_GALLERY_IMAGES) || 25;
   const INTERNATIONAL_GALLERY_IMAGE_CATALOG = typeof window.getRoboCupInternationalGalleryCatalog === "function"
@@ -579,9 +588,125 @@
 
   function saveStoredLeagueDetails(detailsMap) {
     localStorage.setItem(LEAGUE_DETAILS_STORAGE_KEY, JSON.stringify(detailsMap));
+    syncSupabaseConfigValue("league_details", detailsMap);
     if (typeof window.applyRoboCupSiteSettings === "function") {
       window.applyRoboCupSiteSettings();
     }
+  }
+
+  function isSupabaseConfigSyncEnabled() {
+    return window.isSupabaseConfigured && window.supabaseClient && !isDemoAdminAuthenticated();
+  }
+
+  function getLocalConfigValueByKey(key) {
+    switch (key) {
+      case "site_settings":
+        return getRawSiteSettings();
+      case "competitions":
+        return competitions.slice();
+      case "schedule_competitions":
+        return scheduleCompetitions.slice();
+      case "schedule_events":
+        return scheduleEvents.map((event) => normalizeScheduleEvent(event, event));
+      case "league_details":
+        return getStoredLeagueDetails();
+      case "bracket_state":
+        return getBracketState();
+      default:
+        return null;
+    }
+  }
+
+  function writeLocalConfigValueByKey(key, value) {
+    switch (key) {
+      case "site_settings":
+        localStorage.setItem(SITE_SETTINGS_STORAGE_KEY, JSON.stringify(normalizeSiteSettings(value)));
+        break;
+      case "competitions":
+        localStorage.setItem(COMPETITIONS_STORAGE_KEY, JSON.stringify(Array.isArray(value) ? value : []));
+        break;
+      case "schedule_competitions":
+        localStorage.setItem(SCHEDULE_COMPETITIONS_STORAGE_KEY, JSON.stringify(Array.isArray(value) ? value : []));
+        break;
+      case "schedule_events":
+        localStorage.setItem(SCHEDULE_EVENTS_STORAGE_KEY, JSON.stringify(Array.isArray(value) ? value : []));
+        break;
+      case "league_details":
+        localStorage.setItem(LEAGUE_DETAILS_STORAGE_KEY, JSON.stringify(value && typeof value === "object" ? value : {}));
+        break;
+      case "bracket_state":
+        localStorage.setItem(BRACKET_STORAGE_KEY, JSON.stringify(value && typeof value === "object" ? value : {}));
+        break;
+      default:
+        break;
+    }
+  }
+
+  async function hydrateSupabaseConfigState() {
+    if (!isSupabaseConfigSyncEnabled()) return;
+
+    const { data, error } = await supabaseClient
+      .from(APP_CONFIG_TABLE)
+      .select("key, value")
+      .in("key", APP_CONFIG_KEYS);
+
+    if (error) throw error;
+
+    const remoteMap = Object.fromEntries((data || []).map((row) => [row.key, row.value]));
+    const missingKeys = [];
+
+    APP_CONFIG_KEYS.forEach((key) => {
+      if (Object.prototype.hasOwnProperty.call(remoteMap, key)) {
+        writeLocalConfigValueByKey(key, remoteMap[key]);
+        return;
+      }
+
+      missingKeys.push(key);
+    });
+
+    competitions = getStoredCompetitions();
+    scheduleCompetitions = getStoredScheduleCompetitions();
+    scheduleEvents = getStoredScheduleEvents();
+
+    if (missingKeys.length) {
+      const payload = missingKeys.map((key) => ({
+        key,
+        value: getLocalConfigValueByKey(key),
+        updated_at: new Date().toISOString()
+      }));
+
+      const { error: upsertError } = await supabaseClient
+        .from(APP_CONFIG_TABLE)
+        .upsert(payload, { onConflict: "key" });
+
+      if (upsertError) {
+        console.error("Failed to seed app config rows:", upsertError);
+      }
+    }
+
+    if (typeof window.applyRoboCupSiteSettings === "function") {
+      window.applyRoboCupSiteSettings();
+    }
+  }
+
+  function syncSupabaseConfigValue(key, value) {
+    if (!isSupabaseConfigSyncEnabled()) return;
+
+    supabaseClient
+      .from(APP_CONFIG_TABLE)
+      .upsert(
+        {
+          key,
+          value,
+          updated_at: new Date().toISOString()
+        },
+        { onConflict: "key" }
+      )
+      .then(({ error }) => {
+        if (error) {
+          console.error(`Failed to sync ${key} to Supabase:`, error);
+        }
+      });
   }
 
   function getDefaultLeagueDetails(leagueName) {
@@ -778,11 +903,13 @@
   function saveCompetitions(nextCompetitions) {
     competitions = nextCompetitions.slice();
     localStorage.setItem(COMPETITIONS_STORAGE_KEY, JSON.stringify(competitions));
+    syncSupabaseConfigValue("competitions", competitions);
   }
 
   function saveScheduleCompetitions(nextCompetitions) {
     scheduleCompetitions = nextCompetitions.slice();
     localStorage.setItem(SCHEDULE_COMPETITIONS_STORAGE_KEY, JSON.stringify(scheduleCompetitions));
+    syncSupabaseConfigValue("schedule_competitions", scheduleCompetitions);
     if (typeof window.applyRoboCupSiteSettings === "function") {
       window.applyRoboCupSiteSettings();
     }
@@ -791,6 +918,7 @@
   function saveScheduleEvents(nextEvents) {
     scheduleEvents = nextEvents.map((event) => normalizeScheduleEvent(event, event));
     localStorage.setItem(SCHEDULE_EVENTS_STORAGE_KEY, JSON.stringify(scheduleEvents));
+    syncSupabaseConfigValue("schedule_events", scheduleEvents);
     if (typeof window.applyRoboCupSiteSettings === "function") {
       window.applyRoboCupSiteSettings();
     }
@@ -1076,6 +1204,7 @@
     const current = getRawSiteSettings();
     const next = normalizeSiteSettings({ ...current, ...settings });
     localStorage.setItem(SITE_SETTINGS_STORAGE_KEY, JSON.stringify(next));
+    syncSupabaseConfigValue("site_settings", next);
     if (typeof window.applyRoboCupSiteSettings === "function") {
       window.applyRoboCupSiteSettings();
     }
@@ -1210,6 +1339,7 @@
 
   function saveBracketState(state) {
     localStorage.setItem(BRACKET_STORAGE_KEY, JSON.stringify(state));
+    syncSupabaseConfigValue("bracket_state", state);
   }
 
   function setCompetitionBracket(competition, bracket) {
@@ -1815,6 +1945,7 @@
     if (emailLabel) emailLabel.textContent = user.email;
 
     try {
+      await hydrateSupabaseConfigState();
       refreshCompetitionViews();
       await loadTeams();
       await loadScores();
@@ -1851,7 +1982,7 @@
         if (useDemoStorage()) {
           const teams = getDemoTeams();
           teams.push({
-            id: Date.now(),
+            id: String(Date.now()),
             team_name: teamName,
             competition,
             school,
@@ -1887,7 +2018,11 @@
       event.preventDefault();
       try {
         const selectedTeam = document.getElementById("score-team").selectedOptions[0];
-        const teamId = Number(document.getElementById("score-team").value);
+        const teamId = document.getElementById("score-team").value;
+        if (!selectedTeam || !teamId) {
+          setMessage(labels.selectTeam, "error");
+          return;
+        }
         const competition = selectedTeam.dataset.competition;
         const roundNumber = Number(document.getElementById("score-round").value);
         const scoreValue = Number(document.getElementById("score-value").value);
@@ -1939,7 +2074,7 @@
       if (!button) return;
 
       try {
-        await deleteTeam(Number(button.dataset.teamId), button.dataset.teamName);
+        await deleteTeam(button.dataset.teamId, button.dataset.teamName);
       } catch (error) {
         setMessage(error.message, "error");
       }
@@ -2024,7 +2159,7 @@
       saveCompetitions(DEFAULT_COMPETITIONS.slice());
       saveScheduleCompetitions(DEFAULT_COMPETITIONS.slice());
       saveScheduleEvents(getDefaultScheduleEvents());
-      localStorage.removeItem(LEAGUE_DETAILS_STORAGE_KEY);
+      saveStoredLeagueDetails({});
       populateSiteSettingsForm();
       refreshCompetitionViews();
       setMessage(labels.siteSettingsReset, "success");

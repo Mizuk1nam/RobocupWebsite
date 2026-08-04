@@ -4,6 +4,15 @@
   const SCHEDULE_COMPETITIONS_KEY = "robocupScheduleCompetitions";
   const SCHEDULE_EVENTS_KEY = "robocupScheduleEvents";
   const LEAGUE_DETAILS_KEY = "robocupLeagueDetails";
+  const SUPABASE_URL = String(window.ROBOCUP_SUPABASE_URL || window.SUPABASE_URL || "https://vexxlnugvrlkliyijltv.supabase.co").trim();
+  const SUPABASE_ANON_KEY = String(window.ROBOCUP_SUPABASE_ANON_KEY || window.SUPABASE_ANON_KEY || "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZleHhsbnVndnJsa2xpeWlqbHR2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODI3ODU3NzEsImV4cCI6MjA5ODM2MTc3MX0.G2MgcHCSsIg2cqtnqVDl7CBYNzddA0FSoBlPRtG9-jc").trim();
+  const APP_CONFIG_KEYS = [
+    "site_settings",
+    "competitions",
+    "schedule_competitions",
+    "schedule_events",
+    "league_details"
+  ];
   const DEFAULT_SITE_NAME = "RoboCupJunior Canada";
   const MAX_INTERNATIONAL_GALLERY_IMAGES = 25;
   const INTERNATIONAL_GALLERY_IMAGE_CATALOG = [
@@ -271,6 +280,63 @@
     } catch (error) {
       return {};
     }
+  }
+
+  function isSupabaseConfigReadable() {
+    return SUPABASE_URL.startsWith("https://") && Boolean(SUPABASE_ANON_KEY);
+  }
+
+  function writeConfigToLocalStorage(key, value) {
+    switch (key) {
+      case "site_settings":
+        localStorage.setItem(SETTINGS_KEY, JSON.stringify(value && typeof value === "object" ? value : {}));
+        break;
+      case "competitions":
+        localStorage.setItem(LEAGUES_KEY, JSON.stringify(Array.isArray(value) ? value : []));
+        break;
+      case "schedule_competitions":
+        localStorage.setItem(SCHEDULE_COMPETITIONS_KEY, JSON.stringify(Array.isArray(value) ? value : []));
+        break;
+      case "schedule_events":
+        localStorage.setItem(SCHEDULE_EVENTS_KEY, JSON.stringify(Array.isArray(value) ? value : []));
+        break;
+      case "league_details":
+        localStorage.setItem(LEAGUE_DETAILS_KEY, JSON.stringify(value && typeof value === "object" ? value : {}));
+        break;
+      default:
+        break;
+    }
+  }
+
+  async function syncFromSupabaseConfig() {
+    if (!isSupabaseConfigReadable()) return false;
+
+    const inFilter = `(${APP_CONFIG_KEYS.map((key) => `"${key}"`).join(",")})`;
+    const endpoint = `${SUPABASE_URL.replace(/\/$/, "")}/rest/v1/app_config?select=key,value&key=in.${encodeURIComponent(inFilter)}`;
+
+    const response = await fetch(endpoint, {
+      method: "GET",
+      headers: {
+        apikey: SUPABASE_ANON_KEY,
+        Authorization: `Bearer ${SUPABASE_ANON_KEY}`
+      }
+    });
+
+    if (!response.ok) {
+      return false;
+    }
+
+    const rows = await response.json();
+    if (!Array.isArray(rows) || !rows.length) {
+      return false;
+    }
+
+    rows.forEach((row) => {
+      if (!row || typeof row.key !== "string") return;
+      writeConfigToLocalStorage(row.key, row.value);
+    });
+
+    return true;
   }
 
   function normalizeGalleryImageSelection(value, catalog, maxItems) {
@@ -916,6 +982,20 @@
     applyToTextNodes(siteName);
   }
 
+  async function bootstrapRoboCupSiteSettings() {
+    applyRoboCupSiteSettings();
+
+    try {
+      const updatedFromRemote = await syncFromSupabaseConfig();
+      if (updatedFromRemote) {
+        applyRoboCupSiteSettings();
+      }
+    } catch (error) {
+      // Keep local rendering if Supabase is unavailable.
+      console.error("Failed to load site settings from Supabase:", error);
+    }
+  }
+
   window.getRoboCupInternationalGalleryCatalog = getInternationalGalleryCatalog;
   window.getRoboCupInternationalGalleryImages = getInternationalGalleryImagesFromSettings;
   window.getRoboCupRegistrationEventSettings = getRegistrationEventSettings;
@@ -926,10 +1006,11 @@
   window.getRoboCupResourcesLinksDefaults = () => ({ ...DEFAULT_RESOURCES_LINKS });
   window.ROBOCUP_MAX_INTERNATIONAL_GALLERY_IMAGES = MAX_INTERNATIONAL_GALLERY_IMAGES;
   window.applyRoboCupSiteSettings = applyRoboCupSiteSettings;
+  window.syncRoboCupSiteSettingsFromSupabase = syncFromSupabaseConfig;
 
   if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", applyRoboCupSiteSettings, { once: true });
+    document.addEventListener("DOMContentLoaded", bootstrapRoboCupSiteSettings, { once: true });
   } else {
-    applyRoboCupSiteSettings();
+    bootstrapRoboCupSiteSettings();
   }
 })();
