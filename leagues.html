@@ -3,7 +3,6 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
   <title>Leagues & Rules | RoboCupJunior Canada</title>
 
   <style>
@@ -297,12 +296,21 @@
 
     .league-card {
       background: white;
-      padding: 32px;
+      padding: 0 32px 32px;
       border-radius: 18px;
       box-shadow: 0 14px 35px rgba(15, 23, 42, 0.1);
       border-top: 4px solid #2563eb;
       transition: .25s ease;
       cursor: pointer;
+      overflow: hidden;
+    }
+    .league-card-image {
+      width: calc(100% + 64px);
+      height: 190px;
+      margin: 0 -32px 26px;
+      display: block;
+      object-fit: cover;
+      background: #dbeafe;
     }
 
     .league-card:hover,
@@ -324,6 +332,7 @@
       display: grid;
       place-items: center;
       font-size: 28px;
+      margin-top: 12px;
       margin-bottom: 18px;
     }
 
@@ -593,6 +602,7 @@
 
         <div class="grid-3">
           <a class="league-card" href="competition.html?lang=en&type=maze">
+            <img class="league-card-image" src="images/leagues/maze.jpg" alt="Robot navigating the RoboParty maze challenge" loading="lazy">
             <div class="league-icon">&#129521;</div>
             <h3>Maze</h3>
             <p>
@@ -608,6 +618,7 @@
           </a>
 
           <a class="league-card" href="competition.html?lang=en&type=formula-1">
+            <img class="league-card-image" src="images/leagues/formula-1.jpg" alt="Robot competing in the Formula 1 line-following challenge" loading="lazy">
             <div class="league-icon">&#127950;</div>
             <h3>Formula 1</h3>
             <p>
@@ -623,6 +634,7 @@
           </a>
 
           <a class="league-card" href="competition.html?lang=en&type=performance">
+            <img class="league-card-image" src="images/leagues/performance.jpg" alt="Students presenting a robot performance challenge" loading="lazy">
             <div class="league-icon">&#127925;</div>
             <h3>Performance</h3>
             <p>
@@ -638,6 +650,7 @@
           </a>
 
           <a class="league-card" href="competition.html?lang=en&type=sumobots">
+            <img class="league-card-image" src="images/leagues/sumobots.jpg" alt="Robots competing in the SumoBots challenge" loading="lazy">
             <div class="league-icon">&#129302;</div>
             <h3>SumoBots</h3>
             <p>
@@ -653,6 +666,7 @@
           </a>
 
           <a class="league-card" href="competition.html?lang=en&type=rescue-line">
+            <img class="league-card-image" src="images/leagues/rescue-line.jpg" alt="Robot completing a Rescue Line challenge course" loading="lazy">
             <div class="league-icon">&#128657;</div>
             <h3>Rescue Line</h3>
             <p>
@@ -668,6 +682,7 @@
           </a>
 
           <a class="league-card" href="competition.html?lang=en&type=rescue-maze">
+            <img class="league-card-image" src="images/leagues/rescue-maze.png" alt="Robot exploring the Rescue Maze competition field" loading="lazy">
             <div class="league-icon">&#129517;</div>
             <h3>Rescue Maze</h3>
             <p>
@@ -682,6 +697,7 @@
           </a>
 
           <a class="league-card" href="competition.html?lang=en&type=soccer">
+            <img class="league-card-image" src="images/leagues/soccer.jpg" alt="Autonomous robots competing in RoboCupJunior Soccer" loading="lazy">
             <div class="league-icon">&#9917;</div>
             <h3>Soccer</h3>
             <p>
@@ -698,6 +714,7 @@
           </a>
 
           <a class="league-card" href="competition.html?lang=en&type=onstage">
+            <img class="league-card-image" src="images/leagues/onstage.jpg" alt="Students and robots performing in the OnStage league" loading="lazy">
             <div class="league-icon">&#127917;</div>
             <h3>OnStage</h3>
             <p>
