@@ -155,68 +155,108 @@
   ];
   const KNOWN_LEAGUE_CONTENT = {
     maze: {
+      nameEn: "Maze",
+      nameFr: "Maze",
       icon: "&#129521;",
       slug: "maze",
+      image: "images/leagues/maze.jpg",
+      imageAltEn: "Robot navigating the RoboParty maze challenge",
+      imageAltFr: "Robot parcourant le défi de labyrinthe RoboParty",
       summaryEn: "A RoboParty challenge where robots navigate a walled corridor from start to finish.",
-      summaryFr: "Un defi RoboParty ou les robots traversent un corridor avec des murs du depart a l'arrivee.",
+      summaryFr: "Un défi RoboParty où les robots traversent un corridor avec des murs du départ à l'arrivée.",
       bulletsEn: ["3 attempts per robot.", "120 second maximum per run.", "Wall contact can reduce the score."],
-      bulletsFr: ["3 essais par robot.", "Maximum de 120 secondes par essai.", "Les contacts avec les murs peuvent reduire le score."]
+      bulletsFr: ["3 essais par robot.", "Maximum de 120 secondes par essai.", "Les contacts avec les murs peuvent réduire le score."]
     },
     "formula 1": {
+      nameEn: "Formula 1",
+      nameFr: "Formule 1",
       icon: "&#127950;",
       slug: "formula-1",
+      image: "images/leagues/formula-1.jpg",
+      imageAltEn: "Robot competing in the Formula 1 line-following challenge",
+      imageAltFr: "Robot participant au défi de suivi de ligne Formule 1",
       summaryEn: "A RoboParty challenge where robots follow a black curved line around a race track.",
-      summaryFr: "Un defi RoboParty ou les robots suivent une ligne noire courbee sur une piste de course.",
+      summaryFr: "Un défi RoboParty où les robots suivent une ligne noire courbée sur une piste de course.",
       bulletsEn: ["3 attempts per robot.", "Best run is counted.", "Fast and stable line-following is key."],
       bulletsFr: ["3 essais par robot.", "Le meilleur essai est retenu.", "Le suivi de ligne rapide et stable est essentiel."]
     },
     performance: {
+      nameEn: "Performance",
+      nameFr: "Performance",
       icon: "&#127925;",
       slug: "performance",
+      image: "images/leagues/performance.jpg",
+      imageAltEn: "Students presenting a robot performance challenge",
+      imageAltFr: "Élèves présentant un défi de performance robotique",
       summaryEn: "A RoboParty challenge where teams present a short robot routine with music and creativity.",
-      summaryFr: "Un defi RoboParty ou les equipes presentent une courte routine de robot avec musique et creativite.",
+      summaryFr: "Un défi RoboParty où les équipes présentent une courte routine de robot avec musique et créativité.",
       bulletsEn: ["Usually a 1 minute routine.", "Creativity and entertainment are judged.", "Programming complexity matters."],
-      bulletsFr: ["Routine habituellement d'environ 1 minute.", "La creativite et le divertissement sont evalues.", "La complexite de la programmation compte."]
+      bulletsFr: ["Routine habituellement d'environ 1 minute.", "La créativité et le divertissement sont évalués.", "La complexité de la programmation compte."]
     },
     sumobots: {
+      nameEn: "SumoBots",
+      nameFr: "SumoBots",
       icon: "&#129302;",
       slug: "sumobots",
+      image: "images/leagues/sumobots.jpg",
+      imageAltEn: "Robots competing in the SumoBots challenge",
+      imageAltFr: "Robots participant au défi SumoBots",
       summaryEn: "A RoboParty challenge where robots try to push opponents out of an octagonal ring.",
-      summaryFr: "Un defi RoboParty ou les robots tentent de pousser leurs adversaires hors d'un anneau octogonal.",
+      summaryFr: "Un défi RoboParty où les robots tentent de pousser leurs adversaires hors d'un anneau octogonal.",
       bulletsEn: ["Robots compete inside a ring.", "Points are earned by pushing opponents out.", "Size and weight limits apply."],
-      bulletsFr: ["Les robots s'affrontent dans un anneau.", "Des points sont gagnes en poussant les adversaires dehors.", "Des limites de taille et de poids s'appliquent."]
+      bulletsFr: ["Les robots s'affrontent dans un anneau.", "Des points sont gagnés en poussant les adversaires dehors.", "Des limites de taille et de poids s'appliquent."]
     },
     "rescue line": {
+      nameEn: "Rescue Line",
+      nameFr: "Rescue Line",
       icon: "&#128657;",
       slug: "rescue-line",
+      image: "images/leagues/rescue-line.jpg",
+      imageAltEn: "Robot completing a Rescue Line challenge course",
+      imageAltFr: "Robot réalisant un parcours Rescue Line",
       summaryEn: "Robots follow a black line through a rescue course with obstacles and evacuation zones.",
-      summaryFr: "Les robots suivent une ligne noire dans un parcours de sauvetage avec obstacles et zones d'evacuation.",
+      summaryFr: "Les robots suivent une ligne noire dans un parcours de sauvetage avec obstacles et zones d'évacuation.",
       bulletsEn: ["Points are awarded for completing course elements.", "Robots may need to recover from gaps or obstacles.", "Evacuation zones use victim objects and point multipliers."],
-      bulletsFr: ["Des points sont accordes pour les elements completes.", "Les robots peuvent devoir recuperer apres des ecarts ou obstacles.", "La zone d'evacuation utilise des victimes et des multiplicateurs."]
+      bulletsFr: ["Des points sont accordés pour les éléments complétés.", "Les robots peuvent devoir récupérer après des écarts ou des obstacles.", "La zone d'évacuation utilise des victimes et des multiplicateurs."]
     },
     "rescue maze": {
+      nameEn: "Rescue Maze",
+      nameFr: "Rescue Maze",
       icon: "&#129517;",
       slug: "rescue-maze",
+      image: "images/leagues/rescue-maze.png",
+      imageAltEn: "Robot exploring the Rescue Maze competition field",
+      imageAltFr: "Robot explorant le terrain de compétition Rescue Maze",
       summaryEn: "Robots explore a simulated disaster maze to locate victims and deliver rescue kits.",
       summaryFr: "Les robots explorent un labyrinthe simulant une catastrophe pour localiser des victimes et livrer des trousses de secours.",
       bulletsEn: ["Designed as preparation for international Rescue divisions.", "Teams may participate in Rescue Maze and Rescue Line at qualifying events."],
-      bulletsFr: ["Preparation aux divisions internationales de Rescue.", "Les equipes peuvent participer a Rescue Maze et Rescue Line aux evenements de qualification."]
+      bulletsFr: ["Préparation aux divisions internationales de Rescue.", "Les équipes peuvent participer à Rescue Maze et Rescue Line aux événements de qualification."]
     },
     soccer: {
+      nameEn: "Soccer",
+      nameFr: "Soccer",
       icon: "&#9917;",
       slug: "soccer",
+      image: "images/leagues/soccer.jpg",
+      imageAltEn: "Autonomous robots competing in RoboCupJunior Soccer",
+      imageAltFr: "Robots autonomes participant au Soccer RoboCupJunior",
       summaryEn: "Two autonomous robots compete against another pair by detecting and kicking a ball.",
-      summaryFr: "Deux robots autonomes affrontent une autre paire en detectant et en frappant une balle.",
+      summaryFr: "Deux robots autonomes affrontent une autre paire en détectant et en frappant une balle.",
       bulletsEn: ["Lightweight uses an infrared ball.", "Open uses a vision-tracked orange ball.", "Each goal is worth 1 point."],
       bulletsFr: ["Lightweight utilise une balle infrarouge.", "Open utilise une balle orange suivie par vision.", "Chaque but vaut 1 point."]
     },
     onstage: {
+      nameEn: "OnStage",
+      nameFr: "OnStage",
       icon: "&#127917;",
       slug: "onstage",
+      image: "images/leagues/onstage.jpg",
+      imageAltEn: "Students and robots performing in the OnStage league",
+      imageAltFr: "Élèves et robots présentant un spectacle OnStage",
       summaryEn: "Teams create a robotic performance combining engineering, music, and storytelling.",
-      summaryFr: "Les equipes creent une performance robotique combinant ingenierie, musique et recit.",
+      summaryFr: "Les équipes créent une performance robotique combinant ingénierie, musique et récit.",
       bulletsEn: ["Robots and students perform together on stage.", "Judges evaluate creativity and entertainment.", "Robot autonomy is considered during evaluation."],
-      bulletsFr: ["Les robots et les eleves performent ensemble sur scene.", "Les juges evaluent creativite et divertissement.", "L'autonomie des robots est prise en compte lors de l'evaluation."]
+      bulletsFr: ["Les robots et les élèves se produisent ensemble sur scène.", "Les juges évaluent la créativité et le divertissement.", "L'autonomie des robots est prise en compte lors de l'évaluation."]
     }
   };
   const REPLACEMENT_PATTERNS = [
@@ -475,22 +515,32 @@
     const custom = leagueDetailsMap[key] || {};
 
     const fallbackSummaryEn = `This league has been added by the admin team. Full rules for ${trimmed} will be posted soon.`;
-    const fallbackSummaryFr = `Cette ligue a ete ajoutee par l'equipe d'administration. Les regles completes pour ${trimmed} seront publiees bientot.`;
+    const fallbackSummaryFr = `Cette ligue a été ajoutée par l'équipe d'administration. Les règles complètes pour ${trimmed} seront publiées bientôt.`;
 
     const baseConfig = known ? {
+      nameEn: known.nameEn,
+      nameFr: known.nameFr,
       icon: known.icon,
       slug: known.slug,
+      image: known.image,
+      imageAltEn: known.imageAltEn,
+      imageAltFr: known.imageAltFr,
       summaryEn: known.summaryEn,
       summaryFr: known.summaryFr,
       bulletsEn: known.bulletsEn,
       bulletsFr: known.bulletsFr
     } : {
+      nameEn: trimmed,
+      nameFr: trimmed,
       icon: "&#129302;",
       slug: "",
+      image: "",
+      imageAltEn: "",
+      imageAltFr: "",
       summaryEn: fallbackSummaryEn,
       summaryFr: fallbackSummaryFr,
       bulletsEn: ["League details coming soon."],
-      bulletsFr: ["Details de la ligue a venir."]
+      bulletsFr: ["Détails de la ligue à venir."]
     };
 
     const mergedSlug = normalizeLeagueSlug(custom.slug || baseConfig.slug || "");
@@ -506,8 +556,13 @@
 
     return {
       name: trimmed,
+      nameEn: String(custom.nameEn || baseConfig.nameEn || trimmed).trim() || trimmed,
+      nameFr: String(custom.nameFr || baseConfig.nameFr || trimmed).trim() || trimmed,
       icon: mergedIcon,
       slug: mergedSlug,
+      image: String(custom.image || baseConfig.image || "").trim(),
+      imageAltEn: String(custom.imageAltEn || baseConfig.imageAltEn || "").trim(),
+      imageAltFr: String(custom.imageAltFr || baseConfig.imageAltFr || "").trim(),
       summaryEn: mergedSummaryEn,
       summaryFr: mergedSummaryFr,
       bulletsEn: mergedBulletsEn,
@@ -535,16 +590,23 @@
     const content = document.getElementById("content");
     if (!pageTitle || !pageSummary || !backLink || !content) return;
 
-    const detailsWord = isFrench ? "Details" : "Details";
+    const detailsWord = isFrench ? "Détails" : "Details";
+    const displayName = isFrench ? league.nameFr : league.nameEn;
     const summary = isFrench ? league.summaryFr : league.summaryEn;
     const bullets = isFrench ? league.bulletsFr : league.bulletsEn;
 
     document.documentElement.lang = isFrench ? "fr" : "en";
-    document.title = `${league.name} ${detailsWord} | ${DEFAULT_SITE_NAME}`;
-    pageTitle.innerHTML = `${escapeHtml(league.name)}<span>${detailsWord}</span>`;
+    document.title = `${displayName} ${detailsWord} | ${DEFAULT_SITE_NAME}`;
+    pageTitle.innerHTML = `${escapeHtml(displayName)}<span>${detailsWord}</span>`;
     pageSummary.textContent = summary;
     backLink.href = isFrench ? "leagues_fr.html" : "leagues.html";
     backLink.textContent = isFrench ? "Retour aux ligues →" : "Back to Leagues →";
+
+    const heroImage = document.getElementById("hero-image");
+    if (heroImage && league.image) {
+      heroImage.src = league.image;
+      heroImage.alt = isFrench ? league.imageAltFr : league.imageAltEn;
+    }
 
     content.innerHTML = `
       <section>
@@ -552,11 +614,11 @@
           <h2 class="section-title">${isFrench ? "Informations de la ligue" : "League Information"}</h2>
           <div class="content-grid">
             <div class="panel">
-              <h3>${isFrench ? "Resume" : "Summary"}</h3>
+              <h3>${isFrench ? "Résumé" : "Summary"}</h3>
               <p>${escapeHtml(summary)}</p>
             </div>
             <div class="panel">
-              <h3>${isFrench ? "Points cles" : "Highlights"}</h3>
+              <h3>${isFrench ? "Points clés" : "Highlights"}</h3>
               <ul>
                 ${bullets.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
               </ul>
@@ -577,8 +639,8 @@
     const isFrench = document.documentElement.lang === "fr";
     const leagues = readLeagues();
     const lang = isFrench ? "fr" : "en";
-    const actionKnown = isFrench ? "Voir les details" : "View details";
-    const actionUnknown = isFrench ? "Details a venir" : "Details coming soon";
+    const actionKnown = isFrench ? "Voir les détails" : "View details";
+    const actionUnknown = isFrench ? "Détails à venir" : "Details coming soon";
 
     if (!document.getElementById("dynamic-leagues-style")) {
       const style = document.createElement("style");
@@ -591,6 +653,8 @@
       const league = getLeagueConfig(leagueName);
       const description = isFrench ? league.summaryFr : league.summaryEn;
       const bullets = isFrench ? league.bulletsFr : league.bulletsEn;
+      const displayName = isFrench ? league.nameFr : league.nameEn;
+      const imageAlt = isFrench ? league.imageAltFr : league.imageAltEn;
       const normalizedSlug = normalizeLeagueSlug(league.slug || slugifyLeague(league.name));
       const href = normalizedSlug ? `competition.html?lang=${lang}&type=${encodeURIComponent(normalizedSlug)}` : "#";
       const actionText = normalizedSlug ? actionKnown : actionUnknown;
@@ -598,8 +662,9 @@
 
       return `
         <a class="league-card${unknownClass}" href="${href}" ${normalizedSlug ? "" : 'data-no-details="true"'}>
+          ${league.image ? `<img class="league-card-image" src="${escapeHtml(league.image)}" alt="${escapeHtml(imageAlt)}" loading="lazy">` : ""}
           <div class="league-icon">${league.icon}</div>
-          <h3>${escapeHtml(league.name)}</h3>
+          <h3>${escapeHtml(displayName)}</h3>
           <p>${escapeHtml(description)}</p>
           <ul>
             ${bullets.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}

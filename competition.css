@@ -153,7 +153,11 @@ nav {
 }
 
 .hero-img img {
-  width: min(330px, 100%);
+  width: min(460px, 100%);
+  aspect-ratio: 16 / 10;
+  object-fit: cover;
+  border-radius: 22px;
+  border: 3px solid rgba(255, 255, 255, .82);
   animation: floatRobot 4s ease-in-out infinite;
   filter: drop-shadow(0 25px 35px rgba(0,0,0,.55));
 }

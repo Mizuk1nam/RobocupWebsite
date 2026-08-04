@@ -3,7 +3,6 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
   <title>Ligues & Règles | RoboCupJunior Canada</title>
 
   <style>
@@ -297,12 +296,21 @@
 
     .league-card {
       background: white;
-      padding: 32px;
+      padding: 0 32px 32px;
       border-radius: 18px;
       box-shadow: 0 14px 35px rgba(15, 23, 42, 0.1);
       border-top: 4px solid #2563eb;
       transition: .25s ease;
       cursor: pointer;
+      overflow: hidden;
+    }
+    .league-card-image {
+      width: calc(100% + 64px);
+      height: 190px;
+      margin: 0 -32px 26px;
+      display: block;
+      object-fit: cover;
+      background: #dbeafe;
     }
 
     .league-card:hover,
@@ -324,6 +332,7 @@
       display: grid;
       place-items: center;
       font-size: 28px;
+      margin-top: 12px;
       margin-bottom: 18px;
     }
 
@@ -542,7 +551,7 @@
       <div>
         <h1>
           Ligues
-          <span>& Règles</span>
+          <span>et règles</span>
         </h1>
 
         <p>
@@ -587,6 +596,7 @@
 
         <div class="grid-3">
           <a class="league-card" href="competition.html?lang=fr&type=maze">
+            <img class="league-card-image" src="images/leagues/maze.jpg" alt="Robot parcourant le défi de labyrinthe RoboParty" loading="lazy">
             <div class="league-icon">&#129521;</div>
             <h3>Maze</h3>
             <p>
@@ -602,8 +612,9 @@
           </a>
 
           <a class="league-card" href="competition.html?lang=fr&type=formula-1">
+            <img class="league-card-image" src="images/leagues/formula-1.jpg" alt="Robot participant au défi de suivi de ligne Formule 1" loading="lazy">
             <div class="league-icon">&#127950;</div>
-            <h3>Formula 1</h3>
+            <h3>Formule 1</h3>
             <p>
               Un défi RoboParty où les robots suivent une ligne noire courbée sur
               une piste de course.
@@ -617,6 +628,7 @@
           </a>
 
           <a class="league-card" href="competition.html?lang=fr&type=performance">
+            <img class="league-card-image" src="images/leagues/performance.jpg" alt="Élèves présentant un défi de performance robotique" loading="lazy">
             <div class="league-icon">&#127925;</div>
             <h3>Performance</h3>
             <p>
@@ -632,6 +644,7 @@
           </a>
 
           <a class="league-card" href="competition.html?lang=fr&type=sumobots">
+            <img class="league-card-image" src="images/leagues/sumobots.jpg" alt="Robots participant au défi SumoBots" loading="lazy">
             <div class="league-icon">&#129302;</div>
             <h3>SumoBots</h3>
             <p>
@@ -647,6 +660,7 @@
           </a>
 
           <a class="league-card" href="competition.html?lang=fr&type=rescue-line">
+            <img class="league-card-image" src="images/leagues/rescue-line.jpg" alt="Robot réalisant un parcours Rescue Line" loading="lazy">
             <div class="league-icon">&#128657;</div>
             <h3>Rescue Line</h3>
             <p>
@@ -662,6 +676,7 @@
           </a>
 
           <a class="league-card" href="competition.html?lang=fr&type=rescue-maze">
+            <img class="league-card-image" src="images/leagues/rescue-maze.png" alt="Robot explorant le terrain de compétition Rescue Maze" loading="lazy">
             <div class="league-icon">&#129517;</div>
             <h3>Rescue Maze</h3>
             <p>
@@ -676,6 +691,7 @@
           </a>
 
           <a class="league-card" href="competition.html?lang=fr&type=soccer">
+            <img class="league-card-image" src="images/leagues/soccer.jpg" alt="Robots autonomes participant au Soccer RoboCupJunior" loading="lazy">
             <div class="league-icon">&#9917;</div>
             <h3>Soccer</h3>
             <p>
@@ -685,13 +701,14 @@
             <ul>
               <li>Lightweight utilise une balle infrarouge.</li>
               <li>Open utilise une balle orange suivie par vision.</li>
-              <li>Les matchs comprennent deux demies de 10 minutes et une mi-temps de 5 minutes.</li>
+              <li>Les matchs comprennent deux périodes de 10 minutes et une pause de 5 minutes.</li>
               <li>Chaque but vaut 1 point.</li>
             </ul>
             <span class="card-action">Voir les détails</span>
           </a>
 
           <a class="league-card" href="competition.html?lang=fr&type=onstage">
+            <img class="league-card-image" src="images/leagues/onstage.jpg" alt="Élèves et robots présentant un spectacle OnStage" loading="lazy">
             <div class="league-icon">&#127917;</div>
             <h3>OnStage</h3>
             <p>
@@ -699,7 +716,7 @@
               programmation, musique, mouvement, récit et design.
             </p>
             <ul>
-              <li>Les robots et les élèves performent ensemble sur scène.</li>
+              <li>Les robots et les élèves se produisent ensemble sur scène.</li>
               <li>Les juges évaluent créativité, divertissement et complexité de programmation.</li>
               <li>L'autonomie et l'utilisation de capteurs sont prises en compte.</li>
             </ul>
