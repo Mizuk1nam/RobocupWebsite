@@ -160,9 +160,6 @@
       bulletsFr: ["Les robots et les eleves performent ensemble sur scene.", "Les juges evaluent creativite et divertissement.", "L'autonomie des robots est prise en compte lors de l'evaluation."]
     }
   };
-  const DEMO_ADMIN_EMAIL = "admin@robocup.test";
-  const DEMO_ADMIN_PASSWORD = "robocup123";
-  const DEMO_ADMIN_SESSION_KEY = "robocupDemoAdminSession";
   const BRACKET_STORAGE_KEY = "robocupBracketState";
   const SITE_SETTINGS_STORAGE_KEY = "robocupSiteSettings";
   const APP_CONFIG_TABLE = "app_config";
@@ -483,27 +480,7 @@
     activateTab(activeButton?.dataset.settingsTabTarget || tabButtons[0].dataset.settingsTabTarget);
   }
 
-  function isDemoAdminLogin(email, password) {
-    return email.toLowerCase() === DEMO_ADMIN_EMAIL && password === DEMO_ADMIN_PASSWORD;
-  }
-
-  function isDemoAdminAuthenticated() {
-    return localStorage.getItem(DEMO_ADMIN_SESSION_KEY) === "true";
-  }
-
-  function setDemoAdminAuthenticated() {
-    localStorage.setItem(DEMO_ADMIN_SESSION_KEY, "true");
-  }
-
-  function clearDemoAdminAuthenticated() {
-    localStorage.removeItem(DEMO_ADMIN_SESSION_KEY);
-  }
-
   function requireSupabase() {
-    if (isDemoAdminAuthenticated()) {
-      return true;
-    }
-
     if (window.isSupabaseConfigured && window.supabaseClient) {
       return true;
     }
@@ -521,34 +498,6 @@
       .replace(/>/g, "&gt;")
       .replace(/"/g, "&quot;")
       .replace(/'/g, "&#039;");
-  }
-
-  function getDemoTeams() {
-    try {
-      return JSON.parse(localStorage.getItem("robocupDemoTeams") || "[]") || [];
-    } catch (error) {
-      return [];
-    }
-  }
-
-  function saveDemoTeams(teams) {
-    localStorage.setItem("robocupDemoTeams", JSON.stringify(teams));
-  }
-
-  function getDemoScores() {
-    try {
-      return JSON.parse(localStorage.getItem("robocupDemoScores") || "[]") || [];
-    } catch (error) {
-      return [];
-    }
-  }
-
-  function saveDemoScores(scores) {
-    localStorage.setItem("robocupDemoScores", JSON.stringify(scores));
-  }
-
-  function useDemoStorage() {
-    return isDemoAdminAuthenticated() || !window.isSupabaseConfigured || !window.supabaseClient;
   }
 
   function normalizeCompetitionName(value) {
@@ -595,7 +544,7 @@
   }
 
   function isSupabaseConfigSyncEnabled() {
-    return window.isSupabaseConfigured && window.supabaseClient && !isDemoAdminAuthenticated();
+    return window.isSupabaseConfigured && window.supabaseClient;
   }
 
   function getLocalConfigValueByKey(key) {
@@ -1708,10 +1657,6 @@
   }
 
   async function requireAdmin() {
-    if (isDemoAdminAuthenticated()) {
-      return { id: "demo-admin", email: DEMO_ADMIN_EMAIL };
-    }
-
     if (!requireSupabase()) return null;
 
     const { data: sessionData, error: sessionError } = await supabaseClient.auth.getSession();
@@ -1732,13 +1677,6 @@
   }
 
   async function login(email, password) {
-    if (isDemoAdminLogin(email, password)) {
-      setDemoAdminAuthenticated();
-      setMessage("Demo admin login successful.", "success");
-      window.location.href = "dashboard.html";
-      return;
-    }
-
     if (!requireSupabase()) return;
 
     setMessage(labels.checkingLogin);
@@ -1766,47 +1704,6 @@
     const teamSelect = document.getElementById("score-team");
     const teamsTable = document.getElementById("teams-table");
     if (!teamSelect && !teamsTable) return [];
-
-    if (useDemoStorage()) {
-      const demoTeams = getDemoTeams().slice().sort((a, b) => a.team_name.localeCompare(b.team_name));
-      if (teamSelect) {
-        teamSelect.innerHTML = '<option value="">Select team</option>';
-        demoTeams.forEach((team) => {
-          const option = document.createElement("option");
-          option.value = team.id;
-          option.dataset.competition = team.competition;
-          option.textContent = `${team.team_name} (${team.competition})`;
-          teamSelect.appendChild(option);
-        });
-      }
-
-      if (teamsTable) {
-        if (!demoTeams.length) {
-          teamsTable.innerHTML = '<tr><td colspan="4">No teams saved yet.</td></tr>';
-        } else {
-          teamsTable.innerHTML = demoTeams.map((team) => `
-            <tr>
-              <td>${escapeHtml(team.team_name)}</td>
-              <td>${escapeHtml(team.competition)}</td>
-              <td>${escapeHtml(team.school || "-")}</td>
-              <td>
-                <button
-                  class="danger-action small-action delete-team-button"
-                  type="button"
-                  data-team-id="${team.id}"
-                  data-team-name="${escapeHtml(team.team_name)}"
-                >
-                  Delete
-                </button>
-              </td>
-            </tr>
-          `).join("");
-        }
-      }
-      cachedTeams = demoTeams;
-      renderBrackets(cachedTeams);
-      return demoTeams;
-    }
 
     const { data, error } = await supabaseClient
       .from("teams")
@@ -1861,17 +1758,6 @@
     const confirmed = window.confirm(labels.deleteConfirm(teamName));
     if (!confirmed) return;
 
-    if (useDemoStorage()) {
-      const remainingTeams = getDemoTeams().filter((team) => String(team.id) !== String(teamId));
-      saveDemoTeams(remainingTeams);
-      const remainingScores = getDemoScores().filter((score) => String(score.team_id) !== String(teamId));
-      saveDemoScores(remainingScores);
-      await loadTeams();
-      await loadScores();
-      setMessage("Team deleted.", "success");
-      return;
-    }
-
     const { error } = await supabaseClient
       .from("teams")
       .delete()
@@ -1887,31 +1773,6 @@
   async function loadScores() {
     const tableBody = document.getElementById("scores-table");
     if (!tableBody) return;
-
-    if (useDemoStorage()) {
-      const demoTeams = getDemoTeams();
-      const demoScores = getDemoScores()
-        .slice()
-        .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
-        .slice(0, 20);
-
-      if (!demoScores.length) {
-        tableBody.innerHTML = '<tr><td colspan="5">No scores saved yet.</td></tr>';
-        return;
-      }
-
-      const teamLookup = Object.fromEntries(demoTeams.map((team) => [String(team.id), team.team_name]));
-      tableBody.innerHTML = demoScores.map((row) => `
-        <tr>
-          <td>${escapeHtml(teamLookup[String(row.team_id)] || "-")}</td>
-          <td>${escapeHtml(row.competition || "-")}</td>
-          <td>${row.round_number}</td>
-          <td>${row.score}</td>
-          <td>${escapeHtml(row.notes || "")}</td>
-        </tr>
-      `).join("");
-      return;
-    }
 
     const { data, error } = await supabaseClient
       .from("scores")
@@ -1979,23 +1840,6 @@
         const competition = document.getElementById("team-competition").value;
         const school = document.getElementById("team-school").value.trim();
 
-        if (useDemoStorage()) {
-          const teams = getDemoTeams();
-          teams.push({
-            id: String(Date.now()),
-            team_name: teamName,
-            competition,
-            school,
-            created_at: new Date().toISOString()
-          });
-          saveDemoTeams(teams);
-          teamForm.reset();
-          await loadTeams();
-          await loadScores();
-          setMessage("Team saved locally.", "success");
-          return;
-        }
-
         const { error } = await supabaseClient.from("teams").insert({
           team_name: teamName,
           competition,
@@ -2027,25 +1871,6 @@
         const roundNumber = Number(document.getElementById("score-round").value);
         const scoreValue = Number(document.getElementById("score-value").value);
         const notes = document.getElementById("score-notes").value.trim();
-
-        if (useDemoStorage()) {
-          const scores = getDemoScores();
-          scores.push({
-            team_id: teamId,
-            competition,
-            round_number: roundNumber,
-            score: scoreValue,
-            notes,
-            created_at: new Date().toISOString(),
-            created_by: "demo-admin"
-          });
-          saveDemoScores(scores);
-          scoreForm.reset();
-          document.getElementById("score-round").value = "1";
-          await loadScores();
-          setMessage("Score saved locally.", "success");
-          return;
-        }
 
         const userResult = await supabaseClient.auth.getUser();
         const { error } = await supabaseClient.from("scores").insert({
@@ -2632,7 +2457,6 @@
   const logoutButton = document.getElementById("logout-button");
   if (logoutButton) {
     logoutButton.addEventListener("click", async () => {
-      clearDemoAdminAuthenticated();
       if (window.isSupabaseConfigured && window.supabaseClient) {
         await supabaseClient.auth.signOut();
       }
