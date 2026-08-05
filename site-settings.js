@@ -171,10 +171,76 @@
       image: "images/leagues/maze.jpg",
       imageAltEn: "Robot navigating the RoboParty maze challenge",
       imageAltFr: "Robot parcourant le défi de labyrinthe RoboParty",
-      summaryEn: "A RoboParty challenge where robots navigate a walled corridor from start to finish.",
-      summaryFr: "Un défi RoboParty où les robots traversent un corridor avec des murs du départ à l'arrivée.",
-      bulletsEn: ["3 attempts per robot.", "120 second maximum per run.", "Wall contact can reduce the score."],
-      bulletsFr: ["3 essais par robot.", "Maximum de 120 secondes par essai.", "Les contacts avec les murs peuvent réduire le score."]
+      summaryEn: "Robot needs to drive through a walled corridor without touching the sides as fast as possible.",
+      summaryFr: "Le robot doit traverser un corridor bordé de murs sans toucher les côtés, le plus rapidement possible.",
+      bulletsEn: ["Walled corridor challenge", "3 attempts per robot", "Best score counts"],
+      bulletsFr: ["Défi de corridor bordé de murs", "3 tentatives par robot", "Le meilleur score compte"],
+      detailSectionsEn: [
+        {
+          key: "overview",
+          label: "Overview",
+          title: "Overview",
+          text: "Robot needs to drive through a walled corridor without touching the sides as fast as possible."
+        },
+        {
+          key: "rules",
+          label: "Rules",
+          title: "Rules",
+          items: [
+            "There are no restrictions on robot size.",
+            "All walls, including the entrance and exit, are at least 30 cm apart and at least 15 cm high, painted white.",
+            "Teams are allowed 3 attempts and the referee keeps the best score.",
+            "Maximum time per attempt is 120 seconds.",
+            "The captain may return the robot to the entrance area if it gets stuck; wall bump deductions are cancelled, but the countdown continues.",
+            "Walls may be removed, added, or changed just before a run so teams cannot pre-map the maze."
+          ]
+        },
+        {
+          key: "points",
+          label: "Points",
+          title: "Points",
+          items: [
+            "Final score per round = (Time - Bump).",
+            "Bump = -5 points every time the robot touches a wall.",
+            "Completion time = time to get from the beginning to the end of the maze.",
+            "Time = 120 - completion time.",
+            "Example: If a robot finishes in 40 seconds with two bumps, it earns 70 points."
+          ]
+        }
+      ],
+      detailSectionsFr: [
+        {
+          key: "overview",
+          label: "Aperçu",
+          title: "Aperçu",
+          text: "Le robot doit traverser un corridor bordé de murs sans toucher les côtés, le plus rapidement possible."
+        },
+        {
+          key: "rules",
+          label: "Règles",
+          title: "Règles",
+          items: [
+            "Aucune restriction sur la taille du robot.",
+            "Tous les murs, y compris l'entrée et la sortie, sont espacés d'au moins 30 cm et mesurent au moins 15 cm de haut, peints en blanc.",
+            "Les équipes ont droit à 3 tentatives et l'arbitre conserve le meilleur score.",
+            "Le temps maximum par tentative est de 120 secondes.",
+            "Le capitaine peut ramener le robot à l'entrée s'il reste bloqué; les pénalités de contact avec les murs sont annulées, mais le chronomètre continue.",
+            "Les murs peuvent être retirés, ajoutés ou modifiés juste avant une manche pour empêcher la pré-cartographie du parcours."
+          ]
+        },
+        {
+          key: "points",
+          label: "Points",
+          title: "Points",
+          items: [
+            "Score final par manche = (Temps - Coups).",
+            "Coup = -5 points chaque fois que le robot touche un mur.",
+            "Temps de complétion = temps pour aller du début à la fin du labyrinthe.",
+            "Temps = 120 - temps de complétion.",
+            "Exemple : Si un robot termine en 40 secondes avec deux contacts, il obtient 70 points."
+          ]
+        }
+      ]
     },
     "formula 1": {
       nameEn: "Formula 1",
@@ -184,10 +250,68 @@
       image: "images/leagues/formula-1.jpg",
       imageAltEn: "Robot competing in the Formula 1 line-following challenge",
       imageAltFr: "Robot participant au défi de suivi de ligne Formule 1",
-      summaryEn: "A RoboParty challenge where robots follow a black curved line around a race track.",
-      summaryFr: "Un défi RoboParty où les robots suivent une ligne noire courbée sur une piste de course.",
-      bulletsEn: ["3 attempts per robot.", "Best run is counted.", "Fast and stable line-following is key."],
-      bulletsFr: ["3 essais par robot.", "Le meilleur essai est retenu.", "Le suivi de ligne rapide et stable est essentiel."]
+      summaryEn: "Robot follows a black curved line on a Formula 1 race track as fast as possible.",
+      summaryFr: "Le robot suit une ligne noire courbée sur une piste de Formule 1 le plus rapidement possible.",
+      bulletsEn: ["Black curved line track", "Timed challenge", "Best of 3 attempts"],
+      bulletsFr: ["Piste à ligne noire courbée", "Défi chronométré", "Meilleur résultat sur 3 tentatives"],
+      detailSectionsEn: [
+        {
+          key: "overview",
+          label: "Overview",
+          title: "Overview",
+          text: "Robot follows a black curved line on a Formula 1 race track as fast as possible."
+        },
+        {
+          key: "rules",
+          label: "Rules",
+          title: "Rules",
+          items: [
+            "The robot follows a black curved line on a Formula 1 race track.",
+            "The black line is approximately 2 cm wide.",
+            "This is a timed challenge.",
+            "Teams are allowed 3 attempts and the referee keeps the best score.",
+            "Robots are subjected to a size limit of 22 cm in diameter and 22 cm in height.",
+            "The timer starts once the robot starts moving."
+          ]
+        },
+        {
+          key: "points",
+          label: "Points",
+          title: "Points",
+          items: [
+            "Time to get from the beginning to the end of the track."
+          ]
+        }
+      ],
+      detailSectionsFr: [
+        {
+          key: "overview",
+          label: "Aperçu",
+          title: "Aperçu",
+          text: "Le robot suit une ligne noire courbée sur une piste de Formule 1 le plus rapidement possible."
+        },
+        {
+          key: "rules",
+          label: "Règles",
+          title: "Règles",
+          items: [
+            "Le robot suit une ligne noire courbée sur une piste de Formule 1.",
+            "La ligne noire a une largeur d'environ 2 cm.",
+            "Il s'agit d'un défi chronométré.",
+            "Les équipes ont droit à 3 tentatives et l'arbitre conserve le meilleur score.",
+            "Les robots sont limités à 22 cm de diamètre et 22 cm de hauteur.",
+            "Le chronomètre démarre lorsque le robot commence à bouger."
+          ]
+        },
+        {
+          key: "points",
+          label: "Points",
+          title: "Points",
+          items: [
+            "Temps pour aller du début à la fin du parcours."
+          ]
+        }
+      ]
     },
     performance: {
       nameEn: "Performance",
@@ -197,10 +321,72 @@
       image: "images/leagues/performance.jpg",
       imageAltEn: "Students presenting a robot performance challenge",
       imageAltFr: "Élèves présentant un défi de performance robotique",
-      summaryEn: "A RoboParty challenge where teams present a short robot routine with music and creativity.",
-      summaryFr: "Un défi RoboParty où les équipes présentent une courte routine de robot avec musique et créativité.",
-      bulletsEn: ["Usually a 1 minute routine.", "Creativity and entertainment are judged.", "Programming complexity matters."],
-      bulletsFr: ["Routine habituellement d'environ 1 minute.", "La créativité et le divertissement sont évalués.", "La complexité de la programmation compte."]
+      summaryEn: "A robot performs a 1 minute choreographed routine to music, entertaining the audience.",
+      summaryFr: "Un robot présente une routine chorégraphiée d'une minute sur musique pour divertir le public.",
+      bulletsEn: ["1 minute performance", "Creativity and entertainment matter", "No size limit"],
+      bulletsFr: ["Performance d'une minute", "Créativité et divertissement importants", "Aucune limite de taille"],
+      detailSectionsEn: [
+        {
+          key: "overview",
+          label: "Overview",
+          title: "Overview",
+          text: "A robot performs a 1 minute choreographed routine to music, entertaining the audience."
+        },
+        {
+          key: "rules",
+          label: "Rules",
+          title: "Rules",
+          items: [
+            "Teams use their creativity to construct and decorate 1 to 2 robots for a choreographed routine.",
+            "The performance area is approximately 2 meters by 2 meters.",
+            "The performance can last a maximum of 60 seconds, with 5 minutes for setup and 3 minutes for cleanup.",
+            "There is no size limit.",
+            "Teams may provide background music on a USB key or use their own speakers.",
+            "Be creative and entertaining and you can use projections."
+          ]
+        },
+        {
+          key: "points",
+          label: "Points",
+          title: "Points",
+          items: [
+            "Teams present their performance concept and explain their program.",
+            "Judges evaluate creativity, entertainment, and programming complexity.",
+            "Robot sensors and autonomy are taken into consideration."
+          ]
+        }
+      ],
+      detailSectionsFr: [
+        {
+          key: "overview",
+          label: "Aperçu",
+          title: "Aperçu",
+          text: "Un robot présente une routine chorégraphiée d'une minute sur musique pour divertir le public."
+        },
+        {
+          key: "rules",
+          label: "Règles",
+          title: "Règles",
+          items: [
+            "Les équipes utilisent leur créativité pour construire et décorer 1 à 2 robots pour une routine chorégraphiée.",
+            "La zone de performance mesure environ 2 mètres par 2 mètres.",
+            "La performance peut durer au maximum 60 secondes, avec 5 minutes d'installation et 3 minutes de rangement.",
+            "Il n'y a aucune limite de taille.",
+            "Les équipes peuvent fournir la musique d'ambiance sur clé USB ou utiliser leurs propres haut-parleurs.",
+            "Soyez créatifs et divertissants, et vous pouvez utiliser des projections."
+          ]
+        },
+        {
+          key: "points",
+          label: "Points",
+          title: "Points",
+          items: [
+            "Les équipes présentent leur concept et expliquent leur programme.",
+            "Les juges évaluent la créativité, le divertissement et la complexité du programme.",
+            "Les capteurs et l'autonomie des robots sont pris en compte."
+          ]
+        }
+      ]
     },
     sumobots: {
       nameEn: "SumoBots",
@@ -210,10 +396,72 @@
       image: "images/leagues/sumobots.jpg",
       imageAltEn: "Robots competing in the SumoBots challenge",
       imageAltFr: "Robots participant au défi SumoBots",
-      summaryEn: "A RoboParty challenge where robots try to push opponents out of an octagonal ring.",
-      summaryFr: "Un défi RoboParty où les robots tentent de pousser leurs adversaires hors d'un anneau octogonal.",
-      bulletsEn: ["Robots compete inside a ring.", "Points are earned by pushing opponents out.", "Size and weight limits apply."],
-      bulletsFr: ["Les robots s'affrontent dans un anneau.", "Des points sont gagnés en poussant les adversaires dehors.", "Des limites de taille et de poids s'appliquent."]
+      summaryEn: "Four robots start on the corners of an octagon and battle to push one another out until only one remains.",
+      summaryFr: "Quatre robots partent des coins d'un octogone et s'affrontent pour pousser les autres dehors jusqu'à ce qu'il n'en reste qu'un.",
+      bulletsEn: ["4 robots on an octagonal ring", "Push opponents out", "Last robot standing wins"],
+      bulletsFr: ["4 robots sur un anneau octogonal", "Pousser les adversaires dehors", "Le dernier robot restant gagne"],
+      detailSectionsEn: [
+        {
+          key: "overview",
+          label: "Overview",
+          title: "Overview",
+          text: "Four robots start on the corners of an octagon and battle to push one another out until only one remains."
+        },
+        {
+          key: "rules",
+          label: "Rules",
+          title: "Rules",
+          items: [
+            "Four robots compete on an octagonal ring, attempting to push one another out.",
+            "A robot is considered eliminated when it does not move for more than 10 seconds or all wheels exit the ring.",
+            "The ring is approximately 150 cm from side to opposite side and has a white base with a 2 cm black octagonal border; a reversal of colours is possible.",
+            "The ring is elevated off the floor, making it difficult to return once the robot moves beyond the line.",
+            "Robots are limited to 22 cm in diameter and 22 cm in height.",
+            "The mass of the robot must not exceed 1000 grams (1 kg).",
+            "The referee applies a colour label to each robot for identification."
+          ]
+        },
+        {
+          key: "points",
+          label: "Points",
+          title: "Points",
+          items: [
+            "A robot receives 5 points for each opponent it pushes out of the ring.",
+            "A robot receives 20 points for being the last robot in the ring."
+          ]
+        }
+      ],
+      detailSectionsFr: [
+        {
+          key: "overview",
+          label: "Aperçu",
+          title: "Aperçu",
+          text: "Quatre robots partent des coins d'un octogone et s'affrontent pour pousser les autres dehors jusqu'à ce qu'il n'en reste qu'un."
+        },
+        {
+          key: "rules",
+          label: "Règles",
+          title: "Règles",
+          items: [
+            "Quatre robots s'affrontent sur un anneau octogonal en essayant de se pousser hors du ring.",
+            "Un robot est considéré éliminé s'il ne bouge pas pendant plus de 10 secondes ou si toutes ses roues sortent du ring.",
+            "Le ring mesure environ 150 cm d'un côté à l'autre et possède une base blanche avec une bordure octogonale noire de 2 cm; une inversion des couleurs est possible.",
+            "Le ring est surélevé par rapport au sol, ce qui rend le retour difficile une fois la ligne dépassée.",
+            "Les robots sont limités à 22 cm de diamètre et 22 cm de hauteur.",
+            "La masse du robot ne doit pas dépasser 1000 grammes (1 kg).",
+            "L'arbitre applique une étiquette de couleur à chaque robot pour l'identification."
+          ]
+        },
+        {
+          key: "points",
+          label: "Points",
+          title: "Points",
+          items: [
+            "Un robot reçoit 5 points pour chaque adversaire poussé hors du ring.",
+            "Un robot reçoit 20 points pour être le dernier robot dans le ring."
+          ]
+        }
+      ]
     },
     "rescue line": {
       nameEn: "Rescue Line",
@@ -594,7 +842,9 @@
       summaryEn: known.summaryEn,
       summaryFr: known.summaryFr,
       bulletsEn: known.bulletsEn,
-      bulletsFr: known.bulletsFr
+      bulletsFr: known.bulletsFr,
+      detailSectionsEn: Array.isArray(known.detailSectionsEn) ? known.detailSectionsEn : [],
+      detailSectionsFr: Array.isArray(known.detailSectionsFr) ? known.detailSectionsFr : []
     } : {
       nameEn: trimmed,
       nameFr: trimmed,
@@ -632,7 +882,13 @@
       summaryEn: mergedSummaryEn,
       summaryFr: mergedSummaryFr,
       bulletsEn: mergedBulletsEn,
-      bulletsFr: mergedBulletsFr
+      bulletsFr: mergedBulletsFr,
+      detailSectionsEn: Array.isArray(custom.detailSectionsEn) && custom.detailSectionsEn.length
+        ? custom.detailSectionsEn
+        : (Array.isArray(baseConfig.detailSectionsEn) ? baseConfig.detailSectionsEn : []),
+      detailSectionsFr: Array.isArray(custom.detailSectionsFr) && custom.detailSectionsFr.length
+        ? custom.detailSectionsFr
+        : (Array.isArray(baseConfig.detailSectionsFr) ? baseConfig.detailSectionsFr : [])
     };
   }
 
@@ -660,6 +916,17 @@
     const displayName = isFrench ? league.nameFr : league.nameEn;
     const summary = isFrench ? league.summaryFr : league.summaryEn;
     const bullets = isFrench ? league.bulletsFr : league.bulletsEn;
+    const detailSections = isFrench ? league.detailSectionsFr : league.detailSectionsEn;
+    const sections = Array.isArray(detailSections) && detailSections.length
+      ? detailSections
+      : [{
+          key: "overview",
+          label: isFrench ? "Aperçu" : "Overview",
+          title: isFrench ? "Aperçu" : "Overview",
+          text: summary,
+          items: bullets
+        }];
+    const preferredSectionKey = sections.some((section) => section.key === "rules") ? "rules" : (sections[0]?.key || "overview");
 
     document.documentElement.lang = isFrench ? "fr" : "en";
     document.title = `${displayName} ${detailsWord} | ${DEFAULT_SITE_NAME}`;
@@ -678,21 +945,62 @@
       <section>
         <div class="container">
           <h2 class="section-title">${isFrench ? "Informations de la ligue" : "League Information"}</h2>
-          <div class="content-grid">
-            <div class="panel">
-              <h3>${isFrench ? "Résumé" : "Summary"}</h3>
-              <p>${escapeHtml(summary)}</p>
-            </div>
-            <div class="panel">
-              <h3>${isFrench ? "Points clés" : "Highlights"}</h3>
-              <ul>
-                ${bullets.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
-              </ul>
-            </div>
+          <p class="detail-bubble-hint">${isFrench ? "Choisissez un onglet pour voir l'aperçu, les règles et les points." : "Choose a tab to view the overview, rules, and points."}</p>
+          <div class="detail-bubbles" role="tablist" aria-label="${isFrench ? "Détails de la ligue" : "League details"}">
+            ${sections.map((section, index) => `
+              <button
+                type="button"
+                class="detail-bubble${(section.key || `section-${index}`) === preferredSectionKey ? " active" : ""}"
+                data-detail-target="${escapeHtml(section.key || `section-${index}`)}"
+                role="tab"
+                aria-selected="${(section.key || `section-${index}`) === preferredSectionKey ? "true" : "false"}"
+              >
+                ${escapeHtml(section.label || section.title || `Section ${index + 1}`)}
+              </button>
+            `).join("")}
+          </div>
+          <div class="detail-panels">
+            ${sections.map((section, index) => `
+              <section
+                class="detail-panel${(section.key || `section-${index}`) === preferredSectionKey ? " active" : ""}"
+                data-detail-panel="${escapeHtml(section.key || `section-${index}`)}"
+                role="tabpanel"
+              >
+                <div class="panel">
+                  <h3>${escapeHtml(section.title || section.label || `Section ${index + 1}`)}</h3>
+                  ${section.text ? `<p>${escapeHtml(section.text)}</p>` : ""}
+                  ${Array.isArray(section.items) && section.items.length ? `
+                    <ul>
+                      ${section.items.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
+                    </ul>
+                  ` : ""}
+                </div>
+              </section>
+            `).join("")}
           </div>
         </div>
       </section>
     `;
+
+    const detailButtons = Array.from(content.querySelectorAll(".detail-bubble"));
+    const detailPanels = Array.from(content.querySelectorAll(".detail-panel"));
+    if (detailButtons.length && detailPanels.length) {
+      const activateDetail = (targetKey) => {
+        detailButtons.forEach((button) => {
+          const isActive = button.dataset.detailTarget === targetKey;
+          button.classList.toggle("active", isActive);
+          button.setAttribute("aria-selected", isActive ? "true" : "false");
+        });
+
+        detailPanels.forEach((panel) => {
+          panel.classList.toggle("active", panel.dataset.detailPanel === targetKey);
+        });
+      };
+
+      detailButtons.forEach((button) => {
+        button.addEventListener("click", () => activateDetail(button.dataset.detailTarget));
+      });
+    }
   }
   function renderLeagueCardsFromSettings() {
     const path = window.location.pathname.toLowerCase();
