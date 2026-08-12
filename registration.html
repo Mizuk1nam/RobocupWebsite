@@ -476,7 +476,6 @@
                         <button type="submit" class="btn-primary">Submit Registration</button>
                     </div>
 
-                    <p class="form-hint">This page stores data in memory for demo use. Connect to a backend for production submissions.</p>
                     <p id="form-message" class="form-message" role="status" aria-live="polite"></p>
                 </form>
             </div>
@@ -530,6 +529,8 @@
         </div>
     </footer>
 
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="admin/supabase-config.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
     <script>
         const teamsContainer = document.getElementById('teams-container');
@@ -537,6 +538,84 @@
         const formMessage = document.getElementById('form-message');
         const addTeamButton = document.getElementById('add-team-btn');
         const generatePdfButton = document.getElementById('generate-pdf-btn');
+        const registrationSupabase = window.supabaseClient || null;
+
+        function setFormMessage(message, isSuccess = true) {
+            formMessage.textContent = message;
+            formMessage.classList.toggle('success', !!isSuccess);
+            formMessage.style.color = isSuccess ? '#16a34a' : '#dc2626';
+        }
+
+        function buildSafeSubmissionId() {
+            if (window.crypto && typeof window.crypto.randomUUID === 'function') {
+                return window.crypto.randomUUID();
+            }
+            return `robocup-${Date.now()}-${Math.random().toString(16).slice(2)}`;
+        }
+
+        function getPrimaryContactEmail(teams) {
+            const emails = teams
+                .map((team) => team.mentorEmail)
+                .filter(Boolean);
+
+            return emails[0] || '';
+        }
+
+        function persistFallbackRegistration(teams) {
+            const payload = {
+                savedAt: new Date().toISOString(),
+                eventName: document.getElementById('registration-hero-event')?.textContent?.trim() || 'RoboCup Americas 2026',
+                teams,
+                primaryContactEmail: getPrimaryContactEmail(teams),
+                teamCount: teams.length
+            };
+
+            try {
+                const localKey = 'robocupRegistrationFallback';
+                const existing = JSON.parse(localStorage.getItem(localKey) || '[]');
+                const values = Array.isArray(existing) ? existing : [];
+                values.push(payload);
+                localStorage.setItem(localKey, JSON.stringify(values));
+            } catch (error) {
+                console.warn('Could not persist local registration fallback:', error);
+            }
+        }
+
+        async function submitRegistrationToSupabase(teams) {
+            if (!registrationSupabase) {
+                return {
+                    ok: false,
+                    localOnly: true,
+                    message: 'Supabase is not configured on this site. The form was saved locally only.'
+                };
+            }
+
+            const payload = {
+                submission_id: buildSafeSubmissionId(),
+                event_name: document.getElementById('registration-hero-event')?.textContent?.trim() || 'RoboCup Americas 2026',
+                team_count: teams.length,
+                primary_contact_email: getPrimaryContactEmail(teams),
+                status: 'submitted',
+                teams: teams,
+                created_at: new Date().toISOString()
+            };
+
+            const { data, error } = await registrationSupabase
+                .from('registrations')
+                .insert([payload])
+                .select();
+
+            if (error) {
+                throw error;
+            }
+
+            return {
+                ok: true,
+                localOnly: false,
+                data,
+                message: `Registration submitted for ${teams.length} team(s) and saved to Supabase.`
+            };
+        }
 
         function createMemberRow(teamIndex, memberIndex) {
             return `
@@ -949,15 +1028,29 @@
             formMessage.classList.add('success');
         });
 
-        form.addEventListener('submit', (event) => {
+        form.addEventListener('submit', async (event) => {
             event.preventDefault();
             if (!validateForm()) {
                 return;
             }
 
             const teams = collectRegistrationData();
-            formMessage.textContent = `Registration submitted for ${teams.length} team(s).`; 
-            formMessage.classList.add('success');
+
+            try {
+                const result = await submitRegistrationToSupabase(teams);
+
+                if (!result.ok && result.localOnly) {
+                    persistFallbackRegistration(teams);
+                    setFormMessage(result.message, true);
+                    return;
+                }
+
+                setFormMessage(result.message, true);
+            } catch (error) {
+                console.error('Supabase registration save failed:', error);
+                persistFallbackRegistration(teams);
+                setFormMessage('Submission could not be sent to Supabase. A local backup was saved instead.', false);
+            }
         });
 
         addTeam();

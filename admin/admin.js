@@ -1700,6 +1700,367 @@
     }
   }
 
+  function escapeHtml(value) {
+    return String(value ?? "")
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/\"/g, "&quot;")
+      .replace(/'/g, "&#039;");
+  }
+
+  function collectSubmissionTeams(submission) {
+    const source = Array.isArray(submission?.teams) ? submission.teams : [];
+    return source.map((team) => ({
+      teamName: String(team?.teamName || team?.team_name || "").trim(),
+      competition: String(team?.league || team?.competition || "").trim(),
+      school: String(team?.school || "").trim(),
+      mentorName: String(team?.mentorName || team?.mentor_name || "").trim(),
+      mentorEmail: String(team?.mentorEmail || team?.mentor_email || "").trim(),
+      memberCount: Array.isArray(team?.members) ? team.members.length : 0
+    })).filter((team) => team.teamName && team.competition);
+  }
+
+  function normalizeRegistrationStatus(value) {
+    const normalized = String(value || "submitted").toLowerCase();
+    if (["submitted", "pending"].includes(normalized)) return "submitted";
+    if (["reviewing", "in_review", "under_review"].includes(normalized)) return "reviewing";
+    if (["accepted", "approved", "official"].includes(normalized)) return "accepted";
+    if (["rejected", "declined"].includes(normalized)) return "rejected";
+    return "submitted";
+  }
+
+  function getRegistrationStatusLabel(value) {
+    switch (normalizeRegistrationStatus(value)) {
+      case "reviewing":
+        return "Reviewing";
+      case "accepted":
+        return "Accepted";
+      case "rejected":
+        return "Rejected";
+      case "submitted":
+      default:
+        return "Pending";
+    }
+  }
+
+  function renderRegistrationDetails(registration) {
+    const panel = document.getElementById("registration-details-container");
+    if (!panel) return;
+
+    const teams = collectSubmissionTeams(registration);
+    if (!teams.length) {
+      panel.hidden = true;
+      panel.innerHTML = "";
+      return;
+    }
+
+    const detailsHtml = teams.map((team) => {
+      const members = Array.isArray(registration?.teams)
+        ? registration.teams.find((entry) => {
+            const entryTeamName = String(entry?.teamName || entry?.team_name || "").trim();
+            const entryLeague = String(entry?.league || entry?.competition || "").trim();
+            return entryTeamName === team.teamName && entryLeague === team.competition;
+          })
+        : null;
+
+      const memberList = Array.isArray(members?.members) && members.members.length
+        ? members.members.map((member) => `
+            <li>${escapeHtml(member?.memberName || member?.name || "Unknown member")} — ${escapeHtml(member?.memberAge || member?.age || "-")}</li>
+          `).join("")
+        : "<li>No members recorded.</li>";
+
+      return `
+        <article class="registration-detail-team">
+          <h4>${escapeHtml(team.teamName)}</h4>
+          <div class="registration-detail-grid">
+            <div class="registration-detail-item"><strong>League</strong>${escapeHtml(team.competition)}</div>
+            <div class="registration-detail-item"><strong>School</strong>${escapeHtml(team.school || "-")}</div>
+            <div class="registration-detail-item"><strong>Mentor</strong>${escapeHtml(team.mentorName || "-")}</div>
+            <div class="registration-detail-item"><strong>Email</strong>${escapeHtml(team.mentorEmail || "-")}</div>
+          </div>
+          <ul class="registration-detail-members">${memberList}</ul>
+        </article>
+      `;
+    }).join("");
+
+    panel.hidden = false;
+    panel.innerHTML = `
+      <div class="registration-details-header">
+        <h3>Registration Details</h3>
+        <button type="button" class="secondary-action small-action registration-details-close" data-registration-id="${registration.id}">Close</button>
+      </div>
+      <div class="registration-details-scroll">${detailsHtml}</div>
+    `;
+  }
+
+  async function loadRegistrations() {
+    const tableBody = document.getElementById("registrations-table");
+    if (!tableBody) return [];
+
+    const { data, error } = await supabaseClient
+      .from("registrations")
+      .select("id, submission_id, event_name, team_count, primary_contact_email, official, status, teams, created_at")
+      .order("created_at", { ascending: false });
+
+    if (error) throw error;
+
+    if (!data.length) {
+      tableBody.innerHTML = `<tr><td colspan="6">No registrations loaded yet.</td></tr>`;
+      const panel = document.getElementById("registration-details-container");
+      if (panel) {
+        panel.hidden = true;
+        panel.innerHTML = "";
+      }
+      return data;
+    }
+
+    tableBody.innerHTML = data.map((submission) => {
+      const teams = collectSubmissionTeams(submission);
+      const summary = teams.length
+        ? teams.map((team) => `${team.teamName} (${team.competition})`).join("<br>")
+        : "-";
+      const rowStatus = normalizeRegistrationStatus(submission.status);
+
+      return `
+        <tr>
+          <td>${escapeHtml(new Date(submission.created_at).toLocaleString())}</td>
+          <td>${escapeHtml(submission.event_name || "-")}</td>
+          <td>${summary}</td>
+          <td>
+            <select class="registration-status-select" data-registration-id="${submission.id}" aria-label="Registration status">
+              <option value="submitted" ${rowStatus === "submitted" ? "selected" : ""}>Pending</option>
+              <option value="reviewing" ${rowStatus === "reviewing" ? "selected" : ""}>Reviewing</option>
+              <option value="accepted" ${rowStatus === "accepted" ? "selected" : ""}>Accepted</option>
+              <option value="rejected" ${rowStatus === "rejected" ? "selected" : ""}>Rejected</option>
+            </select>
+          </td>
+          <td>${submission.official ? "Official" : "Not official"}</td>
+          <td>
+            <div class="table-actions">
+              <button class="secondary-action small-action registration-details-button" type="button" data-registration-id="${submission.id}">Details</button>
+              <button class="primary-action small-action official-registration-button" type="button" data-registration-id="${submission.id}" data-official="${submission.official ? "true" : "false"}">
+                ${submission.official ? "Remove Official" : "Mark Official"}
+              </button>
+            </div>
+          </td>
+        </tr>
+      `;
+    }).join("");
+
+    return data;
+  }
+
+  async function importOfficialRegistration(registrationId) {
+    const { data, error } = await supabaseClient
+      .from("registrations")
+      .select("id, teams, official")
+      .eq("id", registrationId)
+      .single();
+
+    if (error) throw error;
+
+    const teams = collectSubmissionTeams(data);
+    if (!teams.length) {
+      throw new Error("This registration does not include any valid team entries.");
+    }
+
+    const existingTeams = await supabaseClient
+      .from("teams")
+      .select("id, team_name, competition, school");
+
+    if (existingTeams.error) throw existingTeams.error;
+
+    const existingKeys = new Set(
+      existingTeams.data.map((team) => `${(team.team_name || "").toLowerCase()}|${(team.competition || "").toLowerCase()}|${(team.school || "").toLowerCase()}`)
+    );
+
+    const rowsToInsert = teams
+      .filter((team) => !existingKeys.has(`${team.teamName.toLowerCase()}|${team.competition.toLowerCase()}|${team.school.toLowerCase()}`))
+      .map((team) => ({
+        team_name: team.teamName,
+        competition: team.competition,
+        school: team.school || null
+      }));
+
+    if (rowsToInsert.length) {
+      const { error: insertError } = await supabaseClient
+        .from("teams")
+        .insert(rowsToInsert);
+
+      if (insertError) throw insertError;
+    }
+
+    const { error: updateError } = await supabaseClient
+      .from("registrations")
+      .update({
+        official: !data.official,
+        status: !data.official ? "accepted" : "submitted"
+      })
+      .eq("id", registrationId);
+
+    if (updateError) throw updateError;
+
+    await loadTeams();
+    await loadScores();
+    await loadRegistrations();
+    setMessage(data.official ? "Official status removed for this registration." : "Registration marked official and imported into the competition teams list.", "success");
+  }
+
+  async function getApprovedRegistrationTeams() {
+    const { data, error } = await supabaseClient
+      .from("registrations")
+      .select("id, event_name, status, official, teams")
+      .or("official.eq.true,status.eq.accepted")
+      .order("created_at", { ascending: false });
+
+    if (error) throw error;
+
+    return data.flatMap((submission) => {
+      const teams = collectSubmissionTeams(submission);
+      return teams.map((team) => ({
+        registrationId: submission.id,
+        eventName: submission.event_name || "-",
+        teamName: team.teamName,
+        competition: team.competition,
+        school: team.school || "",
+        official: Boolean(submission.official),
+        status: normalizeRegistrationStatus(submission.status)
+      }));
+    });
+  }
+
+  async function populateApprovedRegistrationTeamSelect() {
+    const select = document.getElementById("approved-registration-team-select");
+    if (!select) return [];
+
+    try {
+      const approvedTeams = await getApprovedRegistrationTeams();
+      const uniqueTeams = approvedTeams.filter((team, index, arr) => {
+        const key = `${team.teamName.toLowerCase()}|${team.competition.toLowerCase()}|${team.school.toLowerCase()}`;
+        return arr.findIndex((entry) => `${entry.teamName.toLowerCase()}|${entry.competition.toLowerCase()}|${entry.school.toLowerCase()}` === key) === index;
+      });
+
+      select.innerHTML = '<option value="">Select approved registration team</option>';
+      uniqueTeams.forEach((team) => {
+        const option = document.createElement("option");
+        option.value = `${team.registrationId}|${team.teamName}|${team.competition}|${team.school}`;
+        option.textContent = `${team.teamName} (${team.competition})`;
+        select.appendChild(option);
+      });
+
+      return uniqueTeams;
+    } catch (error) {
+      setMessage(error.message, "error");
+      return [];
+    }
+  }
+
+  async function loadApprovedRegistrationsPreview() {
+    const tableBody = document.getElementById("approved-registrations-table");
+    if (!tableBody) return [];
+
+    const data = await getApprovedRegistrationTeams();
+
+    if (error) throw error;
+
+    const rows = data.flatMap((submission) => {
+      const teams = collectSubmissionTeams(submission);
+      return teams.map((team) => ({
+        eventName: submission.event_name || "-",
+        teamName: team.teamName,
+        competition: team.competition,
+        status: submission.official ? "Approved" : getRegistrationStatusLabel(submission.status)
+      }));
+    });
+
+    if (!rows.length) {
+      tableBody.innerHTML = `<tr><td colspan="4">No approved registrations yet.</td></tr>`;
+      return rows;
+    }
+
+    tableBody.innerHTML = rows.map((row) => `
+      <tr>
+        <td>${escapeHtml(row.eventName)}</td>
+        <td>${escapeHtml(row.teamName)}</td>
+        <td>${escapeHtml(row.competition)}</td>
+        <td>${escapeHtml(row.status)}</td>
+      </tr>
+    `).join("");
+
+    return rows;
+  }
+
+  async function syncApprovedRegistrationsToTeams() {
+    const { data, error } = await supabaseClient
+      .from("registrations")
+      .select("id, status, official, teams")
+      .or("official.eq.true,status.eq.accepted")
+      .order("created_at", { ascending: false });
+
+    if (error) throw error;
+
+    const approvedRegistrations = data.filter((registration) => {
+      const teams = collectSubmissionTeams(registration);
+      return teams.length > 0 && (registration.official || normalizeRegistrationStatus(registration.status) === "accepted");
+    });
+
+    if (!approvedRegistrations.length) {
+      setMessage("There are no approved registrations ready to import.", "info");
+      return [];
+    }
+
+    const existingTeams = await supabaseClient
+      .from("teams")
+      .select("id, team_name, competition, school");
+
+    if (existingTeams.error) throw existingTeams.error;
+
+    const existingKeys = new Set(
+      existingTeams.data.map((team) => `${(team.team_name || "").toLowerCase()}|${(team.competition || "").toLowerCase()}|${(team.school || "").toLowerCase()}`)
+    );
+
+    const rowsToInsert = [];
+
+    approvedRegistrations.forEach((registration) => {
+      collectSubmissionTeams(registration).forEach((team) => {
+        const key = `${team.teamName.toLowerCase()}|${team.competition.toLowerCase()}|${team.school.toLowerCase()}`;
+        if (!existingKeys.has(key)) {
+          rowsToInsert.push({
+            team_name: team.teamName,
+            competition: team.competition,
+            school: team.school || null
+          });
+          existingKeys.add(key);
+        }
+      });
+    });
+
+    if (rowsToInsert.length) {
+      const { error: insertError } = await supabaseClient
+        .from("teams")
+        .insert(rowsToInsert);
+
+      if (insertError) throw insertError;
+    }
+
+    for (const registration of approvedRegistrations) {
+      const { error: updateError } = await supabaseClient
+        .from("registrations")
+        .update({ official: true, status: "accepted" })
+        .eq("id", registration.id);
+
+      if (updateError) throw updateError;
+    }
+
+    await loadTeams();
+    await loadScores();
+    await loadRegistrations();
+    await loadApprovedRegistrationsPreview();
+    setMessage("Approved registration teams were synced into the competition tools.", "success");
+    return rowsToInsert;
+  }
+
   async function loadTeams() {
     const teamSelect = document.getElementById("score-team");
     const teamsTable = document.getElementById("teams-table");
@@ -1810,6 +2171,9 @@
       refreshCompetitionViews();
       await loadTeams();
       await loadScores();
+      await loadRegistrations();
+      await loadApprovedRegistrationsPreview();
+      await populateApprovedRegistrationTeamSelect();
       populateSiteSettingsForm();
     } catch (error) {
       setMessage(error.message, "error");
@@ -1833,6 +2197,81 @@
     setupSiteSettingsTabs();
     setupDashboard();
 
+    const pullRegistrationsButton = document.getElementById("pull-registrations-button");
+    if (pullRegistrationsButton) {
+      pullRegistrationsButton.addEventListener("click", async () => {
+        try {
+          await syncApprovedRegistrationsToTeams();
+          await populateApprovedRegistrationTeamSelect();
+        } catch (error) {
+          setMessage(error.message, "error");
+        }
+      });
+    }
+
+    const approvedRegistrationSelect = document.getElementById("approved-registration-team-select");
+    if (approvedRegistrationSelect) {
+      approvedRegistrationSelect.addEventListener("change", () => {
+        const [registrationId, teamName, competition, school] = approvedRegistrationSelect.value.split("|");
+        if (!registrationId) return;
+
+        document.getElementById("team-name").value = teamName || "";
+        document.getElementById("team-competition").value = competition || "";
+        document.getElementById("team-school").value = school || "";
+      });
+    }
+
+    const addApprovedRegistrationTeamButton = document.getElementById("add-approved-registration-team-button");
+    if (addApprovedRegistrationTeamButton) {
+      addApprovedRegistrationTeamButton.addEventListener("click", async () => {
+        const value = approvedRegistrationSelect ? approvedRegistrationSelect.value : "";
+        if (!value) {
+          setMessage("Select an approved registration team first.", "error");
+          return;
+        }
+
+        const [registrationId, teamName, competition, school] = value.split("|");
+        if (!registrationId || !teamName || !competition) {
+          setMessage("This approved registration team is missing required fields.", "error");
+          return;
+        }
+
+        try {
+          const existingTeams = await supabaseClient
+            .from("teams")
+            .select("id, team_name, competition, school");
+
+          if (existingTeams.error) throw existingTeams.error;
+
+          const duplicate = existingTeams.data.some((team) => {
+            return (team.team_name || "").toLowerCase() === teamName.toLowerCase()
+              && (team.competition || "").toLowerCase() === competition.toLowerCase()
+              && (team.school || "").toLowerCase() === (school || "").toLowerCase();
+          });
+
+          if (duplicate) {
+            setMessage("This team already exists in the competition teams list.", "info");
+            return;
+          }
+
+          const { error } = await supabaseClient.from("teams").insert({
+            team_name: teamName,
+            competition,
+            school: school || null
+          });
+
+          if (error) throw error;
+
+          await loadTeams();
+          await loadScores();
+          await populateApprovedRegistrationTeamSelect();
+          setMessage("Approved registration team added to the competition list.", "success");
+        } catch (error) {
+          setMessage(error.message, "error");
+        }
+      });
+    }
+
     teamForm.addEventListener("submit", async (event) => {
       event.preventDefault();
       try {
@@ -1855,6 +2294,99 @@
       }
     });
   }
+
+  document.addEventListener("change", async (event) => {
+    const statusTarget = event.target.closest(".registration-status-select");
+    if (!statusTarget) return;
+
+    const registrationId = Number(statusTarget.dataset.registrationId);
+    const nextStatus = statusTarget.value;
+
+    try {
+      const { error } = await supabaseClient
+        .from("registrations")
+        .update({
+          status: nextStatus,
+          official: nextStatus === "accepted"
+        })
+        .eq("id", registrationId);
+
+      if (error) throw error;
+
+      if (nextStatus === "accepted") {
+        await importOfficialRegistration(registrationId);
+        return;
+      }
+
+      await loadRegistrations();
+      setMessage(`Registration status updated to ${getRegistrationStatusLabel(nextStatus)}.`, "success");
+    } catch (error) {
+      setMessage(error.message, "error");
+    }
+  });
+
+  document.addEventListener("click", async (event) => {
+    const detailsTarget = event.target.closest(".registration-details-button");
+    if (detailsTarget) {
+      const registrationId = Number(detailsTarget.dataset.registrationId);
+      try {
+        const { data, error } = await supabaseClient
+          .from("registrations")
+          .select("id, event_name, official, teams, created_at")
+          .eq("id", registrationId)
+          .single();
+
+        if (error) throw error;
+        renderRegistrationDetails(data);
+      } catch (error) {
+        setMessage(error.message, "error");
+      }
+      return;
+    }
+
+    const closeTarget = event.target.closest(".registration-details-close");
+    if (closeTarget) {
+      const panel = document.getElementById("registration-details-container");
+      if (panel) {
+        panel.hidden = true;
+        panel.innerHTML = "";
+      }
+      return;
+    }
+
+    const target = event.target.closest(".official-registration-button");
+    if (!target) return;
+
+    const registrationId = Number(target.dataset.registrationId);
+    const isOfficial = target.dataset.official === "true";
+
+    try {
+      const { data, error } = await supabaseClient
+        .from("registrations")
+        .select("id, official, teams")
+        .eq("id", registrationId)
+        .single();
+
+      if (error) throw error;
+
+      if (!isOfficial) {
+        await importOfficialRegistration(registrationId);
+        return;
+      }
+
+      const { error: updateError } = await supabaseClient
+        .from("registrations")
+        .update({ official: false, status: "submitted" })
+        .eq("id", registrationId);
+
+      if (updateError) throw updateError;
+
+      await loadRegistrations();
+      setMessage("Official status removed from this registration.", "success");
+    } catch (error) {
+      setMessage(error.message, "error");
+    }
+  });
 
   const scoreForm = document.getElementById("score-form");
   if (scoreForm) {

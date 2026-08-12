@@ -585,39 +585,6 @@
               <li>Connectez-vous avec la communauté RoboCupJunior</li>
             </ul>
           </div>
-
-          <!-- Frontend-only form for UI purpose -->
-          <form class="contact-form" id="contactForm">
-            <div class="form-grid">
-              <label>
-                Nom complet
-                <input type="text" id="name" required>
-              </label>
-
-              <label>
-                Adresse e-mail
-                <input type="email" id="email" required>
-              </label>
-
-              <label class="full-width">
-                Sujet
-                <input type="text" id="subject" required>
-              </label>
-
-              <label class="full-width">
-                Message
-                <textarea id="message" required></textarea>
-              </label>
-            </div>
-
-            <button type="submit" class="btn-primary">Envoyer le message &rarr;</button>
-
-            <p class="form-note">
-              Ce formulaire de contact est actuellement une démo frontale. Pour la production, connectez-le à un service de backend ou d'email.
-            </p>
-
-            <p class="form-message" id="formMessage"></p>
-          </form>
         </div>
       </div>
     </section>
@@ -627,17 +594,6 @@
     &copy; 2026 RoboCupJunior Canada. Tous droits réservés.
   </footer>
 
-  <script>
-    // Simple frontend-only form message for demonstration
-    const contactForm = document.getElementById("contactForm");
-    const formMessage = document.getElementById("formMessage");
-
-    contactForm.addEventListener("submit", function(event) {
-      event.preventDefault();
-
-      formMessage.textContent = "Merci. Votre message a été préparé avec succès.";
-      contactForm.reset();
-    });
-  </script>  <script src="site-settings.js"></script>
+  <script src="site-settings.js"></script>
 </body>
 </html>
