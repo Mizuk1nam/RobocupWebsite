@@ -316,7 +316,7 @@
       }
 
       .nav-links {
-        gap: 16px;
+        gap: 14px 16px;
       }
 
       .hero-inner,
@@ -341,6 +341,52 @@
 
       .cards {
         grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 560px) {
+      .container {
+        width: min(100%, 92%);
+      }
+
+      .nav-inner {
+        gap: 10px;
+      }
+
+      .nav-links {
+        gap: 10px 12px;
+        font-size: 14px;
+      }
+
+      .nav-link {
+        font-size: 13px;
+      }
+
+      .hero {
+        min-height: auto;
+        padding: 56px 0;
+      }
+
+      .hero h1 {
+        font-size: clamp(34px, 11vw, 48px);
+      }
+
+      .hero p {
+        font-size: 17px;
+      }
+
+      .hero-buttons {
+        flex-direction: column;
+        width: 100%;
+      }
+
+      .btn {
+        width: 100%;
+        justify-content: center;
+      }
+
+      .about h2 {
+        font-size: 30px;
       }
     }
   </style>

@@ -396,6 +396,25 @@
       .member-row { grid-template-columns: 1fr; }
       .team-card-header { flex-direction: column; align-items: flex-start; }
     }
+
+    @media (max-width: 560px) {
+      .container { width: min(100%, 92%); }
+      .nav-links { gap: 10px 12px; }
+      .nav-link { font-size: 13px; }
+      .hero { padding: 60px 0; }
+      .hero h1 { font-size: clamp(32px, 11vw, 48px); }
+      .hero p { font-size: 17px; }
+      .hero-buttons,
+      .member-actions,
+      .workspace-actions { flex-direction: column; }
+      .btn-primary,
+      .btn-outline,
+      .btn-link,
+      .secondary-action,
+      .primary-action { width: 100%; }
+      .team-card-header { align-items: stretch; }
+      .remove-team-btn { width: 100%; }
+    }
   </style>
 </head>
 <body>
