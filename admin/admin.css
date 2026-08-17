@@ -182,6 +182,20 @@ textarea:focus {
   padding: 8px 12px;
 }
 
+.table-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: nowrap;
+  white-space: nowrap;
+}
+
+.registration-status-select {
+  width: 150px;
+  min-width: 150px;
+  padding-right: 36px;
+}
+
 .button-link {
   display: inline-flex;
   align-items: center;

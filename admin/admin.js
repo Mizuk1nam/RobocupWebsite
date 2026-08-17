@@ -263,6 +263,11 @@
       ? `Supprimer ${teamName}? Les scores liés seront aussi supprimés.`
       : `Delete ${teamName}? This will also remove related scores.`,
     teamDeleted: isFrench ? "Équipe supprimée." : "Team deleted.",
+    registrationDelete: isFrench ? "Supprimer" : "Delete",
+    registrationDeleteConfirm: (registrationId) => isFrench
+      ? `Supprimer définitivement l'inscription no ${registrationId}? Les équipes déjà importées dans les outils de compétition seront conservées.`
+      : `Permanently delete registration #${registrationId}? Teams already imported into the competition tools will be kept.`,
+    registrationDeleted: isFrench ? "Inscription supprimée." : "Registration deleted.",
     noScores: isFrench ? "Aucun score enregistré." : "No scores saved yet.",
     teamSaved: isFrench ? "Équipe enregistrée." : "Team saved.",
     scoreSaved: isFrench ? "Score enregistré." : "Score saved.",
@@ -1842,6 +1847,9 @@
               <button class="primary-action small-action official-registration-button" type="button" data-registration-id="${submission.id}" data-official="${submission.official ? "true" : "false"}">
                 ${submission.official ? "Remove Official" : "Mark Official"}
               </button>
+              <button class="danger-action small-action delete-registration-button" type="button" data-registration-id="${submission.id}">
+                ${labels.registrationDelete}
+              </button>
             </div>
           </td>
         </tr>
@@ -1905,6 +1913,29 @@
     await loadScores();
     await loadRegistrations();
     setMessage(data.official ? "Official status removed for this registration." : "Registration marked official and imported into the competition teams list.", "success");
+  }
+
+  async function deleteRegistration(registrationId) {
+    const confirmed = window.confirm(labels.registrationDeleteConfirm(registrationId));
+    if (!confirmed) return;
+
+    const { error } = await supabaseClient
+      .from("registrations")
+      .delete()
+      .eq("id", registrationId);
+
+    if (error) throw error;
+
+    const detailsPanel = document.getElementById("registration-details-container");
+    if (detailsPanel) {
+      detailsPanel.hidden = true;
+      detailsPanel.innerHTML = "";
+    }
+
+    await loadRegistrations();
+    await loadApprovedRegistrationsPreview();
+    await populateApprovedRegistrationTeamSelect();
+    setMessage(labels.registrationDeleted, "success");
   }
 
   async function getApprovedRegistrationTeams() {
@@ -2350,6 +2381,25 @@
       if (panel) {
         panel.hidden = true;
         panel.innerHTML = "";
+      }
+      return;
+    }
+
+    const deleteTarget = event.target.closest(".delete-registration-button");
+    if (deleteTarget) {
+      const registrationId = Number(deleteTarget.dataset.registrationId);
+      if (!Number.isInteger(registrationId) || registrationId <= 0) {
+        setMessage(isFrench ? "Identifiant d'inscription invalide." : "Invalid registration ID.", "error");
+        return;
+      }
+
+      deleteTarget.disabled = true;
+      try {
+        await deleteRegistration(registrationId);
+      } catch (error) {
+        setMessage(error.message, "error");
+      } finally {
+        if (deleteTarget.isConnected) deleteTarget.disabled = false;
       }
       return;
     }
